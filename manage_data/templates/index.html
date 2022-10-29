@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <div class="button-group">
+
+        <a href="{% url 'display_laptops' %}" class="btn btn-primary btn-md" role="button">Laptops</a>
+        <a href="{% url 'add_laptop' %}" class="btn btn-warning btn-sm" role="button">+</a>
+
+        <a href="{% url 'display_desktops' %}" class="btn btn-primary btn-md" role="button">Desktops</a>
+        <a href="{% url 'add_desktop' %}" class="btn btn-warning btn-sm" role="button">+</a>
+
+        <a href="{% url 'display_mobiles' %}" class="btn btn-primary btn-md" role="button">Mobiles</a>
+        <a href="{% url 'add_mobile' %}" class="btn btn-warning btn-sm" role="button">+</a>
+
+        <a href="{% url 'display_events' %}" class="btn btn-primary btn-md" role="button">Events</a>
+        <a href="{% url 'add_event' %}" class="btn btn-warning btn-sm" role="button">+</a>
+
+    </div>
+    <div class="table-responsive">
+        {% if header != "Events" %}
+            <div id="wrapper">
+
+                <br>
+                <h4>Currently viewing {{ header }}</h4>
+                <br>
+                
+                <div>
+                    <h4> Hide Columns </h4>
+                    <div class="checkbox-grid">
+                        {% for field in fields %}
+                            <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+
+                <div class="table-responsive">
+                    <table id="employee_table" cellpadding="10" class="table table-sm table-bordered table-striped table-hover">
+                        <tr>
+                            <th>S.no</th>
+                            {% for field in fields %}
+                                <th id="{{field.name}}_col_head">{{ field.name }}</th>
+                            {% endfor %}
+                            <th>Action</th>
+                        </tr>
+                        {% for item in items %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="id_col">{{ item.id }}</td>
+                                <td class="type_col">{{ item.type }}</td>
+                                <td class="price_col">{{ item.price }}</td>
+                                <td class="status_col">{{ item.status }}</td>
+                                <td class="issues_col">{{ item.issues }}</td>
+                                {% if header == "Laptops" %}
+                                    <td>
+                                        <a href="{% url 'edit_laptop' item.pk%}" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                        <a href="{% url 'delete_laptop' item.pk%}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                    </td>
+                                {% elif header == "Desktops" %}
+                                    <td>
+                                        <a href="{% url 'edit_desktop' item.pk%}" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                        <a href="{% url 'delete_desktop' item.pk%}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                    </td>
+                                {% else %}
+                                    <td>
+                                        <a href="{% url 'edit_mobile' item.pk%}" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                        <a href="{% url 'delete_desktop' item.pk%}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                    </td>
+                        {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+        {% else %}
+            <div id="wrapper">
+
+                <br>
+                <h4>Currently viewing {{ header }}</h4>
+                <br>
+                
+                <div>
+                    <h4> Hide Columns </h4>
+                    <div class="checkbox-grid">
+                        {% for field in fields %}
+                            <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+
+                <div class="table-responsive">
+                    <table id="employee_table" cellpadding="10" class="table table-sm table-bordered table-striped table-hover">
+                        <tr>
+                            <th>S.no</th>
+                            {% for field in fields %}
+                                <th id="{{field.name}}_col_head">{{ field.name }}</th>
+                            {% endfor %}
+                            <th>Action</th>
+                        </tr>
+                        {% for event in event_data %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="id_col" >{{ event.id }}</td>
+                                <td class="event_name_col" >{{ event.event_name }}</td>
+                                <td class="type_of_event_col" >{{ event.type_of_event }}</td>
+                                <td class="Audience_col" >{{ event.Audience }}</td>
+                                <td class="Organized_by_col" >{{ event.Organized_by }}</td>
+                                <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
+                                <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
+                                <td class="sponsored_by_col" >{{ event.sponsored_by }}</td>
+                                <td class="amt_of_sponsorship_col" >{{ event.amt_of_sponsorship }}</td>
+                                <td class="start_date_col" >{{ event.start_date }}</td>
+                                <td class="end_date_col" >{{ event.end_date }}</td>
+                                <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
+                                <td class="upload_attendance_col" >{{ event.upload_attendance }}</td>
+                                <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
+                                <td>
+                                    <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                    <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}
