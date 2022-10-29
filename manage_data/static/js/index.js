@@ -26,6 +26,7 @@ function hide_show_table(col_name)
         }
         document.getElementById(col_name+"_head").style.display="none";
         document.getElementById(col_name).value="show";
+        console.log("hello");
     }
 
     else
