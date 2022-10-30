@@ -67,9 +67,9 @@ def add_device(request,cls):
 
         if form.is_valid():
             form.save()
-            return redirect('display_laptops')
+            return redirect('display_events')
         else:
-            return redirect('display_laptops')
+            return redirect('display_events')
 
     else:
         form = cls()
@@ -121,7 +121,7 @@ def add_event(request):
             upload_attendance='attendance/event_attendances'+upload_attendance
         )
         event.save()
-        return redirect('display_laptops')
+        return redirect('display_events')
     else:
         return render(request,'add_event.html',{})
 
@@ -132,9 +132,9 @@ def edit_device(request,pk,model,cls):
         form = cls(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('display_laptops')
+            return redirect('display_events')
         else:
-            return redirect('display_laptops')
+            return redirect('display_events')
 
     else:
         form = cls(instance=item)
