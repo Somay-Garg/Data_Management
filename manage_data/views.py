@@ -98,7 +98,7 @@ def add_event(request):
         end_date = request.POST['end_date']
         no_of_participants = request.POST['no_of_parti']
         upload_attendance = ''
-
+        
         if request.method == 'POST' and request.FILES['upload_atten']:
             upload_attendance = request.FILES['upload_atten']
             fs = FileSystemStorage(location='attendance/event_attendances/')
