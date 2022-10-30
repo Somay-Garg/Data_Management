@@ -11,8 +11,8 @@ function add_sponsors(spon){
     for(var i=0;i<spon;i++){
         sponsors.append(spon_node.clone());
     }
-    console.log(spon_node[0]);
 }
+
 
 function hide_show_table(col_name)
 {
