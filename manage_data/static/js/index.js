@@ -1,48 +1,41 @@
-// function add_sponsors(spon) {
-
-//   spon = parseInt(spon);
-//   var spon_node = $(".clone_sponsors").find("input").clone();
-//   spon_node.prop("disabled", false);
-//   if (spon == 0 || isNaN(spon)) {
-//     spon = 1;
-//   }
-//   let sponsors1 = document.querySelector(".sponsors1");
-//   if(sponsors1.value == "MSIT"){
-//     $('.actual_sponsors').html('');
-//   }else if(sponsors1.value == "Others"){
-//     $('.actual_sponsors').html('');
-//     var sponsors = $(".actual_sponsors");
-//     for (var i = 0; i < spon ; i++) {
-//       sponsors.append(spon_node.clone());
-//     }
-//   }else{
-//     $('.actual_sponsors').html('');
-//     var sponsors = $(".actual_sponsors");
-//     for (var i = 0; i < spon-1 ; i++) {
-//       sponsors.append(spon_node.clone());
-//     }
-//   }
-// }
-
 function addSponsors(spon) {
   // let spon = document.querySelector("#no_of_sponsors");
   let nspons = parseInt(spon);
   let inputSponsors = document.querySelector("#inputSponsors");
   let sponsLabel = document.querySelector(".sponsors");
-  // if(inputSponsors.childElementCount > 1)
-  //   inputSponsors.removeChild(inputSponsors.lastChild);
+  
   let tmp = `<div class="sponsors">
-  <label class="w-25" for="exampleFormControlInput1">Sponsor Name</label>
-  <input type="text" name="spons_name" id="" class = "w-30 m-1">
-  <label class="w-25" for="exampleFormControlInput1">Sponsored Amount</label>
-  <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amount" oninput = "findTotal()" required>
-</div>`;
+    <label class="w-25" for="exampleFormControlInput1">Sponsor Name</label>
+    <input type="text" name="sponsored_by" class = "w-30 m-1 sponsored_by_name" >
+    <label class="w-25" for="exampleFormControlInput1">Sponsored Amount</label>
+    <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
+  </div>`;
+
   removeSponsors();
-  for (let i = 0; i < nspons; i++) {
+  for (let i = 0; i < nspons; i++){
     let child = document.createElement("div");
     child.innerHTML = tmp;
     inputSponsors.append(child);
   }
+}
+
+function displaySponsors(){
+  let spons_names = document.querySelectorAll(".sponsored_by_name");
+  let spons_amts = document.querySelectorAll(".spons_amt_individually");
+  // console.log(spons_names);
+  // console.log(spons_amts);
+  let textarea = document.querySelector(".spons_text");
+  textarea.value = "";
+  let value = textarea.value;
+  for(let i=0;i<spons_amts.length;i++){
+    let obj ={
+      name:spons_names[i].value,
+      amt:spons_amts[i].value
+    }
+    // let objstr = JSON.stringify(obj);
+    textarea.value += "("+obj.name +" , "+obj.amt+") , " ;
+  }
+  // findTotal();
 }
 
 function removeSponsors() {
@@ -55,12 +48,13 @@ function removeSponsors() {
 }
 
 function findTotal() {
-  let arr = document.querySelectorAll(".spons_amount");
-  var tot = 0;
-  for (var i = 0; i < arr.length; i++) {
-    if (parseInt(arr[i].value)) tot += parseInt(arr[i].value);
-  }
-  document.getElementById("total").value = tot;
+  let arr = document.querySelectorAll(".spons_amt_individually");
+  var tot=0;
+    for(var i=0;i<arr.length;i++){
+        if(parseInt(arr[i].value))
+            tot += parseInt(arr[i].value);
+    }
+    document.getElementById('total').value = tot;
 }
 
 function hide_show_table(col_name) {

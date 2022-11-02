@@ -57,7 +57,7 @@ def display_events(request):
         'header' : 'Events',
     }
 
-    print(type(event_data))
+    # print(type(event_data))
 
     return render(request,'index.html',context)
 
@@ -92,8 +92,9 @@ def add_event(request):
         Organized_by = request.POST['org_by']
         Conducted_by = request.POST['cond_by']
         no_of_sponsors = request.POST['no_of_sponsors']
-        sponsored_by = ', '.join(request.POST.getlist('spon_by'))
-        amt_of_sponsorship = request.POST['amt_of_spon']
+        sponsors_details = request.POST['sponsored_dets']
+        # sponsored_amout = ', '.join(request.POST.getlist('spons_amount'))
+        total_sponsored_amt = request.POST['total_sponsored_amt']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
         no_of_participants = request.POST['no_of_parti']
@@ -113,8 +114,8 @@ def add_event(request):
             Organized_by=Organized_by,
             Conducted_by=Conducted_by,
             no_of_sponsors=no_of_sponsors,
-            sponsored_by=sponsored_by,
-            amt_of_sponsorship=amt_of_sponsorship,
+            sponsors_details=sponsors_details,
+            total_sponsored_amt=total_sponsored_amt,
             start_date=start_date,
             end_date=end_date,
             no_of_participants=no_of_participants,
@@ -163,7 +164,6 @@ def delete_device(request,pk,model,header):
         'items' : items,
         'header' : header,
     }
-
     return render(request,'index.html',context)
 
 def delete_laptop(request,pk):

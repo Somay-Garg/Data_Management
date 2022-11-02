@@ -40,13 +40,13 @@ class Events(models.Model):
         ('Student','Student'),
         ('Both','Faculty and Student'),
     )
-    Audience = models.CharField(max_length=20,choices=audience,blank=False)
-    
+
+    Audience = models.CharField(max_length=20,choices=audience,blank=False)    
     Organized_by = models.CharField(max_length=255,blank=False)
     Conducted_by = models.CharField(max_length=255,blank=False)
     no_of_sponsors = models.IntegerField()
-    sponsored_by = models.CharField(max_length=255,blank=False)
-    amt_of_sponsorship = models.CharField(max_length=255,blank=False)
+    sponsors_details = models.CharField(max_length=255,blank=False)
+    total_sponsored_amt = models.IntegerField()
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_participants = models.IntegerField()
