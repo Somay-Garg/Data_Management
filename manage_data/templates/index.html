@@ -1,24 +1,23 @@
 {% extends 'base.html' %}
-
 {% block body %}
 
 <!-- <div class="button-group">
 
-        <a href="{% url 'display_laptops' %}" class="btn btn-primary btn-md" role="button">Laptops</a>
-        <a href="{% url 'add_laptop' %}" class="btn btn-warning btn-sm" role="button">+</a>
+        <a href="#" class="btn btn-primary btn-md" role="button">Laptops</a>
+        <a href="#" class="btn btn-warning btn-sm" role="button">+</a>
 
-        <a href="{% url 'display_desktops' %}" class="btn btn-primary btn-md" role="button">Desktops</a>
-        <a href="{% url 'add_desktop' %}" class="btn btn-warning btn-sm" role="button">+</a>
+        <a href="#" class="btn btn-primary btn-md" role="button">Desktops</a>
+        <a href="#" class="btn btn-warning btn-sm" role="button">+</a>
 
-        <a href="{% url 'display_mobiles' %}" class="btn btn-primary btn-md" role="button">Mobiles</a>
-        <a href="{% url 'add_mobile' %}" class="btn btn-warning btn-sm" role="button">+</a>
+        <a href="#" class="btn btn-primary btn-md" role="button">Mobiles</a>
+        <a href="#" class="btn btn-warning btn-sm" role="button">+</a>
 
         <a href="{% url 'display_events' %}" class="btn btn-primary btn-md" role="button">Events</a>
         <a href="{% url 'add_event' %}" class="btn btn-warning btn-sm" role="button">+</a>
 
     </div> -->
 <div class="table-responsive">
-    {% if header != "Events" %}
+    <!-- {% if header != "Events" %}
     <div id="wrapper">
 
         <br>
@@ -78,11 +77,16 @@
         </div>
     </div>
 
-    {% else %}
+    {% else %} -->
     <div id="wrapper">
 
         <br>
-        <h4>Currently viewing {{ header }}</h4>
+        <div id="add-btn">
+            <h3>Currently viewing {{ header }}</h3>
+            <a class="button-19" href="{% url 'add_event' %}">Add Event</a>
+            
+        </div>
+        
         <br>
 
         <div>
@@ -115,8 +119,8 @@
                     <td class="Organized_by_col">{{ event.Organized_by }}</td>
                     <td class="Conducted_by_col">{{ event.Conducted_by }}</td>
                     <td class="no_of_sponsors_col">{{ event.no_of_sponsors }}</td>
-                    <td class="sponsored_by_col">{{ event.sponsored_by }}</td>
-                    <td class="amt_of_sponsorship_col">{{ event.amt_of_sponsorship }}</td>
+                    <td class="sponsored_by_col">{{ event.sponsors_details }}</td>
+                    <td class="amt_of_sponsorship_col">{{ event.total_sponsored_amt }}</td>
                     <td class="start_date_col">{{ event.start_date }}</td>
                     <td class="end_date_col">{{ event.end_date }}</td>
                     <td class="no_of_participants_col">{{ event.no_of_participants }}</td>
