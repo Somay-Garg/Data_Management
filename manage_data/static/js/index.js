@@ -1,5 +1,4 @@
 function addSponsors(spon) {
-  // let spon = document.querySelector("#no_of_sponsors");
   let nspons = parseInt(spon);
   let inputSponsors = document.querySelector("#inputSponsors");
   let sponsLabel = document.querySelector(".sponsors");
@@ -22,8 +21,6 @@ function addSponsors(spon) {
 function displaySponsors(){
   let spons_names = document.querySelectorAll(".sponsored_by_name");
   let spons_amts = document.querySelectorAll(".spons_amt_individually");
-  // console.log(spons_names);
-  // console.log(spons_amts);
   let textarea = document.querySelector(".spons_text");
   textarea.value = "";
   let value = textarea.value;
@@ -32,10 +29,8 @@ function displaySponsors(){
       name:spons_names[i].value,
       amt:spons_amts[i].value
     }
-    // let objstr = JSON.stringify(obj);
     textarea.value += "("+obj.name +" , "+obj.amt+") , " ;
   }
-  // findTotal();
 }
 
 function removeSponsors() {
