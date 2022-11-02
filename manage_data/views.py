@@ -67,13 +67,15 @@ def add_device(request,cls):
 
         if form.is_valid():
             form.save()
-            return redirect('display_laptops')
-        else:
-            return redirect('display_laptops')
-
+            if(cls==LaptopForm):
+              return redirect('display_laptops')
+            elif(cls==DesktopForm):
+              return redirect('display_desktops')
+            else:
+                return redirect('display_mobiles')  
     else:
         form = cls()
-        return render(request,'add_new.html',{'form': form})
+        return render(request, 'add_new.html', {'form' : form})
 
 def add_laptop(request):
     return add_device(request,LaptopForm)
@@ -132,9 +134,12 @@ def edit_device(request,pk,model,cls):
         form = cls(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('display_laptops')
-        else:
-            return redirect('display_laptops')
+            if(cls==LaptopForm):
+                return redirect('display_laptops')     
+            elif(cls==DesktopForm):
+                return redirect('display_desktops')
+            else:
+                return redirect('display_mobiles')
 
     else:
         form = cls(instance=item)
