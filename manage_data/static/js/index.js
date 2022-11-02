@@ -5,6 +5,7 @@ function add_sponsors(spon){
     if(spon==0||isNaN(spon)){
         spon=1;
     }
+    
     $('.actual_sponsors').html('');
     $('.actual_sponsors').append($('.clone_sponsors').find('label').clone());
     var sponsors = $('.actual_sponsors');
