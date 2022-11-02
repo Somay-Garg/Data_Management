@@ -2,21 +2,21 @@
 
 {% block body %}
 
-    <div class="button-group">
+    <!-- <div class="button-group">
 
         <a href="{% url 'display_events' %}" class="btn btn-primary btn-md" role="button">Events</a>
         <a href="{% url 'add_event' %}" class="btn btn-warning btn-sm" role="button">+</a>
 
-    </div>
+    </div> -->
     <div class="table-responsive">
         <div id="wrapper">
 
             <br>
-            <h4>Currently viewing {{ header }}</h4>
+            <h3>Currently viewing {{ header }}</h3>
             <br>
             
             <div>
-                <h4> Hide Columns </h4>
+                <h5> Hide Columns </h5>
                 <div class="checkbox-grid">
                     {% for field in fields %}
                         <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
