@@ -25,4 +25,8 @@ urlpatterns = [
     path('delete_mobile/<int:pk>',delete_mobile,name='delete_mobile'),
     path('delete_event/<int:pk>',delete_event,name='delete_event'),
 
+    path('filter_events',filter_events,name='filter_events'),
+
+    # path('filter_events',filter_events,name='filter_events'),
+
 ]

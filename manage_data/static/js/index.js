@@ -14,6 +14,12 @@ function add_sponsors(spon){
     console.log(spon_node[0]);
 }
 
+$(document).ready(function () {
+    $("select").each(function(){
+        $(this).select2();
+    });
+});
+
 function hide_show_table(col_name)
 {
     var checkbox_val=document.getElementById(col_name).value;

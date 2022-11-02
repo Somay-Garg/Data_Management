@@ -4,7 +4,9 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from .models import *
 from .forms import *
-import os
+from django.db.models import Q
+from django.template.defaulttags import register
+
 # Create your views here.
 
 def index(request):
@@ -51,15 +53,128 @@ def display_mobiles(request):
 def display_events(request):
     fields = Events._meta.fields
     event_data = Events.objects.all().values()
+    
+    filter_data = {
+        'Event Name': set(),
+        'Event Type': set(),
+        'Audience': set(),
+        'break' : 1,
+        'Organized By': set(),
+        'Conducted By': set(),
+        'Sponsors' : set(),
+        'break' : 1,
+    }
+
+    for event in event_data:
+        filter_data['Event Name'].add(event['event_name'])
+        filter_data['Event Type'].add(event['type_of_event'])
+        filter_data['Audience'].add(event['Audience'])
+        filter_data['Organized By'].add(event['Organized_by'])
+        filter_data['Conducted By'].add(event['Conducted_by'])
+        filter_data['Sponsors'].update(set(event['sponsored_by'].split(',')))
+
     context = {
         'fields' : fields,
         'event_data' : event_data,
         'header' : 'Events',
+        'filter_data' : filter_data,
     }
 
-    print(type(event_data))
-
     return render(request,'index.html',context)
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
+def filter_events(request):
+    if request.method == "POST":
+
+        if(request.POST['filter'] == "reset"):
+            return redirect('display_events')
+        
+        event_name = request.POST['Event Name']
+        type_of_event = request.POST['Event Type']
+        Audience = request.POST['Audience']
+        Organized_by = request.POST['Organized By']
+        Conducted_by = request.POST['Conducted By']
+        sponsored_by = request.POST['Sponsors']
+        after = request.POST['after']
+        upto = request.POST['upto']
+        query = Q()
+
+        sel_fil_val = {
+            'Event Name': '-1',
+            'Event Type': '-1',
+            'Audience': '-1',
+            'Organized By': '-1',
+            'Conducted By': '-1',
+            'Sponsors' : '-1',
+        }
+
+        if(event_name != "-1"):
+            query = query & Q(event_name = event_name)
+            sel_fil_val['Event Name'] = event_name
+        if(type_of_event != "-1"):
+            query = query & Q(type_of_event = type_of_event)
+            sel_fil_val['Event Type'] = type_of_event
+        if(Audience != "-1"):
+            query = query & Q(Audience__in = ["both",Audience])
+            sel_fil_val['Audience'] = Audience
+        if(Organized_by != "-1"):
+            query = query & Q(Organized_by = Organized_by)
+            sel_fil_val['Organized By'] = Organized_by
+        if(Conducted_by != "-1"):
+            query = query & Q(Conducted_by = Conducted_by)
+            sel_fil_val['Conducted By'] = Conducted_by
+        if(sponsored_by != "-1"):
+            query = query & Q(sponsored_by__contains = sponsored_by)
+            sel_fil_val['Sponsors'] = sponsored_by
+        if(after == ''):
+            after = '1900-01-01'
+        else:
+            sel_fil_val['start_date'] = after
+        if(upto == ''):
+            upto = '2100-01-01'
+        else:
+            sel_fil_val['end_date'] = upto
+        
+        query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
+
+        fields = Events._meta.fields
+        all_data = Events.objects.all().values()
+        
+        filter_data = {
+            'Event Name': set(),
+            'Event Type': set(),
+            'Audience': set(),
+            'break' : 1,
+            'Organized By': set(),
+            'Conducted By': set(),
+            'Sponsors' : set(),
+            'break' : 1,
+        }
+
+        for event in all_data:
+            filter_data['Event Name'].add(event['event_name'])
+            filter_data['Event Type'].add(event['type_of_event'])
+            filter_data['Audience'].add(event['Audience'])
+            filter_data['Organized By'].add(event['Organized_by'])
+            filter_data['Conducted By'].add(event['Conducted_by'])
+            filter_data['Sponsors'].update(set(event['sponsored_by'].split(',')))
+
+        event_data = Events.objects.filter(query & query2).values()
+
+        context = {
+            'fields' : fields,
+            'event_data' : event_data,
+            'header' : 'Events',
+            'filter_data' : filter_data,
+            'sel_fil_val' : sel_fil_val,
+        }
+
+        return render(request,'index.html',context)
+    else:
+        return render(request,'add_event.html',{})
 
 def add_device(request,cls):
     if request.method == "POST":
