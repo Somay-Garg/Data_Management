@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
 
-    path('',display_events,name='display_events'),
+    path('/',display_events,name='display_events'),
 
     path('display_events',display_events,name='display_events'),
 
