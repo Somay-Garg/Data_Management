@@ -1,1 +1,1 @@
-web: gunicorn sdcapp1.wsgi 
+web: gunicorn sdcapp1.wsgi
