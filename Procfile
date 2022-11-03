@@ -1,0 +1,1 @@
+web: gunicorn sdc-project2.wsgi

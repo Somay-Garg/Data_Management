@@ -1,0 +1,10 @@
+.checkbox-grid {
+    width: 100%;
+    overflow: auto;
+}
+
+.checkbox-grid li {
+    display: block;
+    float: left;
+    width: 31%;
+}
