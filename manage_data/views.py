@@ -19,7 +19,7 @@ def display_events(request):
         'header' : 'Events',
     }
 
-    print(type(event_data))
+    # print(type(event_data))
 
     return render(request,'index.html',context)
 
