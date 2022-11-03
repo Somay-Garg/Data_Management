@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1'
-    'sdc-project2.herokuapp.com'
+    'sdcapp1.herokuapp.com'
 ]
 
 # Application definition
