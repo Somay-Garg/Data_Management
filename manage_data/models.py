@@ -2,34 +2,34 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 # Create your models here.
 
-class Device(models.Model):
-    type = models.CharField(max_length=100,blank=False)
-    price = models.IntegerField()
+# class Device(models.Model):
+#     type = models.CharField(max_length=100,blank=False)
+#     price = models.IntegerField()
 
-    choices = (
-        ('AVAILABLE','Item ready to be purchased'),
-        ('SOLD','Item Sold'),
-        ('RESTOCKING','Item restocking in a few days')
-    )
+#     choices = (
+#         ('AVAILABLE','Item ready to be purchased'),
+#         ('SOLD','Item Sold'),
+#         ('RESTOCKING','Item restocking in a few days')
+#     )
     
-    status = models.CharField(max_length=10,choices=choices,default="SOLD")
-    issues = models.CharField(max_length=100,default="No issues")
+#     status = models.CharField(max_length=10,choices=choices,default="SOLD")
+#     issues = models.CharField(max_length=100,default="No issues")
 
-    class Meta:
-        abstract = True
+#     class Meta:
+#         abstract = True
 
-    def __str__(self):
-        return 'Type : {0} Price : {1}'.format(self.type,self.price)
+#     def __str__(self):
+#         return 'Type : {0} Price : {1}'.format(self.type,self.price)
 
 
-class Laptop(Device):
-    pass
+# class Laptop(Device):
+#     pass
 
-class Desktop(Device):
-    pass
+# class Desktop(Device):
+#     pass
 
-class Mobile(Device):
-    pass
+# class Mobile(Device):
+#     pass
 
 class Events(models.Model):
     event_name = models.CharField(max_length=200,blank=False)
@@ -45,8 +45,8 @@ class Events(models.Model):
     Organized_by = models.CharField(max_length=255,blank=False)
     Conducted_by = models.CharField(max_length=255,blank=False)
     no_of_sponsors = models.IntegerField()
-    sponsored_by = models.CharField(max_length=255,blank=False)
-    amt_of_sponsorship = models.CharField(max_length=255,blank=False)
+    sponsors_details = models.CharField(max_length=255,blank=False,default='Somay')
+    total_sponsored_amt = models.IntegerField(default=0)
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_participants = models.IntegerField()

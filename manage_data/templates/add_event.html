@@ -30,22 +30,26 @@
                 <input class="w-30 m-1" type="text" name="cond_by" id="" required>
             </div>
             <div class="form-group mb-2 align-center">
-                <label class="w-25" for="exampleFormControlInput1">Number of Sponsors</label>
-                <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="add_sponsors(this.value)" val=1 required>
+                <label class="w-25" for="exampleFormControlInput1" >Sponsors Involved</label>
+                <select class="w-30 m-1" name="sponsors" class="form-control sponsors1">
+                    <option value="MSIT" selected>MSIT</option>
+                    <option value="Others">Others</option>
+                    <option value="Both">Both</option>
+                </select>
             </div>
-            <div class="form-group mb-2 align-center" id="sponsored">
-                <div class="clone_sponsors d-none">
-                    <label class="w-25" for="exampleFormControlInput1">Sponsored By</label>
-                    <input class="w-30 m-1" type="text" name="spon_by" id="" required disabled>
-                </div>
-                <div class="actual_sponsors">
-                    <label class="w-25" for="exampleFormControlInput1">Sponsored By</label>
-                    <input class="w-30 m-1" type="text" name="spon_by" id="" required>
-                </div>
+          
+            <div class="form-group mb-2 align-center " id = "inputSponsors" >
+                <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
+                <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
             </div>
+          
+            <div class="actual_sponsors" style = "display :none;">
+                <textarea name="sponsored_dets" id="" cols="30" rows="10" class = "spons_text" ></textarea>
+            </div>
+          
             <div class="form-group mb-2 align-center">
-                <label class="w-25" for="exampleFormControlInput1">Amount of Sponsorship</label>
-                <input class="w-30 m-1" type="number" name="amt_of_spon" id="" required>
+                <label class="w-25" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
+                <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required readonly/>
             </div>
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Start Date</label>

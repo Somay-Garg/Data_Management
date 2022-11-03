@@ -12,43 +12,56 @@ from django.template.defaulttags import register
 def index(request):
     return render(request,'index.html')
 
-def display_laptops(request):
-    fields = Laptop._meta.fields
-    items = Laptop.objects.all()
-    req = ['type','price']
+# def display_laptops(request):
+#     fields = Laptop._meta.fields
+#     items = Laptop.objects.all()
+#     req = ['type','price']
 
-    context = {
-        'items' : items,
-        'header' : "Laptops",
-        'fields' : fields,
-        'req' : req,
-    }
+#     context = {
+#         'items' : items,
+#         'header' : "Laptops",
+#         'fields' : fields,
+#         'req' : req,
+#     }
 
-    return render(request,'index.html',context)
+#     return render(request,'index.html',context)
 
-def display_desktops(request):
-    items = Desktop.objects.all()
-    fields = Desktop._meta.fields
+# def display_desktops(request):
+#     items = Desktop.objects.all()
+#     fields = Desktop._meta.fields
 
-    context = {
-        'items' : items,
-        'header' : "Desktops",
-        'fields' : fields,
-    }
+#     context = {
+#         'items' : items,
+#         'header' : "Desktops",
+#         'fields' : fields,
+#     }
 
-    return render(request,'index.html',context)
+#     return render(request,'index.html',context)
 
-def display_mobiles(request):
-    items = Mobile.objects.all()
-    fields = Mobile._meta.fields
+# def display_mobiles(request):
+#     items = Mobile.objects.all()
+#     fields = Mobile._meta.fields
 
-    context = {
-        'items' : items,
-        'header' : "Mobiles",
-        'fields' : fields
-    }
+#     context = {
+#         'items' : items,
+#         'header' : "Mobiles",
+#         'fields' : fields
+#     }
 
-    return render(request,'index.html',context)
+#     return render(request,'index.html',context)
+
+def filterString(string):
+    list = []
+    remove = [" ","(",")"]
+
+    for i in string:
+        if i not in remove:
+            list.append(i)
+ 
+    return toString(list)
+ 
+def toString(List):
+    return ''.join(List)
 
 def display_events(request):
     fields = Events._meta.fields
@@ -71,7 +84,16 @@ def display_events(request):
         filter_data['Audience'].add(event['Audience'])
         filter_data['Organized By'].add(event['Organized_by'])
         filter_data['Conducted By'].add(event['Conducted_by'])
-        filter_data['Sponsors'].update(set(event['sponsored_by'].split(',')))
+        
+        spon_detail = event['sponsors_details'].split(',')
+        sponsors = set()
+        for spon in spon_detail:
+            sponsor = filterString(spon)
+            if not sponsor.isdigit():
+                if sponsor != '':
+                    sponsors.add(sponsor)
+        
+        filter_data['Sponsors'].update(set(sponsors))
 
     context = {
         'fields' : fields,
@@ -81,10 +103,6 @@ def display_events(request):
     }
 
     return render(request,'index.html',context)
-
-@register.filter
-def get_item(dictionary, key):
-    return dictionary.get(key)
 
 def filter_events(request):
     if request.method == "POST":
@@ -127,7 +145,7 @@ def filter_events(request):
             query = query & Q(Conducted_by = Conducted_by)
             sel_fil_val['Conducted By'] = Conducted_by
         if(sponsored_by != "-1"):
-            query = query & Q(sponsored_by__contains = sponsored_by)
+            query = query & Q(sponsors_details__contains = sponsored_by)
             sel_fil_val['Sponsors'] = sponsored_by
         if(after == ''):
             after = '1900-01-01'
@@ -160,7 +178,16 @@ def filter_events(request):
             filter_data['Audience'].add(event['Audience'])
             filter_data['Organized By'].add(event['Organized_by'])
             filter_data['Conducted By'].add(event['Conducted_by'])
-            filter_data['Sponsors'].update(set(event['sponsored_by'].split(',')))
+            
+            spon_detail = event['sponsors_details'].split(',')
+            sponsors = set()
+            for spon in spon_detail:
+                sponsor = filterString(spon)
+                if not sponsor.isdigit():
+                    if sponsor != '':
+                        sponsors.add(sponsor)
+            
+            filter_data['Sponsors'].update(set(sponsors))
 
         event_data = Events.objects.filter(query & query2).values()
 
@@ -176,28 +203,28 @@ def filter_events(request):
     else:
         return render(request,'add_event.html',{})
 
-def add_device(request,cls):
-    if request.method == "POST":
-        form = cls(request.POST)
+# def add_device(request,cls):
+#     if request.method == "POST":
+#         form = cls(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return redirect('display_laptops')
-        else:
-            return redirect('display_laptops')
+#         if form.is_valid():
+#             form.save()
+#             return redirect('display_laptops')
+#         else:
+#             return redirect('display_laptops')
 
-    else:
-        form = cls()
-        return render(request,'add_new.html',{'form': form})
+#     else:
+#         form = cls()
+#         return render(request,'add_new.html',{'form': form})
 
-def add_laptop(request):
-    return add_device(request,LaptopForm)
+# def add_laptop(request):
+#     return add_device(request,LaptopForm)
 
-def add_desktop(request):
-    return add_device(request,DesktopForm)
+# def add_desktop(request):
+#     return add_device(request,DesktopForm)
 
-def add_mobile(request):
-    return add_device(request,MobileForm)
+# def add_mobile(request):
+#     return add_device(request,MobileForm)
 
 def add_event(request):
     if request.method == "POST":
@@ -207,8 +234,8 @@ def add_event(request):
         Organized_by = request.POST['org_by']
         Conducted_by = request.POST['cond_by']
         no_of_sponsors = request.POST['no_of_sponsors']
-        sponsored_by = ', '.join(request.POST.getlist('spon_by'))
-        amt_of_sponsorship = request.POST['amt_of_spon']
+        sponsors_details = request.POST['sponsored_dets']
+        total_sponsored_amt = request.POST['total_sponsored_amt']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
         no_of_participants = request.POST['no_of_parti']
@@ -228,67 +255,39 @@ def add_event(request):
             Organized_by=Organized_by,
             Conducted_by=Conducted_by,
             no_of_sponsors=no_of_sponsors,
-            sponsored_by=sponsored_by,
-            amt_of_sponsorship=amt_of_sponsorship,
+            sponsors_details=sponsors_details,
+            total_sponsored_amt=total_sponsored_amt,
             start_date=start_date,
             end_date=end_date,
             no_of_participants=no_of_participants,
             upload_attendance='attendance/event_attendances'+upload_attendance
         )
         event.save()
-        return redirect('display_laptops')
+        return redirect('display_events')
     else:
         return render(request,'add_event.html',{})
 
-def edit_device(request,pk,model,cls):
+def edit_entry(request,pk,model,cls):
     item = get_object_or_404(model,pk=pk)
 
     if request.method == "POST":
         form = cls(request.POST, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('display_laptops')
+            return redirect('display_events')
         else:
-            return redirect('display_laptops')
+            return redirect('display_events')
 
     else:
         form = cls(instance=item)
         return render(request,'edit_item.html',{'form' : form})
 
-def edit_laptop(request,pk):
-    return edit_device(request,pk,Laptop,LaptopForm)
-
-def edit_desktop(request,pk):
-    return edit_device(request,pk,Desktop,DesktopForm)
-
-def edit_mobile(request,pk):
-    return edit_device(request,pk,Mobile,MobileForm)
-
 def edit_event(request,pk):
-    return edit_device(request,pk,Events,EventForm)
+    return edit_entry(request,pk,Events,EventForm)
 
-def delete_device(request,pk,model,header):
+def delete_entry(request,pk,model,header):
     model.objects.filter(id=pk).delete()
-    fields = model._meta.fields
-
-    items = model.objects.all()
-
-    context = {
-        'fields' : fields,
-        'items' : items,
-        'header' : header,
-    }
-
-    return render(request,'index.html',context)
-
-def delete_laptop(request,pk):
-    return delete_device(request,pk,Laptop,"Laptops")
-
-def delete_desktop(request,pk):
-    return delete_device(request,pk,Desktop,"Desktops")
-
-def delete_mobile(request,pk):
-    return delete_device(request,pk,Mobile,"Mobiles")
+    return display_events(request)
 
 def delete_event(request,pk):
-    return delete_device(request,pk,Events,"Events")
+    return delete_entry(request,pk,Events,"Events")

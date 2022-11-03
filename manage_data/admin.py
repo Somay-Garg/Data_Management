@@ -12,6 +12,6 @@ from django.apps import apps
 #     except admin.sites.AlreadyRegistered:
 #         pass
 
-@admin.register(Desktop,Laptop,Mobile,Events)
+@admin.register(Events)
 class ViewAdmin(ImportExportModelAdmin):
     pass
