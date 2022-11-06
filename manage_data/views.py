@@ -20,7 +20,6 @@ def display_events(request):
     }
 
     # print(type(event_data))
-
     return render(request,'index.html',context)
 
 def add_event(request):
@@ -74,7 +73,6 @@ def edit_form(request,pk,model,cls):
             return redirect('display_events')
         else:
             return redirect('display_events')
-
     else:
         form = cls(instance=item)
         return render(request,'edit_item.html',{'form' : form})

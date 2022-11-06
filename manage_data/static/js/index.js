@@ -69,3 +69,12 @@ function hide_show_table(col_name) {
     document.getElementById(col_name).value = "hide";
   }
 }
+function displaySocieties() {
+  var societyOpt = document.querySelector('#societyOpt');
+societyOpt.multiselect({
+    columns: 1,
+    placeholder: 'Select Languages',
+    search: true,
+    selectAll: true
+  });
+}
