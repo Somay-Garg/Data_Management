@@ -26,8 +26,13 @@ SECRET_KEY = 'django-insecure-2(dinty3$8y6+&)s-ax=%_^w3qj#a33!0f2%k+xwh6r4b_=tl6
 DEBUG = True
 
 ALLOWED_HOSTS = [
+<<<<<<< HEAD
     'sdcapp1.herokuapp.com',
     '*'
+=======
+    '127.0.0.1',
+    'sdcapp1.herokuapp.com'
+>>>>>>> 5c9635a6fdc477ca2722f82016978393860fdbe4
 ]
 
 # Application definition
