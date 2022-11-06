@@ -11,16 +11,10 @@
                 <label class="w-25" for="exampleFormControlInput1">Type of Event</label>
                 <input class="w-30 m-1" type="text" name="type_of_event" id="" required>
             </div>
-
-            <div class="form-group mb-2 align-center">
-                <label class="w-25" for="exampleFormControlInput1">Departments Involved</label>
-                <input class="w-30 m-1" type="text" name="type_of_event" id="" required>
-            </div>
-
             <div class="form-group mb-2 align-center" id = "society-involved">
                 <label class="w-25" for="exampleFormControlInput1">Societies Involved</label>
-                <select mutliple = "mutliple" class="w-30 m-1" name="society" class="form-control" onselect = "displaySocieties()">
-                    <option value="Prakriti" selected>Prakriti</option>
+                <select multiple = "multiple" class="w-100" >
+                    <option value="Prakriti" >Prakriti</option>
                     <option value="IEEE">IEEE</option>
                     <option value="E-Cell">E-Cell</option>
                     <option value="IIC">IIC</option>
@@ -33,9 +27,21 @@
                     <option value="Mutants">Mutants</option>
                     <option value="Veda">Veda</option>
                     <option value="NSS">NSS</option>
-                    <option value="none">none</option>
+                    <option value="None">None</option>
                 </select>
             </div>
+            <div class="form-group mb-2 align-center" id = "departments-involved">
+                <label class="w-25" for="exampleFormControlInput1">Departments Involved</label>
+                <select multiple = "multiple" class="w-100" >
+                    <option value="CSE" >CSE</option>
+                    <option value="IT">IT</option>
+                    <option value="ECE">ECE</option>
+                    <option value="EEE">EEE</option>
+                    <option value="Applied Science">Applied Science</option>
+                    <option value="None">None</option>
+                </select>
+            </div>
+
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Audience</label>
                 <select class="w-30 m-1" name="audience" class="form-control">
@@ -53,14 +59,14 @@
                 <input class="w-30 m-1" type="text" name="cond_by" id="" required>
             </div>
             
-            <div class="form-group mb-2 align-center">
+            <!-- <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1" >Sponsors Involved</label>
                 <select class="w-30 m-1" name="sponsors" class="form-control sponsors1">
                     <option value="MSIT" selected>MSIT</option>
                     <option value="Others">Others</option>
                     <option value="Both">Both</option>
                 </select>
-            </div>
+            </div> -->
           
             <div class="form-group mb-2 align-center " id = "inputSponsors" >
                 <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
@@ -95,11 +101,15 @@
                 <input class="w-30 m-1" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1">
             </div>
 
+            <div class="form-group mb-2 align-center">
+                <label class="w-25" for="exampleFormControlFile1">Upload Report</label>
+                <input class="w-30 m-1" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1">
+            </div>
+
             <div class="form-group w-100">
                 <input class="btn btn-primary btn-sm" type="submit" value="Add"/>
             </div>
-
         </form>
     </div>
-
+    
 {% endblock %}

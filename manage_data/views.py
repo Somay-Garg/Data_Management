@@ -143,7 +143,6 @@ def filter_events(request):
     else:
         return render(request,'add_event.html',{})
 
-
 def add_event(request):
     if request.method == "POST":
         event_name = request.POST['event_name']
@@ -178,8 +177,9 @@ def add_event(request):
             start_date=start_date,
             end_date=end_date,
             no_of_participants=no_of_participants,
-            upload_attendance='attendance/event_attendances'+upload_attendance
+            upload_attendance=upload_attendance
         )
+
         event.save()
         return redirect('display_events')
     else:

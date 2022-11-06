@@ -4,11 +4,6 @@
 
     <!-- <div class="button-group">
 
-        <a href="" class="btn btn-primary btn-md" role="button">Desktops</a>
-        <a href= class="btn btn-warning btn-sm" role="button">+</a>
-
-        <a href="" class="btn btn-primary btn-md" role="button">Mobiles</a>
-        <a href="" class="btn btn-warning btn-sm" role="button">+</a> -->
         <a href="{% url 'display_events' %}" class="btn btn-primary btn-md" role="button">Events</a>
         <a href="{% url 'add_event' %}" class="btn btn-warning btn-sm" role="button">+</a>
 
@@ -84,13 +79,14 @@
                     {% endfor %}
                 </div>
             </div>
+            <br>
 
             <div class="card table-scroll">
                 <table id="employee_table" cellpadding="10" class="table table-striped table-hover align-middle text-center">
                     <tr class="table-dark">
                         <th>S.no</th>
                         {% for field in fields %}
-                            <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                            <th id="{{field.name}}_col_head">{{ field.name }}</th>
                         {% endfor %}
                         <th>Action</th>
                     </tr>
@@ -129,33 +125,9 @@
                                 <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
                             </td>
                         </tr>
-                        {% for event in event_data %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td class="id_col" >{{ event.id }}</td>
-                                <td class="event_name_col" >{{ event.event_name }}</td>
-                                <td class="type_of_event_col" >{{ event.type_of_event }}</td>
-                                <td class="Audience_col" >{{ event.Audience }}</td>
-                                <td class="Organized_by_col" >{{ event.Organized_by }}</td>
-                                <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
-                                <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
-                                <td class="sponsored_by_col" >{{ event.sponsors_details }}</td>
-                                <td class="amt_of_sponsorship_col" >{{ event.total_sponsored_amt }}</td>
-                                <td class="start_date_col" >{{ event.start_date }}</td>
-                                <td class="end_date_col" >{{ event.end_date }}</td>
-                                <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
-                                <td class="upload_attendance_col" >{{ event.upload_attendance }}</td>
-                                <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
-                                <td>
-                                    <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                    <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
+                    {% endfor %}
+                </table>
             </div>
-        <!-- {% endif %} -->
+        </div>
     </div>
-
 {% endblock %}
