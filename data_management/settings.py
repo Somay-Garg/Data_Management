@@ -26,10 +26,21 @@ SECRET_KEY = 'django-insecure-2(dinty3$8y6+&)s-ax=%_^w3qj#a33!0f2%k+xwh6r4b_=tl6
 DEBUG = True
 
 ALLOWED_HOSTS = [
+<<<<<<< HEAD
     '127.0.0.1',
     'sdc-project1.herokuapp.com'
 ]
 
+=======
+<<<<<<< HEAD
+    'sdcapp1.herokuapp.com',
+    '*'
+=======
+    '127.0.0.1',
+    'sdcapp1.herokuapp.com'
+>>>>>>> 5c9635a6fdc477ca2722f82016978393860fdbe4
+]
+>>>>>>> 2a1183cc5579e46b84d10153a9581fb50a3bc5a6
 
 # Application definition
 
@@ -121,7 +132,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+<<<<<<< HEAD
 STATIC_URL = 'static/'
+=======
+STATIC_URL = '/static/'
+>>>>>>> 2a1183cc5579e46b84d10153a9581fb50a3bc5a6
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type

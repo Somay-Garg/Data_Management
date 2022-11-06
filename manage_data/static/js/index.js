@@ -24,13 +24,15 @@ function displaySponsors() {
   let textarea = document.querySelector(".spons_text");
   textarea.value = "";
   let value = textarea.value;
-  for (let i = 0; i < spons_amts.length; i++) {
-    let obj = {
-      name: spons_names[i].value,
-      amt: spons_amts[i].value,
-    };
-    textarea.value += "(" + obj.name + " , " + obj.amt + ") , ";
+  let spon_obj = {};
+  for(let i=0;i<spons_amts.length;i++){
+    let obj ={
+      name:spons_names[i].value,
+      amt:spons_amts[i].value
+    }
+    spon_obj[obj.name] = obj.amt;
   }
+  textarea.value = JSON.stringify(spon_obj);
 }
 
 function removeSponsors() {
@@ -51,12 +53,24 @@ function findTotal() {
   document.getElementById("total").value = tot;
 }
 
-function hide_show_table(col_name) {
-  var checkbox_val = document.getElementById(col_name).value;
-  if (checkbox_val == "hide") {
-    var all_col = document.getElementsByClassName(col_name);
-    for (var i = 0; i < all_col.length; i++) {
-      all_col[i].style.display = "none";
+$(document).ready(function () {
+    $("select").each(function(){
+        $(this).select2();
+    });
+});
+
+function hide_show_table(col_name)
+{
+    var checkbox_val=document.getElementById(col_name).value;
+    if(checkbox_val=="hide")
+    {
+        var all_col=document.getElementsByClassName(col_name);
+        for(var i=0;i<all_col.length;i++)
+        {
+            all_col[i].style.display="none";
+        }
+        document.getElementById(col_name+"_head").style.display="none";
+        document.getElementById(col_name).value="show";
     }
     document.getElementById(col_name + "_head").style.display = "none";
     document.getElementById(col_name).value = "show";
