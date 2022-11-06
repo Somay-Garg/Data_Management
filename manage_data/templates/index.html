@@ -100,7 +100,20 @@
                             <td class="Organized_by_col" >{{ event.Organized_by }}</td>
                             <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
                             <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
-                            <td class="sponsors_details_col">{{ event.sponsors_details }}</td>
+                            <td class="sponsors_details_col">
+                                 <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                    <tr>
+                                        <th class="ml-1">Sponsor</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                    {% for sponsor,amount in sponsors.items %}
+                                        <tr>
+                                            <td class="ml-1">{{sponsor}}</td>
+                                            <td>{{amount}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table> 
+                            </td>
                             <td class="total_sponsored_amt_col">{{ event.total_sponsored_amt }}</td>
                             <td class="start_date_col" >{{ event.start_date }}</td>
                             <td class="end_date_col" >{{ event.end_date }}</td>

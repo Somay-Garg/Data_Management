@@ -5,23 +5,11 @@ from django.core.files.storage import FileSystemStorage
 from .models import *
 from .forms import *
 from django.db.models import Q
+import json
 # Create your views here.
 
 def index(request):
     return render(request,'index.html')
-
-def filterString(string):
-    list = []
-    remove = [" ","(",")"]
-
-    for i in string:
-        if i not in remove:
-            list.append(i)
- 
-    return toString(list)
- 
-def toString(List):
-    return ''.join(List)
 
 def display_events(request):
     fields = Events._meta.fields
@@ -44,22 +32,17 @@ def display_events(request):
         filter_data['Audience'].add(event['Audience'])
         filter_data['Organized By'].add(event['Organized_by'])
         filter_data['Conducted By'].add(event['Conducted_by'])
-        
-        spon_detail = event['sponsors_details'].split(',')
-        sponsors = set()
-        for spon in spon_detail:
-            sponsor = filterString(spon)
-            if not sponsor.isdigit():
-                if sponsor != '':
-                    sponsors.add(sponsor)
-        
-        filter_data['Sponsors'].update(set(sponsors))
+
+        sponsors = json.loads(event['sponsors_details'])
+        for sponsor in sponsors:
+            filter_data['Sponsors'].add(sponsor)
 
     context = {
         'fields' : fields,
         'event_data' : event_data,
         'header' : 'Events',
         'filter_data' : filter_data,
+        'sponsors' : sponsors,
     }
 
     return render(request,'index.html',context)
@@ -139,15 +122,9 @@ def filter_events(request):
             filter_data['Organized By'].add(event['Organized_by'])
             filter_data['Conducted By'].add(event['Conducted_by'])
             
-            spon_detail = event['sponsors_details'].split(',')
-            sponsors = set()
-            for spon in spon_detail:
-                sponsor = filterString(spon)
-                if not sponsor.isdigit():
-                    if sponsor != '':
-                        sponsors.add(sponsor)
-            
-            filter_data['Sponsors'].update(set(sponsors))
+            sponsors = json.loads(event['sponsors_details'])
+            for sponsor in sponsors:
+                filter_data['Sponsors'].add(sponsor)
 
         event_data = Events.objects.filter(query & query2).values()
 
@@ -157,7 +134,10 @@ def filter_events(request):
             'header' : 'Events',
             'filter_data' : filter_data,
             'sel_fil_val' : sel_fil_val,
+            'sponsors' : sponsors,
         }
+
+        # print(context)
 
         return render(request,'index.html',context)
     else:
@@ -225,17 +205,7 @@ def edit_event(request,pk):
 
 def delete_entry(request,pk,model,header):
     model.objects.filter(id=pk).delete()
-    fields = model._meta.fields
-
-    items = model.objects.all()
-
-    context = {
-        'fields' : fields,
-        'items' : items,
-        'header' : header,
-    }
-
-    return render(request,'index.html',context)
+    return display_events(request)
 
 def delete_event(request,pk):
     return delete_entry(request,pk,Events,"Events")

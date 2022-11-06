@@ -24,13 +24,15 @@ function displaySponsors(){
   let textarea = document.querySelector(".spons_text");
   textarea.value = "";
   let value = textarea.value;
+  let spon_obj = {};
   for(let i=0;i<spons_amts.length;i++){
     let obj ={
       name:spons_names[i].value,
       amt:spons_amts[i].value
     }
-    textarea.value += "("+obj.name +" , "+obj.amt+") , " ;
+    spon_obj[obj.name] = obj.amt;
   }
+  textarea.value = JSON.stringify(spon_obj);
 }
 
 function removeSponsors() {
@@ -51,6 +53,12 @@ function findTotal() {
     }
     document.getElementById('total').value = tot;
 }
+
+$(document).ready(function () {
+    $("select").each(function(){
+        $(this).select2();
+    });
+});
 
 function hide_show_table(col_name)
 {

@@ -30,10 +30,9 @@ function displaySponsors(){
       name:spons_names[i].value,
       amt:spons_amts[i].value
     }
-    textarea.value += "("+obj.name +" , "+obj.amt+") , " ;
     spon_obj[obj.name] = obj.amt;
   }
-  console.log(spon_obj);
+  textarea.value = JSON.stringify(spon_obj);
 }
 
 function removeSponsors() {
