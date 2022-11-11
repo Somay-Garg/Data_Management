@@ -1,7 +1,7 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
-# Create your models here.
 
+# Create your models here.
 class Events(models.Model):
     event_name = models.CharField(max_length=200,blank=False)
     type_of_event = models.CharField(max_length=200,blank=False)
@@ -11,6 +11,31 @@ class Events(models.Model):
         ('Student','Student'),
         ('Both','Faculty and Student'),
     )
+
+    # soceity = (
+    #     ('Prakriti','Prakriti'),
+    #     ('E-Cell','E-Cell'),
+    #     ('IIC','IIC'),
+    #     ('NISP','NISP'),
+    #     ('UBA','UBA'),
+    #     ('E-yantra','E-yantra'),
+    #     ('EBSB','EBSB'),
+    #     ('IIIC','IIIC'),
+    #     ('TechSoc','TechSoc'),
+    #     ('Mutants','Mutants'),
+    #     ('Veda','Veda'),
+    #     ('NSS','NSS'),
+    #     ('None','None'),
+    # )
+
+    # departments = (
+    #     ('CSE','CSE'),
+    #     ('IT','IT'),
+    #     ('ECE','ECE'),
+    #     ('EEE','EEE'),
+    #     ('Applied Science','Applied Science'),
+    #     ('None','None'),
+    # )
 
     Audience = models.CharField(max_length=20,choices=audience,blank=False)    
     Organized_by = models.CharField(max_length=255,blank=False)
