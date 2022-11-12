@@ -6,6 +6,8 @@ from .models import *
 from .forms import *
 from django.db.models import Q
 import json
+import xlwt
+from django.http import HttpResponse
 # Create your views here.
 
 def index(request):
@@ -49,7 +51,6 @@ def display_events(request):
 
 def filter_events(request):
     if request.method == "POST":
-
         if(request.POST['filter'] == "reset"):
             return redirect('display_events')
         
@@ -58,6 +59,7 @@ def filter_events(request):
         Audience = request.POST['Audience']
         Organized_by = request.POST['Organized By']
         Conducted_by = request.POST['Conducted By']
+        # Departments = request.POST['Departments Involved']
         sponsored_by = request.POST['Sponsors']
         after = request.POST['after']
         upto = request.POST['upto']
@@ -70,6 +72,7 @@ def filter_events(request):
             'Organized By': '-1',
             'Conducted By': '-1',
             'Sponsors' : '-1',
+            'Departments':'-1',
         }
 
         if(event_name != "-1"):
@@ -90,6 +93,7 @@ def filter_events(request):
         if(sponsored_by != "-1"):
             query = query & Q(sponsors_details__contains = sponsored_by)
             sel_fil_val['Sponsors'] = sponsored_by
+        
         if(after == ''):
             after = '1900-01-01'
         else:
@@ -121,7 +125,6 @@ def filter_events(request):
             filter_data['Audience'].add(event['Audience'])
             filter_data['Organized By'].add(event['Organized_by'])
             filter_data['Conducted By'].add(event['Conducted_by'])
-            
             sponsors = json.loads(event['sponsors_details'])
             for sponsor in sponsors:
                 filter_data['Sponsors'].add(sponsor)
@@ -136,9 +139,8 @@ def filter_events(request):
             'sel_fil_val' : sel_fil_val,
             'sponsors' : sponsors,
         }
-
-        # print(context)
-
+        # print(event_data+"------")
+        
         return render(request,'index.html',context)
     else:
         return render(request,'add_event.html',{})
@@ -208,3 +210,40 @@ def delete_entry(request,pk,model,header):
 
 def delete_event(request,pk):
     return delete_entry(request,pk,Events,"Events")
+
+
+def export_excel(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="events.xls"'
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Events')
+
+    row_num=0
+    font_style=xlwt.XFStyle()
+    font_style.font.bold = True
+    
+    columns = ['event_name','type_of_event','Audience','Organized_by','Conducted_by','no_of_sponsors','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','uploaded_at']
+    
+    for col_num in range(len(columns)):
+        ws.write(row_num,col_num,columns[col_num],font_style)
+
+    font_style = xlwt.XFStyle()
+
+    rows = Events.objects.all().values_list('event_name','type_of_event','Audience','Organized_by','Conducted_by','no_of_sponsors','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','uploaded_at')
+    
+    for row in rows:
+        row_num +=1
+        for col_num in range(len(row)):
+            if(row[col_num] == 'sponsors_details'):
+                string = JSON.parse(row[col_num])
+                ws.write(row_num,col_num,string,font_style)
+            else: 
+                ws.write(row_num,col_num,str(row[col_num]),font_style) 
+
+    wb.save(response)
+    return response 
+    # if type_of_event in arr:
+    # feilds [] 
+
+

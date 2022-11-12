@@ -10,5 +10,6 @@ urlpatterns = [
     path('edit_event/<int:pk>',edit_event,name='edit_event'),
     path('delete_event/<int:pk>',delete_event,name='delete_event'),
     path('filter_events',filter_events,name='filter_events'),
-
+    path('export_excel',export_excel,name = 'export_excel'),
+    
 ]

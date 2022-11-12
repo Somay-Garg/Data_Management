@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
     <!-- <div class="button-group">
-
         <a href="{% url 'display_events' %}" class="btn btn-primary btn-md" role="button">Events</a>
         <a href="{% url 'add_event' %}" class="btn btn-warning btn-sm" role="button">+</a>
-
     </div> -->
     <div class="table">
         <div id="wrapper">
-
             <br>
             <h3>Currently viewing {{ header }}</h3>
             <br>
@@ -67,6 +63,7 @@
                 <div class="m-2 float-right">
                     <button class="btn btn-success float-right" name="filter" value="filter" type="submit">Filter</button>
                     <button class="btn btn-danger float-right" name="filter" value="reset" type="submit">Reset</button>
+                    <!-- <button class = "btn btn-success float-right" name = "export_excel" value = "{% url 'export_excel' %}" type = "submit">Export to ExcelSheet</button> -->
                 </div>
             </form>
             <br>
@@ -75,7 +72,7 @@
                 <h5> Hide Columns </h5>
                 <div class="checkbox-grid">
                     {% for field in fields %}
-                        <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                        <li class="form-check form-check-inline" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">{{ field.name }}</li>
                     {% endfor %}
                 </div>
             </div>
@@ -96,12 +93,12 @@
                             <td class="id_col" >{{ event.id }}</td>
                             <td class="event_name_col" >{{ event.event_name }}</td>
                             <td class="type_of_event_col" >{{ event.type_of_event }}</td>
-                            <td class="Audience_col" >{{ event.Audience }}</td>
+                            <td class="Audience_col">{{ event.Audience }}</td>
                             <td class="Organized_by_col" >{{ event.Organized_by }}</td>
                             <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
                             <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
                             <td class="sponsors_details_col">
-                                 <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                <table class="table align-middle table-hover table-striped table-light table-sm text-center">
                                     <tr>
                                         <th class="ml-1">Sponsor</th>
                                         <th>Amount</th>

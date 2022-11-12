@@ -12,7 +12,7 @@ class Events(models.Model):
         ('Both','Faculty and Student'),
     )
 
-    # soceity = (
+    # society = (
     #     ('Prakriti','Prakriti'),
     #     ('E-Cell','E-Cell'),
     #     ('IIC','IIC'),
