@@ -55,7 +55,7 @@ def filter_events(request):
         
         event_name = request.POST['Event Name']
         type_of_event = request.POST['Event Type']
-        Audience = request.POST['Audience']
+        Audience = request.POST['Audience'] 
         Organized_by = request.POST['Organized By']
         Conducted_by = request.POST['Conducted By']
         sponsored_by = request.POST['Sponsors']

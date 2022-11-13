@@ -23,11 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2(dinty3$8y6+&)s-ax=%_^w3qj#a33!0f2%k+xwh6r4b_=tl6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
+    'https://sdc-app1.herokuapp.com',
+    'sdc-app1.herokuapp.com',
     '127.0.0.1',
-    'sdcapp1.herokuapp.com'
 ]
 
 # Application definition
@@ -115,7 +116,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
