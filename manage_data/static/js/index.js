@@ -60,6 +60,20 @@ $(document).ready(function () {
     });
 });
 
+function getSocieties(){
+  $('#all_society').val($('#society').val().toString());
+  console.log($('#all_society').val());
+}
+
+function getDepartments(){
+  let society = $('#department').val().toString();
+  if(society.includes('All')){
+    society = "All"
+  }
+  $('#all_department').val(society);
+  console.log($('#all_department').val());
+}
+
 function hide_show_table(col_name)
 {
     var checkbox_val=document.getElementById(col_name).value;
@@ -84,4 +98,20 @@ function hide_show_table(col_name)
         document.getElementById(col_name+"_head").style.display="table-cell";
         document.getElementById(col_name).value="hide";
     }
+
+    display_col = [];
+    
+    $('.display_columns').each(function(){
+        if(!$(this).find('input').is(':checked')){
+            col_id_arr = $(this).find('input').attr('id').split('_');
+            col_name = col_id_arr[0];
+            for(let i=1;i<col_id_arr.length-1;i++){
+                col_name += '_'+col_id_arr[i];
+            }
+            display_col.push(col_name);
+        }
+    });
+
+    $('#display_columns').val(display_col);
+    // console.log(JSON.parse($('#filter_data').val()));
 }
