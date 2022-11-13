@@ -18,6 +18,62 @@ function addSponsors(spon) {
   }
 }
 
+function displaySponsors(){
+  let spons_names = document.querySelectorAll(".sponsored_by_name");
+  let spons_amts = document.querySelectorAll(".spons_amt_individually");
+  let textarea = document.querySelector(".spons_text");
+  textarea.value = "";
+  let value = textarea.value;
+  let spon_obj = {};
+  for(let i=0;i<spons_amts.length;i++){
+    let obj ={
+      name:spons_names[i].value,
+      amt:spons_amts[i].value
+    }
+    spon_obj[obj.name] = obj.amt;
+  }
+  textarea.value = JSON.stringify(spon_obj);
+}
+
+function removeSponsors() {
+  let inputSponsors = document.querySelector("#inputSponsors");
+  var elements = inputSponsors.getElementsByClassName("sponsors");
+
+  while (elements[0]) {
+    elements[0].parentNode.removeChild(elements[0]);
+  }
+}
+
+function findTotal() {
+  let arr = document.querySelectorAll(".spons_amt_individually");
+  var tot=0;
+    for(var i=0;i<arr.length;i++){
+        if(parseInt(arr[i].value))
+            tot += parseInt(arr[i].value);
+    }
+    document.getElementById('total').value = tot;
+}
+
+$(document).ready(function () {
+    $("select").each(function(){
+        $(this).select2();
+    });
+});
+
+function getSocieties(){
+  $('#all_society').val($('#society').val().toString());
+  console.log($('#all_society').val());
+}
+
+function getDepartments(){
+  let society = $('#department').val().toString();
+  if(society.includes('All')){
+    society = "All"
+  }
+  $('#all_department').val(society);
+  console.log($('#all_department').val());
+}
+
 function displaySponsors() {
   let spons_names = document.querySelectorAll(".sponsored_by_name");
   let spons_amts = document.querySelectorAll(".spons_amt_individually");
@@ -56,32 +112,20 @@ function hide_show_table(col_name)
         document.getElementById(col_name+"_head").style.display="table-cell";
         document.getElementById(col_name).value="hide";
     }
-}
 
+    display_col = [];
+    
+    $('.display_columns').each(function(){
+        if(!$(this).find('input').is(':checked')){
+            col_id_arr = $(this).find('input').attr('id').split('_');
+            col_name = col_id_arr[0];
+            for(let i=1;i<col_id_arr.length-1;i++){
+                col_name += '_'+col_id_arr[i];
+            }
+            display_col.push(col_name);
+        }
+    });
 
-function removeSponsors() {
-  let inputSponsors = document.querySelector("#inputSponsors");
-  var elements = inputSponsors.getElementsByClassName("sponsors");
-
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-}
-
-
-function removeSponsors() {
-  let inputSponsors = document.querySelector("#inputSponsors");
-  var elements = inputSponsors.getElementsByClassName("sponsors");
-
-  while (elements[0]) {
-    elements[0].parentNode.removeChild(elements[0]);
-  }
-}
-function findTotal() {
-  let arr = document.querySelectorAll(".spons_amt_individually");
-  var tot = 0;
-  for (var i = 0; i < arr.length; i++) {
-    if (parseInt(arr[i].value)) tot += parseInt(arr[i].value);
-  }
-  document.getElementById("total").value = tot;
+    $('#display_columns').val(display_col);
+    // console.log(JSON.parse($('#filter_data').val()));
 }
