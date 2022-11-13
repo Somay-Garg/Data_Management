@@ -1,1 +1,1 @@
-web: gunicorn sdcapp1.wsgi
+web: gunicorn data_management.wsgi --log-file -
