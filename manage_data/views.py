@@ -91,13 +91,9 @@ def filter_events(request):
         
         event_name = request.POST['Event Name']
         type_of_event = request.POST['Event Type']
-<<<<<<< HEAD
         Audience = request.POST['Audience']
         Society = request.POST['Society']
         Department = request.POST['Department']
-=======
-        Audience = request.POST['Audience'] 
->>>>>>> ab82f21a03df29127ca302d390e3aa3fe13fa564
         Organized_by = request.POST['Organized By']
         Conducted_by = request.POST['Conducted By']
         sponsored_by = request.POST['Sponsors']
@@ -288,7 +284,6 @@ def delete_entry(request,pk,model,header):
     return display_events(request)
 
 def delete_event(request,pk):
-<<<<<<< HEAD
     return delete_entry(request,pk,Events,"Events")
 
 def export_data(request):
@@ -371,6 +366,3 @@ def open_file_atten(request,file):
 
 def open_file_report(request,file):
     return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)
-=======
-    return delete_entry(request,pk,Events,"Events")
->>>>>>> ab82f21a03df29127ca302d390e3aa3fe13fa564
