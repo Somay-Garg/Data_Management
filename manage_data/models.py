@@ -13,6 +13,33 @@ class Events(models.Model):
     )
     Audience = models.CharField(max_length=20,choices=audience,blank=False)
     
+    societies = (
+        ('Prakriti','Prakriti'),
+        ('E-Cell','E-Cell'),
+        ('IIC','IIC'),
+        ('NISP','NISP'),
+        ('UBA','UBA'),
+        ('E-yantra','E-yantra'),
+        ('EBSB','EBSB'),
+        ('IIIC','IIIC'),
+        ('TechSoc','TechSoc'),
+        ('Mutants','Mutants'),
+        ('Veda','Veda'),
+        ('NSS','NSS'),
+        ('None','None'),
+    )
+   
+    Societies = models.CharField(max_length=255,choices=societies,blank=False,default="None")
+    departments = (
+        ('CSE','CSE'),
+        ('IT','IT'),
+        ('ECE','ECE'),
+        ('EEE','EEE'),
+        ('Applied Science','Applied Science'),
+        ('All','All'),
+        ('None','None'),
+    )
+    Departments = models.CharField(max_length=255,choices=departments,blank=False,default="None")
     Organized_by = models.CharField(max_length=255,blank=False)
     Conducted_by = models.CharField(max_length=255,blank=False)
     no_of_sponsors = models.IntegerField()
@@ -22,6 +49,7 @@ class Events(models.Model):
     end_date = models.DateField()
     no_of_participants = models.IntegerField()
     upload_attendance = models.FileField(upload_to='attendance/event_attendances/')
+    upload_report = models.FileField(upload_to='report/event_reports/',blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
