@@ -58,9 +58,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="m-2 float-right">
-                    <button class="btn btn-success float-right" name="filter" value="filter" type="submit">Filter</button>
-                    <button class="btn btn-danger float-right" name="filter" value="reset" type="submit">Reset</button>
+                <div class="m-2 w-100">
+                    <button class="btn btn-success" name="filter" value="filter" type="submit">Filter</button>
+                    <button class="btn btn-danger" name="filter" value="reset" type="submit">Reset</button>
                     <button class="btn btn-primary" style="float: right;" name="filter" value="export" type="submit">Export</button>
                 </div>
                 <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
@@ -73,7 +73,7 @@
                 <div class="checkbox-grid">
                     {% for field in fields %}
                         {% if field.name != "id" %}
-                            <li class="form-check form-check-inline display_columns" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                            <li class="form-check form-check-inline display_columns w-25 p-0 m-0" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -92,8 +92,9 @@
                         <th>Action</th>
                     </tr>
                     {% for event in event_data %}
-                        <tr class="table-light">
+                        <tr class="table-light align-middle">
                             <td>{{ forloop.counter }}</td>
+                            <!-- <td class="id_col" >{{ event.id }}</td> -->
                             <td class="event_name_col" >{{ event.event_name }}</td>
                             <td class="type_of_event_col" >{{ event.type_of_event }}</td>
                             <td class="Audience_col" >{{ event.Audience }}</td>
@@ -121,9 +122,8 @@
                             <td class="end_date_col" >{{ event.end_date }}</td>
                             <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
                             <td class="upload_attendance_col">{{ event.upload_attendance }}<a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn btn-outline-dark btn-sm" role="button">Open</a></td>
-                            <td class="upload_report_col" >{{ event.upload_report }}<a href="{% url 'open_file_report' event.upload_report %}" class="btn btn-outline-dark btn-sm" role="button">Open</a></td>     
-                            
-                           <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
+                            <td class="upload_report_col" >{{ event.upload_report }}<a href="{% url 'open_file_report' event.upload_report %}" class="btn btn-outline-dark btn-sm" role="button">Open</a></td>
+                            <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
                             <td>
                                 <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" role="button">Edit</a>
                                 <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
@@ -134,5 +134,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}

@@ -28,7 +28,7 @@ def display_events(request):
         'Event Type': set(),
         'Audience': set(),
         'break1' : 1,
-        'Society' :set(),
+        'Society' : set(),
         'Department' : set(),
         'Organized By': set(),
         'break2' : 1,
@@ -50,16 +50,17 @@ def display_events(request):
         departments = event['Departments'].split(',')
         for department in departments:
             filter_data['Department'].add(department)
-
+        
         filter_data['Organized By'].add(event['Organized_by'])
         filter_data['Conducted By'].add(event['Conducted_by'])
-
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
 
     for event in event_data:
         event['sponsors_details'] = json.loads(event['sponsors_details'])
+        # event['upload_attendance_dis'] = event['upload_attendance'].split('/')[-1]
+        # event['upload_report_dis'] = event['upload_report'].split('/')[-1]
 
     context = {
         'fields' : fields,
@@ -69,19 +70,30 @@ def display_events(request):
         'sponsors' : sponsor,
     }
 
+    # path = os.path.realpath(os.path.dirname(__file__))
+    # for event in event_data:
+    #     atten = path
+    #     for folder in event['upload_attendance'].split('/'): 
+    #         atten = os.path.join(atten,folder)   
+    #     event['upload_attendance_link'] = atten
+
     return render(request,'index.html',context)
 
 def filter_events(request):
     if request.method == "POST":
         if(request.POST['filter'] == "reset"):
             return redirect('display_events')
+
+        if(request.POST['filter'] == "export"):
+            # if not request.POST['export_filter']:
+            return export_data(request)
         
         if(request.POST['filter'] == "export"):
             return export_data(request)
 
         event_name = request.POST['Event Name']
         type_of_event = request.POST['Event Type']
-        Audience = request.POST['Audience'] 
+        Audience = request.POST['Audience']
         Society = request.POST['Society']
         Department = request.POST['Department']
         Organized_by = request.POST['Organized By']
@@ -95,8 +107,8 @@ def filter_events(request):
             'Event Name': '-1',
             'Event Type': '-1',
             'Audience': '-1',
-            'Society' : '-1',
-            'Department' : '-1',
+            'Society': '-1',
+            'Department': '-1',
             'Organized By': '-1',
             'Conducted By': '-1',
             'Sponsors' : '-1',
@@ -136,6 +148,7 @@ def filter_events(request):
             sel_fil_val['end_date'] = upto
         
         query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
+        event_data = Events.objects.filter(query & query2).values()
 
         fields = Events._meta.fields
         all_data = Events.objects.all().values()
@@ -170,12 +183,10 @@ def filter_events(request):
 
             filter_data['Organized By'].add(event['Organized_by'])
             filter_data['Conducted By'].add(event['Conducted_by'])
-            
             sponsor = json.loads(event['sponsors_details'])
             for spon in sponsor:
                 filter_data['Sponsors'].add(spon)
 
-        event_data = Events.objects.filter(query & query2).values()
         for event in event_data:
             event['sponsors_details'] = json.loads(event['sponsors_details'])
 
@@ -188,8 +199,6 @@ def filter_events(request):
             'sponsors' : sponsor,
             'sel_fil_val_json_string' : json.dumps(sel_fil_val),
         }
-
-        # print(context)
 
         return render(request,'index.html',context)
     else:
@@ -244,8 +253,9 @@ def add_event(request):
             end_date=end_date,
             no_of_participants=no_of_participants,
             upload_attendance=upload_attendance,
-            upload_report= upload_report
+            upload_report=upload_report
         )
+        
         event.save()
         return redirect('display_events')
     else:
@@ -275,12 +285,6 @@ def delete_entry(request,pk,model,header):
 
 def delete_event(request,pk):
     return delete_entry(request,pk,Events,"Events")
-
-def open_file_atten(request,file):
-    return FileResponse(open('attendance/event_attendances/'+file, 'rb'), filename=file)
-
-def open_file_report(request,file):
-    return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)
 
 def export_data(request):
     filter_data = request.POST['filter_data']
@@ -356,3 +360,9 @@ def export_data(request):
         i+=1
 
     return response
+
+def open_file_atten(request,file):
+    return FileResponse(open('attendance/event_attendances/'+file, 'rb'), filename=file)
+
+def open_file_report(request,file):
+    return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)

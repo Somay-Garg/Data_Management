@@ -13,13 +13,13 @@
             </div>
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Audience</label>
-                <select class="w-30 m-1" name="audience" class="form-control">
+                <select class="m-1 form-control" name="audience" style="width:18%">
                     <option value="Faculty" selected>Faculty</option>
                     <option value="Student">Student</option>
                     <option value="Both">Faculty and Student</option>
                 </select>
             </div>
-            <!-- New columns Start -->
+                <!-- New columns Start -->
             <div class="form-group mb-2 align-center" id = "society-involved">
                 <label class="w-25" for="exampleFormControlInput1">Societies Involved</label>
                 <select id="society" multiple = "multiple" class="m-1 form-control" style="width:18%" oninput="getSocieties()">
@@ -62,16 +62,6 @@
                 <label class="w-25" for="exampleFormControlInput1">Conducted By</label>
                 <input class="w-30 m-1" type="text" name="cond_by" id="" required>
             </div>
-            
-            <!-- <div class="form-group mb-2 align-center">
-                <label class="w-25" for="exampleFormControlInput1" >Sponsors Involved</label>
-                <select class="w-30 m-1" name="sponsors" class="form-control sponsors1">
-                    <option value="MSIT" selected>MSIT</option>
-                    <option value="Others">Others</option>
-                    <option value="Both">Both</option>
-                </select>
-            </div> -->
-          
             <div class="form-group mb-2 align-center " id = "inputSponsors" >
                 <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
                 <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
@@ -101,8 +91,8 @@
                 <label class="w-25" for="exampleFormControlFile1">Upload Attendance</label>
                 <input class="w-30 m-1" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1">
             </div>
-              <!-- New columns Start -->
-              <div class="form-group mb-2 align-center">
+                <!-- New columns Start -->
+            <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlFile1">Upload Report</label>
                 <input class="w-30 m-1" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1">
             </div>
