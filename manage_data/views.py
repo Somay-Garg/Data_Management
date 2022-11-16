@@ -207,7 +207,6 @@ def filter_events(request):
         return render(request,'add_event.html',{})
 
 def add_event(request):
-
     if request.method == "POST":
         event_name = request.POST['event_name']
         type_of_event = request.POST['type_of_event']
@@ -266,50 +265,104 @@ def add_event(request):
 
 def edit_form(request,pk,model,cls):
     item = get_object_or_404(model,pk=pk)
-
+    event_data = model.objects.filter(id = pk).values()
+    # item.event_name
+    event = Events()      
     if request.method == "POST":
-        form = cls(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
+        # form = cls(request.POST, instance=item)
+        event.event_name = item.event_name
+        event.type_of_event = item.type_of_event
+        event.Audience = item.Audience
+        event.Societies = item.Societies
+        event.Departments = item.Departments
+        event.Organized_by = item.Organized_by
+        event.Conducted_by = item.Conducted_by
+        event.no_of_sponsors = item.no_of_sponsors
+        event.sponsors_details = item.sponsors_details
+        event.total_sponsored_amt = item.total_sponsored_amt
+        event.start_date = item.start_date
+        event.end_date = item.end_date
+        event.no_of_participants = item.no_of_participants
+        # event.upload_attendance = ''
+        # event.upload_report = ''
+        event.upload_attendance = item.upload_attendance
+        event.upload_report = item.upload_report
+        # event.event_name = request.POST.get('event_name')
+        # event.type_of_event = request.POST.get('type_of_event')
+        # event.Audience = request.POST.get('audience')
+        # event.Societies = request.POST.get('society')
+        # event.Departments = request.POST.get('department')
+        # event.Organized_by = request.POST.get('org_by')
+        # event.Conducted_by = request.POST.get('cond_by')
+        # event.no_of_sponsors = request.POST.get('no_of_sponsors')
+        # event.sponsors_details = request.POST.get('sponsored_dets')
+        # event.total_sponsored_amt = request.POST.get('total_sponsored_amt')
+        # event.start_date = request.POST.get('start_date')
+        # event.end_date = request.POST.get('end_date')
+        # event.no_of_participants = request.POST.get('no_of_parti')
+        # event.upload_attendance = ''
+        # event.upload_report = ''
+        now = datetime.now()
+        
+        if request.method == 'POST' and request.FILES.get('upload_atten'):
+            event.upload_attendance = request.FILES.get('upload_atten')
+            fs = FileSystemStorage(location='media/attendance/event_attendances/')
+            filename = fs.save(now.strftime("%H%M%S")+"_"+event.upload_attendance.name, event.upload_attendance)
+            uploaded_file_url = fs.url(filename)
+            upload_attendance = uploaded_file_url.split('/')[-1]
+        
+        if request.method == 'POST' and request.FILES.get('upload_report'):
+            upload_report = request.FILES.get('upload_report')
+            fs = FileSystemStorage(location='media/report/event_reports/')
+            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_report.name, upload_report)
+            uploaded_file_url = fs.url(filename)
+            upload_report = uploaded_file_url.split('/')[-1]
+        
+        event.save()
+        model.objects.filter(id=pk).delete()
+
+        new_form = cls(request.POST,instance=event)
+
+        if new_form.is_valid():
+            new_form.save()            
             return redirect('display_events')
         else:
             return redirect('display_events')
-
     else:
         form = cls(instance=item)
         return render(request,'edit_item.html',{'form' : form})
+   
     
+def delete_entry(request,pk,model,header):
+    model.objects.filter(id=pk).delete()
+    return display_events(request)
 
 def edit_event(request,pk):
     return edit_form(request,pk,Events,EventForm)
 
-def delete_entry(request,pk,model,header):
-    if request.method == 'POST':
-        event = model.objects.get(id=pk)
-        # print(event['upload_atten'])
-        # print(event['upload_report'])
-        # print(event.upload_attendance)
-        path_attendance = str(event.upload_attendance.path)
-        path_report = str(event.upload_report.path)
-        # complete_atten_path="C:/Users/mansi/Desktop/python_Project/Data_Management/attendance/event_attendances/" +path_attendance
-
-        # print(complete_atten_path)
-        print(path_attendance)
-        print("part of path _-------------->>>>>>>>>>>>>",path_attendance.split('media')[1])
-        print("-------------------------------------------",path_report)
-        new_atten_path = path_attendance.split('media')[0] + 'attendance\event_attendance'+path_attendance.split('media')[1]
-        print(new_atten_path)
-        if os.path.exists(path_attendance):
-            os.remove(path_attendance)
-        if os.path.exists(path_report):
-            os.remove(path_report)
-        event.delete()
-        
-    print("succesfully deleted")
-    return display_events(request)
-
 # def delete_entry(request,pk,model,header):
-#     model.objects.filter(id=pk).delete()
+#     if request.method == 'POST':
+#         event = model.objects.get(id=pk)
+#         # print(event['upload_atten'])
+#         # print(event['upload_report'])
+#         # print(event.upload_attendance)
+#         path_attendance = str(event.upload_attendance.path)
+#         path_report = str(event.upload_report.path)
+#         # complete_atten_path="C:/Users/mansi/Desktop/python_Project/Data_Management/attendance/event_attendances/" +path_attendance
+
+#         # print(complete_atten_path)
+#         print(path_attendance)
+#         print("part of path _-------------->>>>>>>>>>>>>",path_attendance.split('media')[1])
+#         print("-------------------------------------------",path_report)
+#         # new_atten_path = path_attendance.split('media')[0] + 'attendance\event_attendance'+path_attendance.split('media')[1]
+#         # print(new_atten_path)
+#         if os.path.exists(path_attendance):
+#             os.remove(path_attendance)
+#         if os.path.exists(path_report):
+#             os.remove(path_report)
+#         event.delete()
+        
+#     print("succesfully deleted")
 #     return display_events(request)
 
 
@@ -392,7 +445,7 @@ def export_data(request):
     return response
 
 def open_file_atten(request,file):
-    return FileResponse(open('attendance/event_attendances/'+file, 'rb'), filename=file)
+    return FileResponse(open('media/attendance/event_attendances/'+file, 'rb'), filename=file)
 
 def open_file_report(request,file):
-    return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)
+    return FileResponse(open('media/report/event_reports/'+file, 'rb'), filename=file)
