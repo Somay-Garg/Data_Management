@@ -4,7 +4,6 @@
 
     <div class="table">
         <div id="wrapper">
-
             <br>
             <h3>Currently viewing {{ header }}</h3>
             <br>
@@ -90,6 +89,7 @@
                         {% endfor %}
                         <th>Action</th>
                     </tr>
+
                     {% for event in event_data %}
                         <tr class="table-light align-middle">
                             <td>{{ forloop.counter }}</td>
@@ -103,7 +103,7 @@
                             <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
                             <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
                             <td class="sponsors_details_col">
-                                 <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                <table class="table align-middle table-hover table-striped table-light table-sm text-center">
                                     <tr>
                                         <th class="ml-1">Sponsor</th>
                                         <th>Amount</th>
@@ -116,6 +116,7 @@
                                     {% endfor %}
                                 </table> 
                             </td>
+                            
                             <td class="total_sponsored_amt_col">{{ event.total_sponsored_amt }}</td>
                             <td class="start_date_col" >{{ event.start_date }}</td>
                             <td class="end_date_col" >{{ event.end_date }}</td>

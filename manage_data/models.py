@@ -37,6 +37,7 @@ class Events(models.Model):
         ('All','All'),
         ('None','None'),
     )
+
     Departments = models.CharField(max_length=255,choices=departments,blank=False,default="None")
     Organized_by = models.CharField(max_length=255,blank=False)
     Conducted_by = models.CharField(max_length=255,blank=False)
@@ -46,14 +47,11 @@ class Events(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_participants = models.IntegerField()
-    upload_attendance = models.FileField(upload_to='manage_data/media/attendance/event_attendances/')
-    upload_report = models.FileField(upload_to='manage_data/media/report/event_reports/')
+    upload_attendance = models.CharField(max_length=255,blank=False)
+    upload_report = models.CharField(max_length=255,blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.event_name
 
-    def delete(self,*args,**kwargs):
-        self.upload_attendance.delete()
-        self.upload_report.delete()
-        super().delete(*args,**kwargs)
+    
