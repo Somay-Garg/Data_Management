@@ -53,7 +53,7 @@
                 </select>
             </div>
             <textarea class="d-none" name="department" id="all_department" cols="30" rows="10"></textarea>
-                <!-- New columns End -->
+            <!-- New columns End -->
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Organized By</label>
                 <input class="w-30 m-1" type="text" name="org_by" id="" required>
@@ -62,6 +62,7 @@
                 <label class="w-25" for="exampleFormControlInput1">Conducted By</label>
                 <input class="w-30 m-1" type="text" name="cond_by" id="" required>
             </div>
+
             <div class="form-group mb-2 align-center " id = "inputSponsors" >
                 <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
                 <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
@@ -70,11 +71,12 @@
             <div class="actual_sponsors" style = "display :none;">
                 <textarea name="sponsored_dets" id="" cols="30" rows="10" class = "spons_text" ></textarea>
             </div>
-          
+            
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
                 <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required readonly/>
             </div>
+
             <div class="form-group mb-2 align-center">
                 <label class="w-25" for="exampleFormControlInput1">Start Date</label>
                 <input class="w-30 m-1" type="date" name="start_date" id="" required>

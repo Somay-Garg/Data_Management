@@ -8,8 +8,7 @@
             <br>
             <h3>Currently viewing {{ header }}</h3>
             <br>
-            
-            <form class="overflow-hidden" action="filter_events" method="POST">
+            <form class="overflow-hidden" action="filter_events" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h4> Filter Data </h4>
                 <div class="form-group row">
@@ -121,12 +120,15 @@
                             <td class="start_date_col" >{{ event.start_date }}</td>
                             <td class="end_date_col" >{{ event.end_date }}</td>
                             <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
-                            <td class="upload_attendance_col">{{ event.upload_attendance }}<a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn btn-outline-dark btn-sm" role="button">Open</a></td>
-                            <td class="upload_report_col" >{{ event.upload_report }}<a href="{% url 'open_file_report' event.upload_report %}" class="btn btn-outline-dark btn-sm" role="button">Open</a></td>
+                            <td class="upload_attendance_col"><a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn  btn-sm" role="button"><i class="fa-solid fa-file" style = "font-size:2rem;"></i></a></td>
+                            <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" class="btn  btn-sm" role="button"><i class="fa-solid fa-file" style = "font-size:2rem;"></i></a></td>
                             <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
                             <td>
                                 <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                <form action="{% url 'delete_event' event.id %}" method = "post">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger btn-sm" type = "submit">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

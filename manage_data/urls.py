@@ -1,10 +1,9 @@
 from django.urls import path
 from .views import *
-
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
-
     path('',display_events,name='display_events'),
-
     path('display_events',display_events,name='display_events'),
     path('add_event',add_event,name='add_event'),
     path('edit_event/<int:pk>',edit_event,name='edit_event'),
@@ -13,3 +12,6 @@ urlpatterns = [
     path('open_file_atten/<str:file>',open_file_atten,name='open_file_atten'),
     path('open_file_report/<str:file>',open_file_report,name='open_file_report'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

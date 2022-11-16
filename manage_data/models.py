@@ -1,5 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
+import os
 # Create your models here.
 
 class Events(models.Model):
@@ -45,9 +46,14 @@ class Events(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_participants = models.IntegerField()
-    upload_attendance = models.FileField(upload_to='attendance/event_attendances/')
-    upload_report = models.FileField(upload_to='report/event_reports/')
+    upload_attendance = models.FileField(upload_to='manage_data/media/attendance/event_attendances/')
+    upload_report = models.FileField(upload_to='manage_data/media/report/event_reports/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.event_name
+
+    def delete(self,*args,**kwargs):
+        self.upload_attendance.delete()
+        self.upload_report.delete()
+        super().delete(*args,**kwargs)

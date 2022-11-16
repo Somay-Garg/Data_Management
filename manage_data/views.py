@@ -14,6 +14,8 @@ import json
 import os
 import csv
 import uuid
+# from django.dispatch import receiver
+# from django.utils.translation import ugettext_lazy as _
 # Create your views here.
 
 def index(request):
@@ -22,7 +24,7 @@ def index(request):
 def display_events(request):
     fields = Events._meta.fields
     event_data = Events.objects.all().values()
-    
+    # print(event_data)
     filter_data = {
         'Event Name': set(),
         'Event Type': set(),
@@ -205,6 +207,7 @@ def filter_events(request):
         return render(request,'add_event.html',{})
 
 def add_event(request):
+
     if request.method == "POST":
         event_name = request.POST['event_name']
         type_of_event = request.POST['type_of_event']
@@ -226,14 +229,14 @@ def add_event(request):
 
         if request.method == 'POST' and request.FILES['upload_atten']:
             upload_attendance = request.FILES['upload_atten']
-            fs = FileSystemStorage(location='attendance/event_attendances/')
+            fs = FileSystemStorage(location='media/attendance/event_attendances/')
             filename = fs.save(now.strftime("%H%M%S")+"_"+upload_attendance.name, upload_attendance)
             uploaded_file_url = fs.url(filename)
             upload_attendance = uploaded_file_url.split('/')[-1]
         
         if request.method == 'POST' and request.FILES['upload_report']:
             upload_report = request.FILES['upload_report']
-            fs = FileSystemStorage(location='report/event_reports/')
+            fs = FileSystemStorage(location='media/report/event_reports/')
             filename = fs.save(now.strftime("%H%M%S")+"_"+upload_report.name, upload_report)
             uploaded_file_url = fs.url(filename)
             upload_report = uploaded_file_url.split('/')[-1]
@@ -263,7 +266,7 @@ def add_event(request):
 
 def edit_form(request,pk,model,cls):
     item = get_object_or_404(model,pk=pk)
-    print(item.Societies)
+
     if request.method == "POST":
         form = cls(request.POST, instance=item)
         if form.is_valid():
@@ -275,13 +278,40 @@ def edit_form(request,pk,model,cls):
     else:
         form = cls(instance=item)
         return render(request,'edit_item.html',{'form' : form})
+    
 
 def edit_event(request,pk):
     return edit_form(request,pk,Events,EventForm)
 
 def delete_entry(request,pk,model,header):
-    model.objects.filter(id=pk).delete()
+    if request.method == 'POST':
+        event = model.objects.get(id=pk)
+        # print(event['upload_atten'])
+        # print(event['upload_report'])
+        # print(event.upload_attendance)
+        path_attendance = str(event.upload_attendance.path)
+        path_report = str(event.upload_report.path)
+        # complete_atten_path="C:/Users/mansi/Desktop/python_Project/Data_Management/attendance/event_attendances/" +path_attendance
+
+        # print(complete_atten_path)
+        print(path_attendance)
+        print("part of path _-------------->>>>>>>>>>>>>",path_attendance.split('media')[1])
+        print("-------------------------------------------",path_report)
+        new_atten_path = path_attendance.split('media')[0] + 'attendance\event_attendance'+path_attendance.split('media')[1]
+        print(new_atten_path)
+        if os.path.exists(path_attendance):
+            os.remove(path_attendance)
+        if os.path.exists(path_report):
+            os.remove(path_report)
+        event.delete()
+        
+    print("succesfully deleted")
     return display_events(request)
+
+# def delete_entry(request,pk,model,header):
+#     model.objects.filter(id=pk).delete()
+#     return display_events(request)
+
 
 def delete_event(request,pk):
     return delete_entry(request,pk,Events,"Events")
