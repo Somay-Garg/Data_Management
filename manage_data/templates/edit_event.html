@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <form enctype="multipart/form-data" method="post" action="/add_event">
+            {% csrf_token %}
+            {% for event in event_data %}
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Event Name</label>
+                    <input class="w-30 m-1" type="text" name="event_name" id="" required value = {{event.event_name}}>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Type of Event</label>
+                    <input class="w-30 m-1" type="text" name="type_of_event" id="" required value = {{event.type_of_event}}>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Audience</label>
+                    <select class="w-30 m-1" name="audience" class="form-control">
+                        <option value="Faculty" selected>Faculty</option>
+                        <option value="Student">Student</option>
+                        <option value="Both">Faculty and Student</option>
+                    </select>
+                </div>
+                <!-- New columns Start -->
+                <div class="form-group mb-2 align-center" id = "society-involved"  style="display: flex">
+                    <label class="w-25" for="exampleFormControlInput1">Societies Involved</label>
+                    <!-- <select id="society" multiple = "multiple" class="m-1 form-control" style="width:18%" oninput="getSocieties()">
+                        <option value="Prakriti" >Prakriti</option>
+                        <option value="IEEE">IEEE</option>
+                        <option value="E-Cell">E-Cell</option>
+                        <option value="IIC">IIC</option>
+                        <option value="NISP">NISP</option>
+                        <option value="UBA">UBA</option>
+                        <option value="E-yantra">E-yantra</option>
+                        <option value="EBSB">EBSB</option>
+                        <option value="IIIC">IIIC</option>
+                        <option value="TechSoc">TechSoc</option>
+                        <option value="Mutants">Mutants</option>
+                        <option value="Veda">Veda</option>
+                        <option value="NSS">NSS</option>
+                        <option value="None">None</option>
+                    </select> -->
+                    <textarea name="society" id="society" oninput="getSocieties()" class="m-1 form-control"style="width:18%;">{{event.Societies}}</textarea>
+                </div>
+                <textarea class="d-none" name="society" id="all_society" cols="30" rows="10"></textarea>
+                <div class="form-group mb-2 align-center" id = "departments-involved"  style="display: flex">
+                    <label class="w-25" for="exampleFormControlInput1">Departments Involved</label>
+                    <!-- <select id="department" multiple = "multiple" name="department" class="m-1 form-control" style="width:18%" oninput="getDepartments()">
+                        <option value="All" >All</option>
+                        <option value="CSE" >CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                        <option value="EEE">EEE</option>
+                        <option value="Applied Science">Applied Science</option>
+                        <option value="None">None</option>
+                    </select> -->
+                    <textarea name="department" id="department" class="m-1 form-control" oninput="getDepartments(); updateTextArea()" style="width:18%;">{{ event.Departments }}</textarea>
+
+                </div>
+                <textarea class="d-none" name="department" id="all_department" cols="30" rows="10"></textarea>
+                    <!-- New columns End -->
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Organized By</label>
+                    <input class="w-30 m-1" type="text" name="org_by" id="" required value = {{event.Organized_by}}>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Conducted By</label>
+                    <input class="w-30 m-1" type="text" name="cond_by" id="" required value = {{event.Conducted_by}}>
+                </div>
+                
+                <!-- <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1" >Sponsors Involved</label>
+                    <select class="w-30 m-1" name="sponsors" class="form-control sponsors1">
+                        <option value="MSIT" selected>MSIT</option>
+                        <option value="Others">Others</option>
+                        <option value="Both">Both</option>
+                    </select>
+                </div> -->
+            
+                <div class="form-group mb-2 align-center " id = "inputSponsors" >
+                    <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
+                    <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors"  val="1" required value ={{event.no_of_sponsors}}/>
+                </div>
+            
+                <div class="actual_sponsors" style = "display :none;">
+                    <textarea name="sponsored_dets" id="" cols="30" rows="10" class = "spons_text" >{{event.sponsors_details}}</textarea>
+                </div>
+            
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
+                    <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required value = ""/>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Start Date</label>
+                    <input class="w-30 m-1" type="date" name="start_date" id="" required>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">End Date</label>
+                    <input class="w-30 m-1" type="date" name="end_date" id="" required>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlInput1">Number of Participants</label>
+                    <input class="w-30 m-1" type="text" name="no_of_parti" id="" required>
+                </div>
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlFile1">Upload Attendance</label>
+                    <input class="w-30 m-1" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+                <!-- New columns Start -->
+                <div class="form-group mb-2 align-center">
+                    <label class="w-25" for="exampleFormControlFile1">Upload Report</label>
+                    <input class="w-30 m-1" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+                    <!-- New columns Start -->
+                <div class="form-group w-100">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add"/>
+                </div>
+                {% endfor %}
+        </form>
+    </div>
+
+{% endblock %}

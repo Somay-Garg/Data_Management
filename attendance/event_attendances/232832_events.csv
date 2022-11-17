@@ -1,0 +1,4 @@
+S.no,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,no_of_sponsors,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants
+
+1,ABC,Inter College,faculty,"IEEE,IIC",All,IIIT Cell,MSIT,1,"{""Somay"":""100000""}",100000,2022-11-13,2022-11-30,300
+2,ENVA,Technical Fest,both,"E-Cell,NISP,Veda","CSE,ECE,Applied Science",IIIT Cell,MSIT,3,"{""Somay"":""30000"",""Mansi"":""35000"",""Chirag"":""40000""}",105000,2022-11-13,2022-11-22,500

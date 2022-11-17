@@ -115,5 +115,12 @@ function hide_show_table(col_name)
     });
     // console.log(display_col);
     $('#display_columns').val(display_col);
+}
 
+
+function updateAttendanceFileValue(){
+  let textarea = document.querySelector("#upload_attendance_area")
+  let inputval = document.querySelector("#attendance_div").childNodes[0].value
+  console.log(inputval)
+  textarea.value = inputval
 }
