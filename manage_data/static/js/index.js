@@ -35,6 +35,12 @@ function displaySponsors(){
   textarea.value = JSON.stringify(spon_obj);
 }
 
+function updateTextArea(){
+  let textarea = document.querySelector('#all_department')
+  textarea.value = document.querySelector("department").value; 
+
+}
+
 function removeSponsors() {
   let inputSponsors = document.querySelector("#inputSponsors");
   var elements = inputSponsors.getElementsByClassName("sponsors");

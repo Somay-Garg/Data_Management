@@ -38,14 +38,15 @@
                         <option value="Mutants">Mutants</option>
                         <option value="Veda">Veda</option>
                         <option value="NSS">NSS</option>
-                        <option value="None">None</option>
+                        <option value="None">None</option>                         
                     </select> -->
                     <textarea name="society" id="society" oninput="getSocieties()" class="m-1 form-control"style="width:18%;">{{event.Societies}}</textarea>
                 </div>
                 <textarea class="d-none" name="society" id="all_society" cols="10" rows="10"></textarea>
-                <div class="form-group mb-2 align-center" id = "departments-involved">
+
+                <div class="form-group mb-2 align-center" id = "departments-involved" style="display: flex">
                     <label class="w-25" for="exampleFormControlInput1">Departments Involved</label>
-                    <select id="department" multiple = "multiple" name="department" class="m-1 form-control" style="width:18%" oninput="getDepartments()">
+                    <!-- <select id="department" multiple = "multiple" name="department" class="m-1 form-control" style="width:18%" oninput="getDepartments()">
                         <option value="All" >All</option>
                         <option value="CSE" >CSE</option>
                         <option value="IT">IT</option>
@@ -53,7 +54,8 @@
                         <option value="EEE">EEE</option>
                         <option value="Applied Science">Applied Science</option>
                         <option value="None">None</option>
-                    </select>
+                    </select> -->
+                    <textarea name="department" id="department" class="m-1 form-control" oninput="getDepartments(); updateTextArea()" style="width:18%;">{{ event.Departments }}</textarea>
                 </div>
                 <textarea class="d-none" name="department" id="all_department" cols="30" rows="10"></textarea>
                 <!-- New columns End -->
@@ -66,15 +68,15 @@
                     <input class="w-30 m-1" type="text" name="cond_by" id="" required value = {{event.Conducted_by}}>
                 </div>
 
-                <!-- <div class="form-group mb-2 align-center " id = "inputSponsors" > -->
-                    <!-- <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Sponsor Details</label>
-                    <textarea name="no_of_sponsors" id="" cols="30" rows="10" style="width: 18%;height:10%">{{event.sponsors_details}}</textarea> -->
-                <!-- </div> -->
+                <div class="form-group mb-2 align-center " id = "inputSponsors" > 
+                    <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Sponsor Details</label>
+                    <textarea name="no_of_sponsors" id="" cols="30" rows="10" style="width: 18%;height:10%">{{event.sponsors_details}}</textarea>
+                </div>
                 <div class="form-group mb-2 align-center " id = "inputSponsors" >
                     <label class="w-25" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
                     <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
                 </div>
-              
+                
                 <div class="actual_sponsors" style = "display :none;">
                     <textarea name="sponsored_dets" id="" cols="30" rows="10" class = "spons_text" ></textarea>
                 </div>
