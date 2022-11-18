@@ -11,6 +11,7 @@ class Events(models.Model):
         ('Both','Faculty and Student'),
     )
     Audience = models.CharField(max_length=20,choices=audience,blank=False)
+    
     societies = (
         ('Prakriti','Prakriti'),
         ('E-Cell','E-Cell'),
@@ -26,6 +27,7 @@ class Events(models.Model):
         ('NSS','NSS'),
         ('None','None'),
     )
+   
     Societies = models.CharField(max_length=255,choices=societies,blank=False,default="None")
     departments = (
         ('CSE','CSE'),
@@ -45,8 +47,8 @@ class Events(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     no_of_participants = models.IntegerField()
-    upload_attendance = models.FileField(upload_to='attendance/event_attendances/')
-    upload_report = models.FileField(upload_to='report/event_reports/')
+    upload_attendance = models.CharField(max_length=255,blank=False)
+    upload_report = models.CharField(max_length=255,blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

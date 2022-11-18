@@ -74,20 +74,6 @@ function getDepartments(){
   console.log($('#all_department').val());
 }
 
-function displaySponsors() {
-  let spons_names = document.querySelectorAll(".sponsored_by_name");
-  let spons_amts = document.querySelectorAll(".spons_amt_individually");
-  let textarea = document.querySelector(".spons_text");
-  textarea.value = "";
-  let value = textarea.value;
-  for (let i = 0; i < spons_amts.length; i++) {
-    let obj = {
-      name: spons_names[i].value,
-      amt: spons_amts[i].value,
-    };
-    textarea.value += "(" + obj.name + " , " + obj.amt + ") , ";
-  }
-}
 function hide_show_table(col_name)
 {
     var checkbox_val=document.getElementById(col_name).value;
@@ -112,11 +98,11 @@ function hide_show_table(col_name)
         document.getElementById(col_name+"_head").style.display="table-cell";
         document.getElementById(col_name).value="hide";
     }
-
     display_col = [];
     
     $('.display_columns').each(function(){
         if(!$(this).find('input').is(':checked')){
+          // console.log("heloooooo");
             col_id_arr = $(this).find('input').attr('id').split('_');
             col_name = col_id_arr[0];
             for(let i=1;i<col_id_arr.length-1;i++){
@@ -125,7 +111,14 @@ function hide_show_table(col_name)
             display_col.push(col_name);
         }
     });
-
+    // console.log(display_col);
     $('#display_columns').val(display_col);
-    // console.log(JSON.parse($('#filter_data').val()));
+}
+
+
+function updateAttendanceFileValue(){
+  let textarea = document.querySelector("#upload_attendance_area")
+  let inputval = document.querySelector("#attendance_div").childNodes[0].value
+  console.log(inputval)
+  textarea.value = inputval
 }
