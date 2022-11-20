@@ -20,18 +20,17 @@
     <script src="{% static '/js/index.js' %}"></script>
 
 </head>
-
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg " style = "background-color: #080885;">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">Data Management</a>
+          <a class="navbar-brand" href="#" style="color: white;">Data Management</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarsExample02">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a href="#" class="nav-link dropdown-toggle" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Events</a>
+                <a href="#" class="nav-link dropdown-toggle" id="dropdown03" style="color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Events</a>
                 <div class="dropdown-menu" aria-labelledby="dropdown03">
                   <a class="dropdown-item" href="{% url 'display_events' %}">Display</a>
                   <a class="dropdown-item" href="{% url 'add_event'%}">Add</a>

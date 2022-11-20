@@ -4,7 +4,17 @@ from django.db import models
 
 class Events(models.Model):
     event_name = models.CharField(max_length=200,blank=False)
-    type_of_event = models.CharField(max_length=200,blank=False)
+    event_types = (
+        ('Cultural','Cultural'),
+        ('Technical','Technical'),
+        ('Sports','Sports'),
+        ('FDP','FDP'),
+        ('Seminar','Seminar'),
+        ('Workshop','Workshop'),
+        ('Expert Lecture','Expert Lecture'),
+        ('Conference','Conference'),
+    )
+    type_of_event = models.CharField(max_length=200,choices=event_types,blank=False)
 
     audience = (
         ('Faculty','Faculty'),
