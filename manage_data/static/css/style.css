@@ -2,12 +2,14 @@
 .checkbox-grid {
     width: 100%;
     overflow: auto;
+	
 }
 
 .checkbox-grid li {
     display: block;
     float: left;
-    width: 31%;
+    width: 20%;
+	
 }
 
 .table-scroll
@@ -40,65 +42,18 @@
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #dfe4e4;
 }
-.dropdown-item{
-	color:whitesmoke;
-}
-.other{
-	width: 100vw;
-	height: 100%;
-	margin:0;
-	padding:0;
-}
-
-.form_style{
-	
-	background:transparent;
-	padding: 30px;
-    
-	margin-left:300px;
-	color: whitesmoke;
+h3{
+	text-align: center;
 }
 .navbar-brand{
-	margin-left: 15px;
+margin-left:15px;
 }
-
-#wrapper{
-	margin-left: 80px;
-	
+.expo-btn:hover{
+	background-color: rgb(40, 40, 153);
 }
 
 
-.tags{
-	margin-left: 33px;
-	
-}
 
-input[type="date"]::-webkit-calendar-picker-indicator{
-	filter: invert(1);
-	margin-left: 45px;
-}
-.entry{
-	border:none;
-	border-bottom: 1px solid whitesmoke;
-	background: transparent;
-	color:whitesmoke;
-	
-}
+    
 
-div.entry{
-	border: none;	
-}
 
-.outside{
-	width:inherit;
-	height: inherit;
-	background-image: linear-gradient(to right, #434343 0%, black 100%);
-	background-size: cover;
-	
-}
-.editor{
-height: fit-content;
-}
-#society option::selection{
-background-color:black;
-}

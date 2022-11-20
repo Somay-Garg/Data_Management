@@ -58,6 +58,35 @@ $(document).ready(function () {
     $("select").each(function(){
         $(this).select2();
     });
+    $(function(){
+      let filetype1=document.getElementsByClassName('icon_attach1').getAttribute("href")
+      let filetype2=document.getElementsByClassName('icon_attach2').getAttribute("href")
+      console.log(filetype1)
+      let ext1=filetype1.split('.').pop()
+      console.log(ext1)
+      if(ext1==='pdf'){
+        document.getElementsByClassName('icon_attach1').innerHTML=`<img src="https://ehs.utoronto.ca/wp-content/uploads/2021/06/pdf-icon.png" alt="pdf-icon" style="width:30px; height:30px;">`
+      }
+      else if(ext1==='xlsx' || ext1==='csv'){
+        document.getElementsByClassName('icon_attach1').innerHTML=`<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg/826px-Microsoft_Office_Excel_%282019%E2%80%93present%29.svg.png" alt="xlsx-icon" style="width:30px; height:30px;">`
+      }
+      
+      else if(ext1==='png' || ext1==='jpg' || ext1==='jpeg'){
+        document.getElementsByClassName('icon_attach1').innerHTML=`<img src="https://blogs.windows.com/wp-content/uploads/prod/sites/44/2022/09/photos-newicon.png" alt="img-icon" style="width:30px; height:30px;">`
+      }
+      let ext2=filetype2.split('.').pop()
+      console.log(ext1)
+      if(ext2==='pdf'){
+        document.getElementsByClassName('icon_attach2').innerHTML=`<img src="https://ehs.utoronto.ca/wp-content/uploads/2021/06/pdf-icon.png" alt="pdf-icon" style="width:30px; height:30px;">`
+      }
+      else if(ext2==='xlsx' || ext1==='csv'){
+        document.getElementsByClassName('icon_attach2').innerHTML=`<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Microsoft_Office_Excel_%282019%E2%80%93present%29.svg/826px-Microsoft_Office_Excel_%282019%E2%80%93present%29.svg.png" alt="xlsx-icon" style="width:30px; height:30px;">`
+      }
+      
+      else if(ext2==='png' || ext2==='jpg' || ext2==='jpeg'){
+        document.getElementsByClassName('icon_attach2').innerHTML=`<img src="https://blogs.windows.com/wp-content/uploads/prod/sites/44/2022/09/photos-newicon.png" alt="img-icon" style="width:30px; height:30px;">`
+      }
+    });
 });
 
 function getSocieties(){
@@ -122,3 +151,14 @@ function updateAttendanceFileValue(){
   console.log(inputval)
   textarea.value = inputval
 }
+
+/* function fileExtension(filetype){
+  console.log(filetype)
+  let ext=filetype.split('.').pop();
+  if(ext==='pdf'){
+    document.getElementById('#atten_id').innerHTML=`<i class="bi bi-file-pdf"></i>`
+  }
+  else if(ext === 'csv' || ext==='xlsx'){
+    document.getElementById('#atten_id').innerText=`<i class="bi bi-filetype-xlsx"></i>`
+  }
+} */
