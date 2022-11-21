@@ -8,10 +8,10 @@
             <br>
             <h3>Currently viewing {{ header }}</h3>
             <br>
-            
-            <form class="overflow-hidden" action="filter_events" method="POST">
+            <fieldset class="border p-2">
+                <legend class="float-none w-auto p-2">Filter Data</legend>
+                <form class="overflow-hidden" action="filter_events" method="POST">
                 {% csrf_token %}
-                <h4> Filter Data </h4>
                 <div class="form-group row">
                     {% for key,filter in filter_data.items %}
                         {% if 'break' in key %}
@@ -58,38 +58,59 @@
                         </div>
                     </div>
                 </div>
+            </fieldset>
                 <div class="m-2 float-right">
-                    <button class="btn btn-success float-right" name="filter" value="filter" type="submit">Filter</button>
-                    <button class="btn btn-danger float-right" name="filter" value="reset" type="submit">Reset</button>
-                    <button class="btn btn-primary" style="float: right;" name="filter" value="export" type="submit">Export</button>
+                    <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit">Filter</button>
+                    <button class="btn btn-danger float-right"style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
+                    <!-- export btn changes -->
+                    <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"                name="filter" value="export" type="submit">Export</button>
+                    <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> -->
                 </div>
                 <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                 <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
             </form>
             <br>
-
             <div>
-                <h5> Hide Columns </h5>
-                <div class="checkbox-grid">
-                    {% for field in fields %}
+                <!-- <fieldset class="border p-2">
+                    <legend class="float-none w-auto p-2">Hide Columns</legend>
+                    <div class="checkbox-grid">
+                        {% for field in fields %}
                         {% if field.name != "id" %}
-                            <li class="form-check form-check-inline display_columns" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                        <li class="form-check form-check-inline display_columns" style="list-style: none;"><input
+                                type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col"
+                                onchange="hide_show_table(this.id);"> {{ field.name }}</li>
                         {% endif %}
-                    {% endfor %}
-                </div>
+                        {% endfor %}
+                    </div> -->
+                <!-- </fieldset> -->
+                <!-- old html -->
+                <fieldset class="border p-2">
+                    <legend class="float-none w-auto p-2">Hide Columns</legend>
+                        <div class="checkbox-grid">
+                            {% for field in fields %}
+                                {% if field.name != "id" %}
+                                    <li class="form-check form-check-inline display_columns" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" style="width: 12px;" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
+                                {% endif %}
+                            {% endfor %}
+                    </div>
+                </fieldset>
             </div>
             <br>
-
             <div class="card table-scroll">
                 <table id="employee_table" cellpadding="10" class="table table-striped table-hover align-middle text-center">
-                    <tr class="table-dark">
-                        <th>S.no</th>
+                    <tr class="table" style = "background-color: #052e6a;">
+                        <th style="color: white;">S.no</th>
                         {% for field in fields %}
-                            {% if field.name != "id" %}
-                                <th id="{{field.name}}_col_head">{{ field.name }}</th>
+                            <!-- {{field.name}} -->
+                            {% if field.name == "upload_attendance"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Attendance</th>
+                            {% elif field.name == "upload_report"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Report</th>
+                            {% elif field.name != "id"  %}
+                                <th style="color: white;" id="{{field.name}}_col_head">{{ field.name }}</th>
                             {% endif %}
                         {% endfor %}
-                        <th>Action</th>
+                        <th style="color: white;">Action</th>
                     </tr>
                     {% for event in event_data %}
                         <tr class="table-light">
@@ -103,7 +124,7 @@
                             <td class="Conducted_by_col" >{{ event.Conducted_by }}</td>
                             <td class="no_of_sponsors_col" >{{ event.no_of_sponsors }}</td>
                             <td class="sponsors_details_col">
-                                 <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                <table class="table align-middle table-hover table-striped table-light table-sm text-center">
                                     <tr>
                                         <th class="ml-1">Sponsor</th>
                                         <th>Amount</th>
@@ -120,12 +141,12 @@
                             <td class="start_date_col" >{{ event.start_date }}</td>
                             <td class="end_date_col" >{{ event.end_date }}</td>
                             <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
-                            <td class="upload_attendance_col"><a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn  btn-sm" role="button"><i class="fa-solid fa-file" style = "font-size:2rem;"></i></a></td>
-                            <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" class="btn  btn-sm" role="button"><i class="fa-solid fa-file" style = "font-size:2rem;"></i></a></td>
+                            <td class="upload_attendance_col"><a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn btn-sm atten_file" role="button"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                            <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" class="btn  btn-sm report_file" role="button" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                             <td class="uploaded_at_col" >{{ event.uploaded_at }}</td>
                             <td>
-                                <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                <a href="{% url 'edit_event' event.id %}" class="btn btn-warning btn-sm" style = "margin-bottom:7px ;" role="button" ><i class="material-icons">&#xE254;</i></a>
+                                <a href="{% url 'delete_event' event.id %}" class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px ;"><i class="material-icons">&#xE872;</i></a>
                             </td>
                         </tr>
                     {% endfor %}
