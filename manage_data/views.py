@@ -22,7 +22,7 @@ def index(request):
 def display_events(request):
     fields = Events._meta.fields
     event_data = Events.objects.all().values()
-    
+    # print(event_data)
     filter_data = {
         'Event Name': set(),
         'Event Type': set(),
@@ -53,7 +53,7 @@ def display_events(request):
 
         filter_data['Organized By'].add(event['Organized_by'])
         filter_data['Conducted By'].add(event['Conducted_by'])
-
+        print(event['sponsors_details'])
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
@@ -205,7 +205,7 @@ def add_event(request):
         Organized_by = request.POST['org_by']
         Conducted_by = request.POST['cond_by']
         no_of_sponsors = request.POST['no_of_sponsors']
-        sponsors_details = request.POST['sponsored_dets']
+        sponsors_details = request.POST['sponsored_details']
         total_sponsored_amt = request.POST['total_sponsored_amt']
         start_date = request.POST['start_date']
         end_date = request.POST['end_date']
@@ -249,57 +249,7 @@ def add_event(request):
         event.save()
         return redirect('display_events')
     else:
-        return render(request,'add_event.html',{})
-
-def edit_form(request,pk,model,cls):
-    item = get_object_or_404(model,pk=pk)
-    # prev_attendance_path = item.upload_attendance
-    # print(prev_attendance_path)
-    if request.method == "POST":
-        form = cls(request.POST, instance=item)
-        if form.is_valid():
-            form.save()
-            return redirect('display_events')
-        else: 
-            return redirect('display_events')
-    else:
-        form = cls(instance=item)
-        return render(request,'edit_item.html',{'form' : form})
-
-def edit_event_(request,pk):
-    item = get_object_or_404(Events,pk=pk)    
-    event_data = Events.objects.filter(id=pk).values()
-    Events.objects.filter(id=pk).delete()
-    if request.method == "POST":
-        form = EventForm(request.POST, instance=item)
-        event = Events() 
-        event.event_name = form.cleaned_data.get("event_name")
-        event.type_of_event = form.cleaned_data.get("type_of_event")
-        event.Audience = form.cleaned_data.get("Audience")
-        event.Societies = form.cleaned_data.get("Societies")
-        event.Departments = form.cleaned_data.get("Departments")
-        event.Organized_by = form.cleaned_data.get("Organized_by")
-        event.Conducted_by = form.cleaned_data.get("Conducted_by")
-        event.no_of_sponsors = form.cleaned_data.get("no_of_sponsors")
-        event.sponsors_details = form.cleaned_data.get("sponsors_details")
-        event.total_sponsored_amt = form.cleaned_data.get("total_sponsored_amt")
-        event.start_date = form.cleaned_data.get("start_date")
-        event.end_date = form.cleaned_data.get("end_date")
-        event.no_of_participants = form.cleaned_data.get("no_of_participants")
-        event.upload_attendance = form.cleaned_data.get("upload_attendance")
-        event.upload_report = form.cleaned_data.get("upload_report")
-
-        if form.is_valid():
-            event.save()
-            # form.save()
-            Events.objects.filter(id=pk).delete()
-            return redirect('display_events')
-        else:
-            return redirect('display_events')
-    else:
-        form = EventForm(instance=item)
-        event_data = Events.objects.filter(id=pk).values()
-        return render(request,'edit_item.html',{'form':form,'event_data':event_data})
+        return render(request,'addEvent.html',{})
 
 def edit_event(request,pk):
     event_data = Events.objects.filter(id=pk).values()
@@ -307,17 +257,16 @@ def edit_event(request,pk):
     # Events.objects.filter(id=pk).delete()
 
     if request.method == "POST":
-        item.event_name = request.POST['event_name']
-        
+        item.event_name = request.POST['event_name']        
         # event_name = request.POST['event_name']
         item.type_of_event = request.POST['type_of_event']
-        # print(request.POST['Audience'])
         item.Audience =request.POST['Audience']
         item.Societies = request.POST['Societies']
         item.Departments = request.POST['Departments']
         item.Organized_by = request.POST['Organized_by']
         item.Conducted_by = request.POST['Conducted_by']
         item.no_of_sponsors = request.POST['no_of_sponsors']
+       
         item.sponsors_details = request.POST['sponsors_details']
         item.total_sponsored_amt = request.POST['total_sponsored_amt']
         item.start_date = request.POST['start_date']
@@ -342,35 +291,14 @@ def edit_event(request,pk):
             uploaded_file_url = fs.url(filename)
             fs.delete(item.upload_report)
             item.upload_report = uploaded_file_url.split('/')[-1] 
-
-        # event = Events(
-        #     event_name=event_name,
-        #     type_of_event=type_of_event,
-        #     Audience=Audience,
-        #     Societies=Societies,
-        #     Departments=Departments,
-        #     Organized_by=Organized_by,
-        #     Conducted_by=Conducted_by,
-        #     no_of_sponsors=no_of_sponsors,
-        #     sponsors_details=sponsors_details,
-        #     total_sponsored_amt=total_sponsored_amt,
-        #     start_date=start_date,
-        #     end_date=end_date,
-        #     no_of_participants=no_of_participants,
-        #     upload_attendance=upload_attendance,
-        #     upload_report= upload_report
-        # )
+        
         item.save()
         # event.save()
 
         return redirect('display_events')
     else:
         form = EventForm(instance=item)
-        return render(request,'edit_item.html',{'form':form})
-        
-
-def edit_event1(request,pk):
-    return edit_form(request,pk,Events,EventForm)
+        return render(request,'edit_event.html',{'form':form})
 
 def delete_entry(request,pk,model,header):
     item = get_object_or_404(model,pk=pk)
