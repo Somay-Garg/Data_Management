@@ -62,14 +62,12 @@
                             <div class="form-group mb-2 align-center" id = "inputSponsors" >
                                 <textarea name="{{field.name}}"  id = "sponDets" class="d-none spons_text" >{{field.value}}</textarea>        
                             </div>          
-                            
                         {% elif field.label == "No of sponsors" %}
                             <div class="form-group mb-2 align-center " id = "inputSponsors" >
                                 <label class="w-25 required_asterisk" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
-                                <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required />
+                                <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required/>
                             </div>
-                            <!-- 
-                            <div class="actual_sponsors" style = "display :none;">
+                            <!-- <div class="actual_sponsors" style = "display :none;">
                                 <textarea name="sponsors_details" id="" cols="30" rows="10" class = "" ></textarea>
                             </div>  -->
                         {% elif field.label == "Total sponsored amt" %}
@@ -77,7 +75,6 @@
                                 <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
                                 <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required value = "{{field.value}}" readonly/>
                             </div>
-                            
                         {% endif %}                   
                     {% endfor %}
                  </fieldset>
@@ -85,7 +82,7 @@
                 <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Event Dates</legend>
                     {% for field in form %}
-                    {% if field.label == "Start date" %}
+                        {% if field.label == "Start date" %}
                         <div class="form-group mb-2 align-center">
                         <!-- <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label> -->
                         <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
@@ -98,7 +95,7 @@
                             <input class="w-30 m-1" type="date" name="start_date" id="" required>
                         </div> -->
                         
-                    {% elif field.label == "End date"%}
+                        {% elif field.label == "End date"%}
                         <div class="form-group mb-2 align-center">
                             <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">End Date</label>
                             <input class="w-30 m-1 datesettup" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
@@ -108,7 +105,7 @@
                             <label class="w-25 required_asterisk" for="exampleFormControlInput1">End Date</label>
                             <input class="w-30 m-1" type="date" name="end_date" id="" required>
                         </div> -->
-                    {% endif %}
+                        {% endif %}
                     {% endfor %}
                  </fieldset>
                  <br>
@@ -164,15 +161,11 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                 </fieldset>
-                
+                 </fieldset>                
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
                     <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>
                 </div>
             </form>
         </div>
-
-    </div>
-       
-
+    </div>     
 {% endblock %}
