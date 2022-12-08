@@ -9,23 +9,75 @@ function addSponsors(spon) {
     <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsored Amount</label>
     <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
   </div>`;
+  var elements = inputSponsors.getElementsByClassName("sponsors");
 
-  removeSponsors();
+  removeChildren(elements);
   for (let i = 0; i < nspons; i++) {
+    console.log("hii");
     let child = document.createElement("div");
     child.innerHTML = tmp;
-    insertAfter(child, document.querySelector("#sponsors"));
-    // inputSponsors.append(child);
+    // insertAfter(child, document.querySelector("#sponsors"));
+    inputSponsors.append(child);
   }
 }
+
+function addColumns(cols) {
+  let ncols = parseInt(cols);
+  let inputColumns = document.querySelector("#inputColumns");
+  let template = `
+    <div class = "field_columns">
+      <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()">
+          <option value="-1">Select Values</option>
+          <option value="event_name">Event Name</option>
+          <option value="type_of_event">Type of Event</option>
+          <option value="Audience">Audience</option>
+          <option value="Societies">Societies</option>
+          <option value="Departments">Departments</option>
+          <option value="Organized_by">Organized By</option>
+          <option value="Conducted_by">Conducted By</option>
+          <option value="sponsors_details">Sponsors Details</option>
+          <option value="total_sponsored_amt">Total Sponsored Amount</option>
+          <option value="start_date">Start Date</option>
+          <option value="end_date">End Date</option>
+          <option value="no_of_participants">No of Participants</option>
+          <option value="upload_attendance">Upload Attendance</option>
+          <option value="upload_report">Upload Report</option>
+      </select>
+    </div>
+  `;
+
+  // console.log(ncols)
+  removeChildren(document.getElementsByClassName("field_columns"));
+  for (let i = 0; i < ncols; i++) {
+    let child = document.createElement("div");
+    child.innerHTML = template;
+    inputColumns.append(child);
+  }
+}
+
+function getFields() {
+  let area = document.querySelector("#fillColumns");
+  let cols = document.querySelectorAll(".fill-columns");
+  console.log(cols);
+  area.value = "";
+
+  let arr = [];
+  for (let i = 0; i < cols.length; i++) {
+    arr.push(cols[i].value);
+  }
+  area.value = JSON.stringify(arr);
+}
+
 function insertAfter(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
 }
+
 function displaySponsors() {
   let spons_names = document.querySelectorAll(".sponsored_by_name");
-  console.log(spons_names)
+  console.log(spons_names);
   let spons_amts = document.querySelectorAll(".spons_amt_individually");
-  console.log(spons_amts)
+  console.log(spons_amts);
   let textarea = document.querySelector(".spons_text");
   textarea.value = "";
   let value = textarea.value;
@@ -40,10 +92,7 @@ function displaySponsors() {
   textarea.value = JSON.stringify(spon_obj);
 }
 
-function removeSponsors() {
-  let inputSponsors = document.querySelector("#inputSponsors");
-  var elements = inputSponsors.getElementsByClassName("sponsors");
-
+function removeChildren(elements) {
   while (elements[0]) {
     elements[0].parentNode.removeChild(elements[0]);
   }
@@ -190,6 +239,12 @@ $(document).ready(function () {
       parentDiv.appendChild(child);
     }
   });
+
+  // table display
+  // $(function(){
+  //   let tablediv = document.querySelector("#table-fields");
+  //   tablediv.style.display = "none";
+  // })
 });
 
 function loadFileIcon() {
@@ -273,4 +328,8 @@ function updateAttendanceFileValue() {
   let inputval = document.querySelector("#attendance_div").childNodes[0].value;
   console.log(inputval);
   textarea.value = inputval;
+}
+
+function showTable(){
+  $('#table-fields').style.display = 'block';
 }

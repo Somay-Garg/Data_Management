@@ -61,6 +61,8 @@ class Events(models.Model):
     upload_attendance = models.CharField(max_length=255,blank=False)
     upload_report = models.CharField(max_length=255,blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
+    min_amount = models.IntegerField(default=0)
+    max_amount = models.IntegerField(default=0)
     def __str__(self):
         return self.event_name
+
