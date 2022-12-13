@@ -12,4 +12,5 @@ urlpatterns = [
     path('filter_events',filter_events,name='filter_events'),
     path('open_file_atten/<str:file>',open_file_atten,name='open_file_atten'),
     path('open_file_report/<str:file>',open_file_report,name='open_file_report'),
+    path('display_report',display_report,name='display_report'),
 ]

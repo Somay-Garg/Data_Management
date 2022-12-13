@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Bootstrap Sidebar</h3>
+            </div>
+
+            <ul class="list-unstyled components">
+                <!-- <p>Dummy Heading</p> -->
+                <li class="active">
+                    <a href="#title-page">Title Page</a>
+                </li>
+                <li>
+                    <a href="#sec-1" data-toggle="collapse" aria-expanded="false">Executive Summary</a>
+                    <ul class="collapse list-unstyled" id="sec-1">
+                        <li><a href="#sec-1.1">Introduction</a></li>
+                        <li><a href="#sec-1.2">SWOC</a></li>
+                        <li><a href="#sec-1.3">Criteria Wise Summary</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sec-2" data-toggle="collapse" aria-expanded="false">Profile</a>
+                    <ul class="collapse list-unstyled" id="sec-2">
+                        <li><a href="#sec-2.1">Basic Information</a></li>
+                        <li><a href="#sec-2.2">Academic Information</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sec-3" data-toggle="collapse" aria-expanded="false">Extended Profile</a>
+                    <ul class="collapse list-unstyled components" id="sec-3">
+                        <li><a href="#sec-3.1">Program</a></li>
+                        <li><a href="#sec-3.2">Students</a></li>
+                        <li><a href="#sec-3.3">Teachers</a></li>
+                        <li><a href="#sec-3.4">Institution</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sec-4" data-toggle="collapse" aria-expanded="false">Quality Indicator Framework(QIF)</a>
+                    <ul class="collapse list-unstyled" id="sec-4">
+                        <li>
+                            <a href="#sec-4.1" data-toggle="collapse" aria-expanded="false">Criterion 1 - Curricular Aspects</a>
+                            <ul class="collapse list-unstyled" id="sec-4.1">
+                                <li><a href="#sec-4.1.1">Curricular Planning and Implementation</a></li>
+                                <li><a href="#sec-4.1.2">Academic Flexibility</a></li>
+                                <li><a href="#sec-4.1.3">Curriculum Enrichment</a></li>
+                                <li><a href="#sec-4.1.4">Feedback System</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.2" data-toggle="collapse" aria-expanded="false">Criterion 2 - Teaching-Learning and Evalutaion</a>
+                            <ul class="collapse list-unstyled" id="sec-4.2">
+                                <li><a href="#sec-4.2.1">Student Enrollment and Profile</a></li>
+                                <li><a href="#sec-4.2.2">Catering to Student Diversity</a></li>
+                                <li><a href="#sec-4.2.3">Teaching - Learning Process</a></li>
+                                <li><a href="#sec-4.2.4">Teacher Profile and Quality</a></li>
+                                <li><a href="#sec-4.2.5">Evaluation Process and Reforms</a></li>
+                                <li><a href="#sec-4.2.6">Student Performance and Learning Outcomes</a></li>
+                                <li><a href="#sec-4.2.7">Student Satisfaction Survey</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.3" data-toggle="collapse" aria-expanded="false">Criterion 3 - Research, Innovations and Extension</a>
+                            <ul class="collapse list-unstyled" id="sec-4.3">
+                                <li><a href="#sec-4.3.1">Resource Mobilization for Research</a></li>
+                                <li><a href="#sec-4.3.2">Resource Publication and Awards</a></li>
+                                <li><a href="#sec-4.3.3">Extension Activities</a></li>
+                                <li><a href="#sec-4.3.4">Collaboration</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.4" data-toggle="collapse" aria-expanded="false">Criterion 4 - Infrastructure and Learning Resources</a>
+                            <ul class="collapse list-unstyled" id="sec-4.4">
+                                <li><a href="#sec-4.4.1">Physical Facilities</a></li>
+                                <li><a href="#sec-4.4.2">Library as a Learning Resource</a></li>
+                                <li><a href="#sec-4.4.3">IT Infrastructure</a></li>
+                                <li><a href="#sec-4.4.4">Maintenance of Campus Infrastructure</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.5" data-toggle="collapse" aria-expanded="false">Criterion 5 - Student Support and Progression</a>
+                            <ul class="collapse list-unstyled" id="sec-4.5">
+                                <li><a href="#sec-4.5.1">Student Support</a></li>
+                                <li><a href="#sec-4.5.2">Student Progression</a></li>
+                                <li><a href="#sec-4.5.3">Student Participation and Activities</a></li>
+                                <li><a href="#sec-4.5.4">Alumni Engagement</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.6" data-toggle="collapse" aria-expanded="false">Criterion 6 - Governance, Leadership and Management</a>
+                            <ul class="collapse list-unstyled" id="sec-4.6">
+                                <li><a href="#sec-4.6.1">Institutional Vision and Leadership</a></li>
+                                <li><a href="#sec-4.6.2">Strategy Development and Deployment</a></li>
+                                <li><a href="#sec-4.6.3">Faculty Empowerment Stragegies</a></li>
+                                <li><a href="#sec-4.6.4">Financial Management and Resource Mobilization</a></li>
+                                <li><a href="#sec-4.6.5">Internal Quality Assurance System</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#sec-4.7" data-toggle="collapse" aria-expanded="false">Criterion 7 - Institutional Values and Best Practices</a>
+                            <ul class="collapse list-unstyled" id="sec-4.7">
+                                <li><a href="#sec-4.7.1">Institutional Values and Social Responsibilities</a></li>
+                                <li><a href="#sec-4.7.2">Best Practices</a></li>
+                                <li><a href="#sec-4.7.3">Institutional Distinctiveness</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#sec-5">Conclusion</a>
+                </li>
+
+
+                <!-- <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="#">Home 1</a></li>
+                        <li><a href="#">Home 2</a></li>
+                        <li><a href="#">Home 3</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li><a href="#">Page 1</a></li>
+                        <li><a href="#">Page 2</a></li>
+                        <li><a href="#">Page 3</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Portfolio</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li> -->
+            </ul>
+        </nav>
+
+        <!-- Page Content Holder -->
+        <div id="content">
+
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+
+                    <div class="navbar-header">
+                        <button type="button" id="sidebarCollapse" class="navbar-btn">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                    </div>
+
+            </nav>
+
+        </div>
+    </div>
+
+{% endblock %}

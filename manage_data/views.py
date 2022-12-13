@@ -416,3 +416,6 @@ def export_data(request):
         i+=1
 
     return response
+
+def display_report(request):
+    return render(request,'edit_report.html')

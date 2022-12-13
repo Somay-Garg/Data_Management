@@ -63,6 +63,11 @@ $(document).ready(function () {
     $(this).select2();
   });
 
+  $('#sidebarCollapse').on('click', function () {
+    $('#sidebar').toggleClass('active');
+    $(this).toggleClass('active');
+  });
+
   //disabled future dates
   $(function () {
     var dtToday = new Date();
