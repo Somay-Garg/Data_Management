@@ -3,12 +3,17 @@ function addSponsors(spon) {
   let inputSponsors = document.querySelector("#inputSponsors");
   let sponsLabel = document.querySelector(".sponsors");
 
-  let tmp = `<div class="sponsors">
-    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsor Name</label>
-    <input type="text" name="sponsored_by" class = "w-30 m-1 sponsored_by_name">
-    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsored Amount</label>
-    <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
-  </div>`;
+  let tmp = `<br>
+  <div class="sponsers" style="margin-top:10px;">
+    <div class="form-group  align-center float-child">
+     <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
+     <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name">
+    </div>
+    <div class="form-group  align-center float-child">  
+     <label class=" w-25 spon_amt required_asterisk" style="width:153px;"  for="exampleFormControlInput1">Sponsored Amount</label>
+     <input type="number" name="spons_amount" id="" style="height:32px; border-radius: 4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
+    </div>
+  <div>`;
 
   removeSponsors();
   for (let i = 0; i < nspons; i++) {
@@ -180,11 +185,16 @@ $(document).ready(function () {
     for (let i = 0; i < arr.length; i++) {
       let sponName = arr[i][0];
       let sponAmt = arr[i][1];
-      let template = `<div class="sponsors">
+      let template = `<div class="sponsors" style="margin-top:10px;">
+      <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsor Name</label>
-        <input type="text" name="sponsored_by" class = "w-30 m-1 sponsored_by_name"  oninput = "findTotal();displaySponsors()" value = ${sponName} >
+        <input type="text" name="sponsored_by" style="height:32px; border-radius:4px;" class = "w-30 m-1 sponsored_by_name"  oninput = "findTotal();displaySponsors()" value = ${sponName} >
+        </div>
+        <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsored Amount</label>
-        <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" value =${sponAmt} required></div>`;
+        <input type="number" name="spons_amount" id="" style="height:32px; border-radius:4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" value =${sponAmt} required>
+        </div>
+        </div>`;
       let child = document.createElement("div");
       child.innerHTML = template;
       parentDiv.appendChild(child);
@@ -274,3 +284,14 @@ function updateAttendanceFileValue() {
   console.log(inputval);
   textarea.value = inputval;
 }
+
+/* const toggleButton = document.getElementsByClassName('toggle-button')[0]
+const navbarLinks = document.getElementsByClassName('navbar_link')[0]
+if(toggleButton){
+toggleButton.addEventListener('click', () => {
+  console.log("hi")
+  navbarLinks.classList.toggle('active')
+})
+}else{
+  console.log('bye')
+} */

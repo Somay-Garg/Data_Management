@@ -26,15 +26,16 @@ def display_events(request):
     filter_data = {
         'Event Name': set(),
         'Event Type': set(),
-        'Audience': set(),
         'break1' : 1,
+        'Audience': set(),
         'Society' :set(),
+        'break2' : 1,
         'Department' : set(),
         'Organized By': set(),
-        'break2' : 1,
+        'break3' : 1,
         'Conducted By': set(),
         'Sponsors' : set(),
-        'break3' : 1,
+        'break4' : 1,
     }
 
     sponsor = ''

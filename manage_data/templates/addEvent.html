@@ -8,11 +8,11 @@
                 {% csrf_token %}
                 <fieldset class="border p-3">
                     <legend  class="float-none w-auto">Event's Details</legend>
-                    <div class="form-group mb-2 align-center">
+                    <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Name</label>
-                        <input class="w-30 " type="text" name="event_name" id="" required>
+                        <input class="w-30" style="height:32px; border-radius: 4px;" type="text" name="event_name" id="" required>
                     </div>
-                    <div class="form-group mb-2 align-center">
+                    <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Type of Event</label>
                         <!-- <input class="w-30 " type="text" name="type_of_event" id="" required> -->
                         <select class="w-30 m-1" name="type_of_event" class="form-control">
@@ -26,8 +26,9 @@
                             <option value="Conference">Conference</option>
                         </select>
                     </div>
-                    <div class="form-group mb-2 align-center">
-                        <label class="w-25" for="exampleFormControlInput1">Audience</label>
+                    
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Audience</label>
                         <select class="w-30 m-1" name="audience" class="form-control">
                             <option value="Faculty" selected>Faculty</option>
                             <option value="Student">Student</option>
@@ -35,10 +36,11 @@
                         </select>
                     </div>
                     <!-- New columns Start -->
-                    <div class="form-group mb-2 align-center" id = "society-involved">
+                    <div class="form-group  align-center float-child" id = "society-involved">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Societies Involved</label>
-                        <select id="society" multiple = "multiple" class="w-30 m-1 " oninput="getSocieties()">
-                            <option value="Prakriti" >Prakriti</option>
+                         <select id="society" multiple = "multiple"  class="w-30 m-1  " oninput="getSocieties()">
+                       <!-- <select class="w-30 m-1" id="society" multiple = "multiple" name="type_of_society" oninput="getSocieties()" class="form-control"> -->   
+                            <option value="Prakriti">Prakriti</option>
                             <option value="IEEE">IEEE</option>
                             <option value="E-Cell">E-Cell</option>
                             <option value="IIC">IIC</option>
@@ -55,9 +57,10 @@
                         </select>
                     </div>
                     <textarea class="d-none" name="society" id="all_society" cols="30" rows="10"></textarea>
-                    <div class="form-group mb-2 align-center" id = "departments-involved">
+                    
+                    <div class="form-group  align-center float-child"  id = "departments-involved">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Departments Involved</label>
-                        <select id="department" multiple = "multiple" name="department" class="m-1 w-30"  oninput="getDepartments()">
+                        <select id="department" multiple = "multiple"  name="department" class="m-1 w-30 "  oninput="getDepartments()">
                             <option value="All" >All</option>
                             <option value="CSE" >CSE</option>
                             <option value="IT">IT</option>
@@ -69,76 +72,84 @@
                     </div>
                     <textarea class="d-none" name="department" id="all_department" cols="30" rows="10"></textarea>
                         <!-- New columns End -->
-                    <div class="form-group mb-2 align-center">
-                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Organized By</label>
-                        <input class="w-30 " type="text" name="org_by" id="" required>
-                    </div>
-                    <div class="form-group mb-2 align-center">
+                     <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Number of Participants</label>
+                         <input class="w-30 " type="text"  style="height:32px; border-radius: 4px;" name="no_of_parti" id="" required>
+                     </div>    
+                     
+                    <div class="form-group  align-center float-child" >
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Conducted By</label>
-                        <input class="w-30" type="text" name="cond_by" id="" required>
-                    </div>
-                    
+                        <input class="w-30 " type="text"  style="height:32px; border-radius: 4px;" name="cond_by" id="" required>
+                    </div> 
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Organized By</label>
+                        <input class="w-30 " type="text"  style="height:32px; border-radius: 4px;" name="org_by" id="" required>
+                    </div> 
                     
                 </fieldset>               
                 <br>
                 <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Event's Sponsors Details</legend>
-                    <div class="form-group mb-2 align-center " id = "inputSponsors" >
-                        <label class="w-25 required_asterisk" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
-                        <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
+                    <div class="form-group  align-center" id = "inputSponsors" >
+                        <label class=" required_asterisk" style="margin-left:69px; width:145px;" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
+                        <input class="w-30 " type="number" style="height:32px; border-radius: 4px;" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" val="1" required />
                     </div>
                   
                     <div class="actual_sponsors" style = "display :none;">
                         <textarea name="sponsored_details" id="" cols="30" rows="10" class = "spons_text" ></textarea>
                     </div>
                   
-                    <div class="form-group mb-2 align-center">
+                    <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
-                        <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required readonly/>
+                        <input class="w-30 m-1" type="number" style="height:32px; border-radius: 4px;" name="total_sponsored_amt" id="total" required readonly/>
                     </div>
                 </fieldset>
                 <br>
                 <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Event Dates</legend>
-                    <div class="form-group mb-2 align-center">
+                    <div class="form-group mb-2 align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Start Date</label>
                         <!-- <input class="w-30 m-1" type="date" name="start_date" min ="1600-01-01" max = "3020-12-31" id="start_date" required> -->
-                        <input class="w-30 m-1 datesettup" type="date" name="start_date" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
+                        <input class="w-30 m-1 datesettup" style="height:32px; border-radius: 4px;" type="date" name="start_date" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
                     </div>
-                    <div class="form-group mb-2 align-center">
+                    <div class="form-group mb-2 align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">End Date</label>
                         <!-- <input class="w-30 m-1" type="date" name="end_date" min ="1600-01-01" max = "3020-12-31" id="end_date" required> -->
-                        <input class="w-30 m-1 datesettup" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
+                        <input class="w-30 m-1 datesettup" style="height:32px; border-radius: 4px;" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
 
                     </div>
                 </fieldset> 
-                 <br>
+                 <!-- <br>
                  <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Participants Details</legend>
                     <div class="form-group mb-2 align-center">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Number of Participants</label>
                         <input class="w-30 m-1" type="text" name="no_of_parti" id="" required>
                     </div>
-                 </fieldset>
+                 </fieldset> -->
                  <br>
                  <fieldset class="border p-2">
-                    <legend  class="float-none w-auto">Upload Attendance</legend>
-                    <div class="form-group mb-2 align-center">
+                    <legend  class="float-none w-auto">Upload Attendance/Report</legend>
+                    <div class="form-group mb-2 align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Attendance</label>
-                        <input class="w-30 m-1" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1">
+                        <input class="w-30 m-1" style="height:32px; border-radius: 4px;" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                    <div class="form-group mb-2 align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Report</label>
+                        <input class="w-30 m-1" style="height:32px; border-radius: 4px;" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1">
                     </div>
                  </fieldset>
-                 <br>
+                 <!-- <br>
                  <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Upload Report</legend>
                     <div class="form-group mb-2 align-center">
                         <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Report</label>
                         <input class="w-30 m-1" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1">
                     </div>
-                 </fieldset>
+                 </fieldset> -->
                 
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white;"/>
+                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885; width:10rem; color: white;"/>
                 </div>
             </form>
         </div>

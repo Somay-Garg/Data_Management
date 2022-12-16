@@ -9,14 +9,41 @@
                 <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Event Details</legend>
                     {% for field in form %}  
-                        {% if field.label == "Event name" or field.label == "Type of event" or field.label == "Audience"  or field.label == "Organized by" or field.label == "Conducted by"%}
-                            <div class="form-group mb-2 align-center">
-                            <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label>
-                            {{field}}
+                        {% if field.label == "Event name" or  field.label == "No of participants" or field.label == "Organized by" or field.label == "Conducted by" %}
+                            <div class="form-group  align-center float-child">
+                            <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
+                            <!-- {{field}} -->
+                            <input class="w-30" style="height:32px; border-radius: 4px;" type="text"  value = "{{field.value}}" name="event_name" id="" required>
                             </div>
+
+                        {% elif field.label == "Audience" %} 
+                            <div class="form-group  align-center float-child">
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                                <select class="w-30 m-1" style="height:32px;" name="audience" value="{{field.value}}" class="form-control">
+                                    <option value="Faculty" selected>Faculty</option>
+                                    <option value="Student">Student</option>
+                                    <option value="Both">Faculty and Student</option>
+                                </select>
+                            </div>   
+                            
+                        {% elif field.label == "Type of event" %} 
+                        <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                            <!-- <input class="w-30 " type="text" name="type_of_event" id="" required> -->
+                            <select class="w-30 m-1" style="height:32px;" name="type_of_event" value="{{field.value}}"  class="form-control">
+                                <option value="Cultural" selected>Cultural</option>
+                                <option value="Technical">Technical</option>
+                                <option value="Sports">Sports</option>
+                                <option value="FDP">FDP</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Expert Lecture">Expert Lecture</option>
+                                <option value="Conference">Conference</option>
+                            </select>
+                        </div>   
                         {% elif field.label == "Societies" %}
-                            <div class="form-group mb-2 align-center" id = "society-involved">
-                                <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label>
+                            <div class="form-group  align-center float-child" id = "society-involved">
+                                <label for="id_{{ field.name }}" class="w-25 required_asterisk" style="width:138.5px;"  > {{ field.label }} </label>
                                 <!-- {{field.name}} -->
                                 <textarea class="d-none" name ="Societies" id="all_society" cols="30" rows="10">{{field.value}}</textarea>
                                 <select id="society" multiple = "multiple" class="w-30 m-1" oninput="getSocieties()">
@@ -37,8 +64,8 @@
                                     </select>
                             </div>
                         {% elif field.label == "Departments"%}
-                            <div class="form-group mb-2 align-center">
-                                <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">Departments</label>
+                            <div class="form-group  align-center float-child" id = "departments-involved">
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1" style="width:138.5px;">Departments</label>
                                 <textarea class="d-none" name="Departments" id="all_department" cols="30" rows="10">{{field.value}}</textarea>
                                 <select id="department" multiple = "multiple" name="department" class="w-30 m-1" oninput="getDepartments()">
                                     <option value="All" >All</option>
@@ -59,23 +86,23 @@
                     {% for field in form %}
                     <!-- {{field.label}} -->
                         {% if field.label == "Sponsors details"   %}
-                            <div class="form-group mb-2 align-center" id = "inputSponsors" >
+                            <div class="form-group  align-center " id = "inputSponsors" >
                                 <textarea name="{{field.name}}"  id = "sponDets" class="d-none spons_text" >{{field.value}}</textarea>        
                             </div>          
                             
                         {% elif field.label == "No of sponsors" %}
-                            <div class="form-group mb-2 align-center " id = "inputSponsors" >
-                                <label class="w-25 required_asterisk" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
-                                <input class="w-30 m-1" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required />
+                            <div class="form-group  align-center " id = "inputSponsors" >
+                                <label class="required_asterisk" style="margin-left:72px; width:145px;" for="exampleFormControlInput1" id=" no_of_sponsors">Number of Sponsors</label>
+                                <input class="w-30" type="number" style="height:32px; border-radius:4px; margin-left: -3px;" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required />
                             </div>
-                            <!-- 
-                            <div class="actual_sponsors" style = "display :none;">
+                            
+                            <!--<div class="actual_sponsors" style = "display :none;">
                                 <textarea name="sponsors_details" id="" cols="30" rows="10" class = "" ></textarea>
                             </div>  -->
                         {% elif field.label == "Total sponsored amt" %}
-                            <div class="form-group mb-2 align-center">
-                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
-                                <input class="w-30 m-1" type="number" name="total_sponsored_amt" id="total" required value = "{{field.value}}" readonly/>
+                            <div class="form-group  align-center float-child">
+                                <label class="w-25 required_asterisk " for="exampleFormControlInput1">Total Amount of Sponsorship</label>
+                                <input class="w-30 m-1" type="number" style="height:32px; border-radius:4px;" name="total_sponsored_amt" id="total" required value = "{{field.value}}" readonly/>
                             </div>
                             
                         {% endif %}                   
@@ -86,10 +113,10 @@
                     <legend  class="float-none w-auto">Event Dates</legend>
                     {% for field in form %}
                     {% if field.label == "Start date" %}
-                        <div class="form-group mb-2 align-center">
+                        <div class="form-group mb-2 align-center float-child">
                         <!-- <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label> -->
                         <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
-                        <input class="w-30 m-1 datesettup" type="date" name="start_date" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
+                        <input class="w-30  datesettup" style="height:32px; border-radius: 4px; margin-left: 50px;" type="date" name="start_date" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
                         <label id = "start-date-setter" class ="d-none">{{field.value}}</label>
                         </div>
 
@@ -99,9 +126,9 @@
                         </div> -->
                         
                     {% elif field.label == "End date"%}
-                        <div class="form-group mb-2 align-center">
+                        <div class="form-group mb-2 align-center float-child">
                             <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">End Date</label>
-                            <input class="w-30 m-1 datesettup" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
+                            <input class="w-30  datesettup" style="height:32px; border-radius: 4px;  margin-left: 50px;" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
                             <label id = "end-date-setter" class="d-none">{{field.value}}</label>
                         </div>
                         <!-- <div class="form-group mb-2 align-center">
@@ -112,10 +139,10 @@
                     {% endfor %}
                  </fieldset>
                  <br>
-                 <fieldset class="border p-2">
+                 <!-- <fieldset class="border p-2">
                     <legend  class="float-none w-auto">Participants Details</legend>
                     {% for field in form %}
-                        <div class="form-group mb-2 align-center">
+                        <div class="form-group mb-2 align-center float-child">
                         {% if field.label == "No of participants"  %}
                             <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label>
                             {{field}}
@@ -123,13 +150,13 @@
                         </div>
                     {% endfor %}
                  </fieldset>
-                 <br>
+                 <br> -->
                  <fieldset class="border p-2">
-                    <legend  class="float-none w-auto">Upload Attendance</legend>
+                    <legend  class="float-none w-auto">Upload Attendance/Report</legend>
                     {% for field in form %}
                         <div class="form-group mb-2 align-center">
                         {% if field.label == "Upload attendance"  %}
-                        <div class="form-group mb-2 align-center" style="display: flex;">
+                        <div class="form-group mb-2 align-center float-child" style="display: flex;">
                             <label for="id_{{ field.name }}" class="col-2 col-form-label  " > {{ field.label }} </label>
                             <!-- {{field.name}} -->
                             <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
@@ -137,7 +164,20 @@
                                 <label for="">{{field.value}}</label>
                                 <div>
                                     <label for="">Change File :</label>
-                                    <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                                    <input class="w-30 m-1" style="height:32px; border-radius: 4px;" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                                </div>
+                            </div>
+                        </div>
+                        {% elif field.label == "Upload report" %}
+                        <div class="form-group mb-2 align-center float-child" style="display: flex;">
+                            <label for="id_{{ field.name }}" class="col-2 col-form-label " > {{ field.label }} </label>
+                            <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
+                                <label for="">Previously Uploaded :</label>
+                                <label for="">{{field.value}}</label>
+                                <div>
+                                    <label for="">Change File :</label>
+                                    <input class="w-30 m-1" type="file" style="height:32px; border-radius: 4px;" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                                      
                                 </div>
                             </div>
                         </div>
@@ -145,12 +185,12 @@
                         </div>
                     {% endfor %}
                  </fieldset>
-                 <br>
+                 <!-- <br>
                  <fieldset class="border p-2">
                     <legend  class="float-none w-auto ">Upload Report</legend>
                     {% for field in form %}
                         {% if field.label == "Upload report"  %}
-                            <div class="form-group mb-2 align-center" style="display: flex;">
+                            <div class="form-group mb-2 align-center float-child" style="display: flex;">
                                 <label for="id_{{ field.name }}" class="col-2 col-form-label " > {{ field.label }} </label>
                                 <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
                                     <label for="">Previously Uploaded :</label>
@@ -158,16 +198,16 @@
                                     <div>
                                         <label for="">Change File :</label>
                                         <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
-                                        <!-- <input type="text" name = "upload_atten"> -->
+                                         <input type="text" name = "upload_atten"> 
                                     </div>
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
-                 </fieldset>
+                 </fieldset> -->
                 
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>
+                    <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885; width:10rem; color: white;"/>
                 </div>
             </form>
         </div>
