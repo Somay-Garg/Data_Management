@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import *
+from .models.eventsModel import *
 from import_export.admin import ImportExportModelAdmin
 from django.apps import apps
 # Register your models here.

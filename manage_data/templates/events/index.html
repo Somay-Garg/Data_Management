@@ -7,7 +7,7 @@
             <br>
             <fieldset class="border border-2 p-2">
                 <legend class="float-none w-auto p-2">Filter Data</legend>
-                <form class="overflow-hidden" action="{% url 'filter_event_new'%}" method="POST">
+                <form class="overflow-hidden" action="{% url 'filter_event'%}" method="POST">
                     {% csrf_token %}
                     <div class="form-group row">
                         {% for key,filter in filter_data.items %}

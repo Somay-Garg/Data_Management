@@ -1,8 +1,8 @@
 from operator import or_
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.files.storage import FileSystemStorage
-from .models import *
-from .forms import *
+from manage_data.models.eventsModel import *
+from ..forms import *
 from django.db.models import Q
 from django.http import HttpResponse
 from django.http import FileResponse
@@ -12,8 +12,7 @@ import csv
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    return render(request,'index.html')
-
+    return render(request,'events/index.html')
 
 def display_events(request):
     fields = Events._meta.fields
@@ -67,161 +66,7 @@ def display_events(request):
         'sponsors' : sponsor,
     }
 
-    return render(request,'index.html',context)
-
-def filter_events(request):
-    if request.method == "POST":
-        if(request.POST['filter'] == "reset"):
-            return redirect('display_events')
-        
-        if(request.POST['filter'] == "export"):
-            return export_data(request)
-
-        columns = request.POST['columns_details'].split(",")
-        print("abc ==  ",columns)
-
-        event_name = request.POST['Event Name']
-        type_of_event = request.POST['Event Type']
-        Audience = request.POST['Audience'] 
-        Society = request.POST['Society']
-        Department = request.POST['Department']
-        Organized_by = request.POST['Organized By']
-        Conducted_by = request.POST['Conducted By']
-        # changes
-        # total_sponsored_amt = request.POST['Total Sponsored Amount']
-        sponsored_by = request.POST['Sponsors']
-        after = request.POST['after']
-        upto = request.POST['upto']
-
-        # changes strt
-        # min_amount = request.POST['min_amount']
-        # max_amount =  request.POST['max_amount']
-        # changes end
-        query = Q()
-        sel_fil_val = {
-            'Event Name': '-1',
-            'Event Type': '-1',
-            'Audience': '-1',
-            'Society' : '-1',
-            'Department' : '-1',
-            'Organized By': '-1',
-            'Conducted By': '-1',
-            'Sponsors' : '-1',
-            ########changes###
-            'Total Sponsored Amount' : '-1',
-            # 'max_amount':'-1',
-            # 'min_amount':'-1',
-        }
-
-        if(event_name != "-1"):
-            query = query & Q(event_name = event_name)
-            sel_fil_val['Event Name'] = event_name
-        if(type_of_event != "-1"):
-            query = query & Q(type_of_event = type_of_event)
-            sel_fil_val['Event Type'] = type_of_event
-        if(Audience != "-1"):
-            query = query & Q(Audience__in = ["both",Audience])
-            sel_fil_val['Audience'] = Audience
-        if(Society != "-1"):
-            query = query & Q(Societies__contains = Society)
-            sel_fil_val['Society'] = Society
-        if(Department != "-1"):
-            query = query & (Q(Departments__contains = "All") | Q(Departments__contains = Department))
-            sel_fil_val['Department'] = Department
-        if(Organized_by != "-1"):
-            query = query & Q(Organized_by = Organized_by)
-            sel_fil_val['Organized By'] = Organized_by
-        if(Conducted_by != "-1"):
-            query = query & Q(Conducted_by = Conducted_by)
-            sel_fil_val['Conducted By'] = Conducted_by
-        if(sponsored_by != "-1"):
-            query = query & Q(sponsors_details__contains = sponsored_by)
-            sel_fil_val['Sponsors'] = sponsored_by
-
-        if(after == ''):
-            after = '1900-01-01'
-        else:
-            sel_fil_val['start_date'] = after
-
-        if(upto == ''):
-            upto = '2100-01-01'
-        else:
-            sel_fil_val['end_date'] = upto
-        
-        # changes strt  --> min and max amt selfilval updation
-        # if(min_amount == ''):
-        #     sel_fil_val['min_amount'] = '0'
-        # else:
-        #     sel_fil_val['min_amount'] = min_amount
-
-        # if(max_amount == ''):
-        #     sel_fil_val['max_amount'] = '1000000000'   # max value set manually as 100cr
-        # else:
-        #     sel_fil_val['max_amount'] = max_amount
-    
-        # changes end
-        query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
-        
-        # changes in query 
-        # query3 = Q(min_amount__range = [min_amount,max_amount]) | Q(max_amount__range = [min_amount,max_amount])
-        # changes end
-    
-        fields = Events._meta.fields
-        all_data = Events.objects.all().values()
-        filter_data = {
-            'Event Name': set(),
-            'Event Type': set(),
-            'break1':1,
-            'Audience': set(),
-            'Society' : set(),
-            'break2' : 1,
-            'Department' : set(),
-            'Organized By': set(),
-            'break3' : 1,
-            'Conducted By': set(),
-            'Sponsors' : set(),
-            'break4' : 1,            
-        }
-
-        sponsor = ''
-        for event in all_data:
-            filter_data['Event Name'].add(event['event_name'])
-            filter_data['Event Type'].add(event['type_of_event'])
-            filter_data['Audience'].add(event['Audience'])
-
-            socities = event['Societies'].split(',')
-            for society in socities:
-                filter_data['Society'].add(society)
-            
-            departments = event['Departments'].split(',')
-            for department in departments:
-                filter_data['Department'].add(department)
-
-            filter_data['Organized By'].add(event['Organized_by'])
-            filter_data['Conducted By'].add(event['Conducted_by'])
-            sponsor = json.loads(event['sponsors_details'])
-            for spon in sponsor:
-                filter_data['Sponsors'].add(spon)
-        
-        #changes in line query2 & query3
-        event_data = Events.objects.filter(query & query2 ).values()
-        # print(event_data)
-        
-        for event in event_data:
-            event['sponsors_details'] = json.loads(event['sponsors_details'])
-        
-        context = {
-            'fields' : fields,
-            'event_data' : event_data,
-            'header' : 'Events',
-            'filter_data' : filter_data,
-            'sel_fil_val' : sel_fil_val,
-            'sponsors' : sponsor,
-            'sel_fil_val_json_string' : json.dumps(sel_fil_val),
-        }
-        return render(request,'index.html',context)
-    else:
-        return render(request,'add_event.html',{})
+    return render(request,'events/index.html',context)
 
 # display the selected columns
 def display_columns(request):
@@ -300,12 +145,10 @@ def display_columns(request):
 
     if 'columns_details' in request.POST:
         context['columns_str'] = request.POST['columns_details']
-        # print("hello")
     elif 'columns_details' not in request.POST:
         context['display'] = False
-        # print("ohoo")
 
-    return render(request,'index.html',context)
+    return render(request,'events/index.html',context)
 
 # add new event
 def add_event(request):
@@ -362,11 +205,13 @@ def add_event(request):
         event.save()
         return redirect('display_events')
     else:
-        
-        return render(request,'addEvent.html',{})
+        print(request.GET)
+        if( 'columns_details' in request.GET):
+            print("hello ")
+        return render(request,'events/addEvent.html',{})
 
 # filter event data
-def filter_event_new(request):
+def filter_event(request):
     if request.method == "POST":
         if(request.POST['filter'] == "reset"):
             return redirect('display_events')
@@ -395,6 +240,7 @@ def filter_event_new(request):
         print(min_amount)
         print(max_amount)
         query = Q()
+        
         sel_fil_val = {
             'Event Name': '-1',
             'Event Type': '-1',
@@ -515,9 +361,9 @@ def filter_event_new(request):
             if request.POST['columns_details'] == '' :
                 context['display'] = False
                
-        return render(request,'index.html',context)
+        return render(request,'events/index.html',context)
     else:
-        return render(request,'add_event.html',{})
+        return render(request,'events/addEvent.html',{})
 
 # open file 
 def open_file_atten(request,file):
@@ -655,14 +501,11 @@ def save_event(request,pk):
         return display_columns(request)
     else:
         form = EventForm(instance=item)
-        return redirect(request,'edit_event.html',{'form':form},permanent=True)
+        return redirect(request,'events/edit_event.html',{'form':form},permanent=True)
     
 def edit_event(request):
-    # columns = request.POST['passingColumns'].replace('\\','')[1:-1].replace('\'','\"')
     id = request.POST['id_details']
     columns = request.POST['passingColumns']
-    # print(columns)
-    # print(type(columns))
     item = Events.objects.get(pk = id)
     form = EventForm(instance=item)
     context = {
@@ -670,4 +513,4 @@ def edit_event(request):
         'columns':columns,
         'id':id
         }
-    return render(request,'edit_event.html',context)
+    return render(request,'events/edit_event.html',context)

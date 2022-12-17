@@ -1,12 +1,11 @@
 from django.urls import path
-from .views import *
+from .views.eventViews import *
 
 urlpatterns = [
     path('',display_events,name='display_events'),
     path('display_events',display_events,name='display_events'),
     path('add_event',add_event,name='add_event'),
     path('edit_event/<int:pk>',edit_event,name='edit_event'),
-    path('filter_events',filter_events,name='filter_events'),
     path('display_columns',display_columns,name='display_columns'),
     path('open_file_atten/<str:file>',open_file_atten,name='open_file_atten'),
     path('open_file_report/<str:file>',open_file_report,name='open_file_report'),
@@ -16,6 +15,6 @@ urlpatterns = [
     path('save_event/deleteEvent',deleteEvent,name = 'deleteEvent'),
     path('save_event/<int:pk>',save_event,name = 'save_event'),
     path('edit_event',edit_event,name = 'edit_event'),
-    path('filter_event_new',filter_event_new,name = 'filter_event_new'),
+    path('filter_event',filter_event,name = 'filter_event'),
 ]
 
