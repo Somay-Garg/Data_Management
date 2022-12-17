@@ -1,33 +1,43 @@
 function addSponsors(spon) {
   let nspons = parseInt(spon);
-  let inputSponsors = document.querySelector("#inputSponsors");
+  let inputSponsors = document.querySelector("#insertSponsDets");
   let sponsLabel = document.querySelector(".sponsors");
+  let tmp = `
+  <div class="sponsors" >
+    <div class="form-group  align-center float-child">
+     <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
+     <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name">
+    </div>
+    <div class="form-group  align-center float-child">  
+     <label class=" w-25 spon_amt required_asterisk" style="width:153px;"  for="exampleFormControlInput1">Sponsored Amount</label>
+     <input type="number" name="spons_amount" id="" style="height:32px; border-radius: 4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
+    </div>
+  <div>`;
 
-  let tmp = `<div class="sponsors">
-    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsor Name</label>
-    <input type="text" name="sponsored_by" class = "w-30 m-1 sponsored_by_name">
-    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsored Amount</label>
-    <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" required>
-  </div>`;
-  var elements = inputSponsors.getElementsByClassName("sponsors");
+  $("#insertSponsDets").html('');
 
-  removeChildren(elements);
   for (let i = 0; i < nspons; i++) {
-    console.log("hii");
     let child = document.createElement("div");
+    // child.setAttribute("class",'sponsors')
     child.innerHTML = tmp;
     // insertAfter(child, document.querySelector("#sponsors"));
-    inputSponsors.append(child);
+    inputSponsors.appendChild(child);
   }
 }
 
+
+
 function addColumns(cols) {
   let ncols = parseInt(cols);
+  if(ncols >14){
+    // alert("Not more than 14 columns are allowed");
+    return false;
+  }
   let inputColumns = document.querySelector("#inputColumns");
   let template = `
-    <div class = "field_columns">
+    <div class = "field_columns" style = "display: flex; margin-bottom: 20px; width: 78%; align-items: center;  justify-content: center;">
       <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
-      <select class="fill-columns" class="w-30 m-1" oninput="getFields()">
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this)" style = "height: 30px;border-radius: 4px;">
           <option value="-1">Select Values</option>
           <option value="event_name">Event Name</option>
           <option value="type_of_event">Type of Event</option>
@@ -44,29 +54,54 @@ function addColumns(cols) {
           <option value="upload_attendance">Upload Attendance</option>
           <option value="upload_report">Upload Report</option>
       </select>
-    </div>
+    </div>    
   `;
 
   // console.log(ncols)
   removeChildren(document.getElementsByClassName("field_columns"));
   for (let i = 0; i < ncols; i++) {
     let child = document.createElement("div");
+    child.style = 'display: inline-block;width: 40%; margin-left: 98px;box-sizing: border-box;';
     child.innerHTML = template;
     inputColumns.append(child);
   }
+  
+}
+
+function disableFields(field){
+  var arr = [];
+   $(".fill-columns").each(function(){
+    let val  = $(this).val();
+    // console.log(val);
+    if(val != '-1'){
+      arr.push(val)
+    }
+   });
+  //  console.log(arr);
+
+   let options = field.querySelectorAll('option');
+   for(let i=0;i<options.length;i++){
+    
+    if(arr.includes(options[i].value)){
+      // console.log('disabled'+options[i].value)
+      options[i].disabled = true;
+    }else{
+      if(options[i].disabled){
+        options[i].disabled = false;
+      }
+    }
+   }
 }
 
 function getFields() {
   let area = document.querySelector("#fillColumns");
   let cols = document.querySelectorAll(".fill-columns");
-  console.log(cols);
   area.value = "";
-
-  let arr = [];
+  let arr = ["id"];
   for (let i = 0; i < cols.length; i++) {
     arr.push(cols[i].value);
   }
-  area.value = JSON.stringify(arr);
+  area.value = arr
 }
 
 function insertAfter(newNode, existingNode) {
@@ -221,30 +256,29 @@ $(document).ready(function () {
   $(function () {
     let spondataJSON = document.querySelector("#sponDets").value;
     // console.log(spondataJSON);
-    let parentDiv = document.querySelector("#inputSponsors");
+    let parentDiv = document.querySelector("#insertSponsDets");
     let sponData = JSON.parse(spondataJSON);
     console.log(sponData);
     let arr = Object.entries(sponData);
     console.log(arr);
-    for (let i = 0; i < arr.length; i++) {
-      let sponName = arr[i][0];
-      let sponAmt = arr[i][1];
-      let template = `<div class="sponsors">
-        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsor Name</label>
-        <input type="text" name="sponsored_by" class = "w-30 m-1 sponsored_by_name"  oninput = "findTotal();displaySponsors()" value = ${sponName} >
-        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sponsored Amount</label>
-        <input type="number" name="spons_amount" id="" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()" value =${sponAmt} required></div>`;
-      let child = document.createElement("div");
-      child.innerHTML = template;
-      parentDiv.appendChild(child);
-    }
+      for (let i = 0; i < arr.length; i++) {
+        let sponName = arr[i][0];
+        let sponAmt = arr[i][1];
+        let template = ` <div class="sponsors" >
+          <div class="form-group  align-center float-child">
+          <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
+          <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name" oninput = "findTotal();displaySponsors()" value = ${sponName} >
+          </div>
+          <div class="form-group  align-center float-child">  
+          <label class=" w-25 spon_amt required_asterisk" style="width:153px;"  for="exampleFormControlInput1">Sponsored Amount</label>
+          <input type="number" name="spons_amount" id="" style="height:32px; border-radius: 4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()"  value =${sponAmt} required>
+          </div>
+        <div>`
+        let child = document.createElement("div");
+        child.innerHTML = template;
+        parentDiv.appendChild(child);
+      }
   });
-
-  // table display
-  // $(function(){
-  //   let tablediv = document.querySelector("#table-fields");
-  //   tablediv.style.display = "none";
-  // })
 });
 
 function loadFileIcon() {
@@ -331,5 +365,58 @@ function updateAttendanceFileValue() {
 }
 
 function showTable(){
-  $('#table-fields').style.display = 'block';
+  $("#table-fields").removeClass("d-none");
+}
+
+function deleteRow(id){
+  console.log(document.URL);
+  let url = document.URL.split("/")
+  console.log(url);
+  let newurl = url[0]+'//'+url[2]+'/deleteEvent';
+  console.log(newurl);
+  let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
+  window.location.href = redirectingUrl;
+  // urlobj = '{% url deleteEvent %}'
+  $.ajax({
+    url : newurl,
+    method :"POST",
+    data : { "id" : id},
+    success : function(response){
+      let data = JSON.parse(response)
+      if(data.success ){
+        $("#event_row_id_"+id).addClass('d-none')
+      }
+      console.log(data.success)
+    }
+  })
+}
+
+function submitHiddenForm(id){  
+  let columns = document.querySelector("#columns_dets").value;
+  // console.log(id);
+  // console.log(columns);
+  let template = `<input name = "id_details" class = "d-none" value = "${id}"/> <textarea name="passingColumns" class="d-none" id = 'passingColumns'>`+ columns +
+    `</textarea>`;
+  console.log(template);
+  let child = document.createElement("div");
+  child.innerHTML = template;
+  document.querySelector("#insertForm").appendChild(child)
+  $("#columnsDataform").submit();
+  // document.querySelector("#columnsDataform").submit()
+}
+
+function fillDefaultValues(){
+  if($("#min_amount").val() == ''){
+    $("#min_amount").val('0');
+    console.log($("#min_amount").val('0'));
+  }
+  if($("#max_amount").val() == ''){
+    $("#max_amount").val('1000000000');
+    console.log($("#max_amount").val('1000000000'));
+  }
+}
+
+function showAllCols(){
+  $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
+  $("#no_of_cols").val('14');
 }

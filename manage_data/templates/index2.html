@@ -76,11 +76,10 @@
                         <button class="btn btn-danger float-right"style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
                         <!-- export btn changes -->
                         <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"                name="filter" value="export" type="submit">Export</button>
-                        <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> -->
+                        <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> --> 
                 </div>
                 <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                 <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
-
                 </form>
             <br>
             </fieldset>
@@ -173,5 +172,4 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
