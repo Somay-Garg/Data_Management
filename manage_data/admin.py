@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models.eventsModel import *
+from .models.studentsModel import *
 from import_export.admin import ImportExportModelAdmin
 from django.apps import apps
 # Register your models here.
@@ -13,5 +14,6 @@ from django.apps import apps
 #         pass
 
 @admin.register(Events)
+@admin.register(Students)
 class ViewAdmin(ImportExportModelAdmin):
     pass

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block body %}
+        <br>
+            <fieldset  class="border border-2 p-2">
+                <legend class="float-none w-auto p-2">Filter Columns</legend>
+                <form action="{% url 'display_students_table' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <legend  class="float-none w-auto"></legend>
+                        <div class="form-group mb-2 align-center" >
+                            <label class="mx-4 required_asterisk" for="exampleFormControlInput1" id="no_of_columns">No of Columns</label>
+                            <input class="w-30 m-1" type="number" name="" id="no_of_col" val="1" required oninput="addStudentColumns(this.value)" min = "0" max = "17" />
+                            <div class="form-group mb-2 align-center" id = "insert_student_Fields" style="margin-top: 20px;"></div>
+                            <textarea id = "fillColumns" name = "columns_details" class="d-none"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group w-100" style = "margin-top : 15px;">
+                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Add</button>
+                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showAllStudentsCols()" style="background-color: #052e6a;float:right;">Add All</button>
+                    </div>
+                </form>
+            </fieldset>
+            <br>
+
+            <div class="card table-scroll {% if not display %} d-none {% endif %}" id = "table-fields"  >
+                <table id="employee_table" cellpadding="10" class="table table-striped  table-bordered table-hover align-middle text-center">
+                    <tr class="table" style = "background-color: #052e6a;">
+                        <th style="color: white;">S.no</th>
+                        {% for col in columns %}
+                            {% if col != "id" and col != '' %}
+                                <th style="color: white;" id="{{field.name}}_col_head">{{col}}</th>
+                            {% endif %}
+                        {% endfor %}
+                        <th style="color: white;">Action</th>
+                    </tr>
+                    {% for student in students_data %}
+                        <tr class="table-light" id = "event_row_id_{{event.id}}">
+                            <td>{{ forloop.counter }}</td>
+                            {% for col in columns %}
+                                {% if col == 'name' %}
+                                    <td class="event_name_col" >{{ student.name }}</td>
+                                {% elif col == 'eroll_no' %}
+                                    <td class="eroll_no_col" >{{ student.eroll_no }}</td>
+                                {% elif col == 'semester' %}
+                                    <td class="semester_col" >{{ student.semester }}</td>
+                                {% elif col == 'Departments' %}
+                                    <td class="Departments_col" >{{ student.Departments }}</td>
+                                {% elif col == 'Class' %}
+                                    <td class="Class_col" >{{ student.Class }}</td>
+                                {% elif col == 'organized_by' %}
+                                    <td class="organized_by_col" >{{ student.organized_by }}</td>
+                                {% elif col == 'mobile_no' %}
+                                    <td class="mobile_no_col" >{{ student.mobile_no }}</td>
+                                {% elif col == 'mail_id' %}
+                                    <td class="mail_id_col" >{{ student.mail_id }}</td>
+                                {% elif col == 'event_name' %}
+                                    <td class="event_name_col" >{{ student.event_name }}</td>
+                                {% elif col == 'event_type' %}
+                                    <td class="event_type_col" >{{ student.event_type }}</td>
+                                {% elif col == 'event_date' %}
+                                    <td class="event_date_col" >{{ student.event_date }}</td>
+                                {% elif col == 'host_institute' %}
+                                    <td class="host_institute_col" >{{ student.host_institute }}</td>
+                                {% elif col == 'team_size' %}
+                                    <td class="team_size_col" >{{ student.team_size }}</td>
+                                {% elif col == 'level' %}
+                                    <td class="level_col" >{{ student.level }}</td>
+                                {% elif col == 'date_of_award' %}
+                                    <td class="date_of_award_col" >{{ student.date_of_award }}</td>
+                                {% elif col == 'upload_proof' %}
+                                    <td class="upload_proof_col" >{{ student.upload_proof }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <td>                                 
+                                <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
+                                <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;"   ><i class="material-icons">&#xE872;</i></span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

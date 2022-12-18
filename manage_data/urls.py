@@ -1,5 +1,6 @@
 from django.urls import path
 from .views.eventViews import *
+from .views.studentViews import *
 
 urlpatterns = [
     path('',display_events,name='display_events'),
@@ -16,5 +17,9 @@ urlpatterns = [
     path('save_event/<int:pk>',save_event,name = 'save_event'),
     path('edit_event',edit_event,name = 'edit_event'),
     path('filter_event',filter_event,name = 'filter_event'),
+    
+    path('display_students',display_students,name = 'display_students'),
+    path('display_students_table',display_students_table,name = 'display_students_table'),
+    path('add_student',add_student,name = 'add_student'),
 ]
 

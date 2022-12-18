@@ -25,8 +25,6 @@ function addSponsors(spon) {
   }
 }
 
-
-
 function addColumns(cols) {
   let ncols = parseInt(cols);
   if(ncols >14){
@@ -37,7 +35,7 @@ function addColumns(cols) {
   let template = `
     <div class = "field_columns" style = "display: flex; margin-bottom: 20px; width: 78%; align-items: center;  justify-content: center;">
       <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
-      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this)" style = "height: 30px;border-radius: 4px;">
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this,'fill-columns')" style = "height: 30px;border-radius: 4px;">
           <option value="-1">Select Values</option>
           <option value="event_name">Event Name</option>
           <option value="type_of_event">Type of Event</option>
@@ -67,6 +65,8 @@ function addColumns(cols) {
   }
   
 }
+
+
 
 function disableFields(field){
   var arr = [];
@@ -374,8 +374,8 @@ function deleteRow(id){
   console.log(url);
   let newurl = url[0]+'//'+url[2]+'/deleteEvent';
   console.log(newurl);
-  let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
-  window.location.href = redirectingUrl;
+  // let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
+  // window.location.href = redirectingUrl;
   // urlobj = '{% url deleteEvent %}'
   $.ajax({
     url : newurl,
@@ -419,4 +419,59 @@ function fillDefaultValues(){
 function showAllCols(){
   $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
   $("#no_of_cols").val('14');
+}
+
+//////////////////////////////// students //////////////////////////////////////////
+
+
+function addStudentColumns(cols){
+  let ncols = parseInt(cols);
+  if(ncols >17){
+    // alert("Not more than 14 columns are allowed");
+    return false;
+  }
+  let inputColumns = document.querySelector("#insert_student_Fields");
+  let template = `
+    <div class = "field_student_columns" style = "display: flex; margin-bottom: 20px; width: 78%; align-items: center;  justify-content: center;">
+      <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this)" style = "height: 30px;border-radius: 4px;">
+          <option value="-1">Select Values</option>
+          <option value="name">Student Name</option>
+          <option value="eroll_no">Enrollment No.</option>
+          <option value="semester">Semester</option>
+          <option value="Departments">Departments</option>
+          <option value="Class">Class</option>
+          <option value="organized_by">Organized By</option>
+          <option value="mobile_no">Mobile Number</option>
+          <option value="mail_id">E-mail Id</option>
+          <option value="event_name">Event Name</option>
+          <option value="event_type">Type of Event</option>
+          <option value="event_date">Event Date</option>
+          <option value="host_institute">Host Institute</option>
+          <option value="team_size">Team Size</option>
+          <option value="level">Level of Competition</option>
+          <option value="date_of_award">Award Date</option>
+          <option value="upload_proof">Upload Proof</option>
+      </select>
+    </div>    
+  `;
+
+  // console.log(ncols)
+  removeChildren(document.getElementsByClassName("field_student_columns"));
+  for (let i = 0; i < ncols; i++) {
+    let child = document.createElement("div");
+    child.style = 'display: inline-block;width: 40%; margin-left: 98px;box-sizing: border-box;';
+    child.innerHTML = template;
+    inputColumns.append(child);
+  }
+  
+}
+
+function showAllStudentsCols(){
+  $('#fillColumns').val('id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,team_size,level,date_of_award,upload_proof');
+  $('#no_of_col').val('17');
+}
+
+function fillTextarea(){
+  console.log("true clicked");
 }

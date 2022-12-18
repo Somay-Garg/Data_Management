@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block body%}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; ">Student's Entry</h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" method="post" action="{% url 'add_student' %}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Student's Details</legend>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Student Name</label>
+                        <input class="w-30 " type="text" name="name" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Enrollment Number</label>
+                        <input class="w-30 " type="number" name="eroll_no" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Semester</label>
+                        <select id=""  name="semester" class="m-1 w-30"  >
+                            <option value="-1">Select Values</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group  align-center float-child" id = "departments-involved">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Departments Involved</label>
+                        <select id="department"  name="Departments" class="m-1 w-30"  >
+                            <option value="-1">Select Values</option>
+                            <option value="CSE" >CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="Applied Science">Applied Science</option>
+                        </select>
+                    </div>
+                                            
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Class/Section</label>
+                        <select id="" name="Class" class="m-1 w-30"  >
+                            <option value="-1">Select Values</option>
+                            <option value="1" >I</option>
+                            <option value="2" >II</option>
+                            <option value="3">III</option>
+                            <option value="Evening">Evening</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Mobile Number</label>
+                        <input class="w-30 " type="number" name="mobile_no" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Email Id</label>
+                        <input class="w-30 " type="email" name="mail_id" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                </fieldset>               
+                <br>
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Prizes Won</legend>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Name</label>
+                        <input class="w-30 " type="text" name="event_name" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Type of Event</label>
+                        <select class="w-30 m-1" name="event_type" class="form-control">
+                            <option value="-1">Select Values</option>
+                            <option value="Cultural" >Cultural</option>
+                            <option value="Technical">Technical</option>
+                            <option value="Sports">Sports</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Date</label>
+                        <input class="w-30 m-1 datesettup" type="date" name="event_date" id="event_date" min ="1600-01-01" max = "3020-12-31" required  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+
+                                        
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Organized By</label>
+                        <input class="w-30 " type="text" name="organized_by" id="" required  style = "height: 32px;
+                        border-radius: 4px;
+                    ">
+                    </div>
+
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Host Institute</label>
+                        <input cla
+                        ss="w-30 " type="text" name="host_institute" id="" required  style = "height: 32px;
+                        border-radius: 4px;
+                    ">
+                    </div>
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Position Obtained</label>
+                        <select class="w-30 m-1" name="position" class="form-control">
+                            <option value="-1">Select Values</option>
+                            <option value="1" >I</option>
+                            <option value="2">II</option>
+                            <option value="3">III</option>
+                            <option value="Runner_up">Runner up</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Team Size</label>
+                        <select class="w-30 m-1" name="team_size" class="form-control">
+                            <option value="-1">Select Values</option>
+                            <option value="Team" >Team</option>
+                            <option value="Individual">Individual</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Level Of Event</label>
+                        <select class="w-30 m-1" name="level" class="form-control">
+                            <option value="-1">Select Values</option>
+                            <option value="College" >College</option>
+                            <option value="InterCollege">InterCollege</option>
+                            <option value="University">University</option>
+                            <option value="State">State</option>
+                            <option value="National">National</option>
+                            <option value="International">International</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Award Date</label>
+                        <input class="w-30 m-1" type="date" name="date_of_award" id="" required  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof</label>
+                        <input class="w-30 m-1" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>  
+                </fieldset>
+                <textarea name="columns_details" class="d-none" id="selected_columns" cols="30" rows="10"></textarea>
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white; width: 10rem; " onclick = "fillTextarea()"/>
+                </div>
+            </form>
+        </div>
+        </div>     
+{% endblock %}
