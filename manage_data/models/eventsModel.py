@@ -1,5 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from rest_framework import serializers
 # Create your models here.
 
 class Events(models.Model):
@@ -61,6 +62,6 @@ class Events(models.Model):
     upload_attendance = models.CharField(max_length=255,blank=False)
     upload_report = models.CharField(max_length=255,blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return self.event_name

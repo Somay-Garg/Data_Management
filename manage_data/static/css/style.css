@@ -1,7 +1,13 @@
+*{
+	margin:0;
+	padding:0;
+	box-sizing: border-box;
+}
+
 .checkbox-grid {
     width: 100%;
     overflow: auto;
-	margin-left: 20px;
+	margin-left: 4.5rem;
 }
 
 .checkbox-grid li {
@@ -17,43 +23,43 @@
 	width: 100%;
 	background: #F5F5F5;
 	overflow-x: scroll;
-	margin-bottom: 25px;
+	margin-bottom: 2.5rem;
 }
 
 .table-scroll::-webkit-scrollbar-track
 {
     box-shadow: inset;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
+	border-radius: 1rem;
 	background-color: #F5F5F5;
 }
 
 .table-scroll::-webkit-scrollbar
 {
-	width: 12px;
+	width: 1.2rem;
 	background-color: #F5F5F5;
 }
 
 .table-scroll::-webkit-scrollbar-thumb
 {
-	border-radius: 10px;
+	border-radius: 1rem;
     box-shadow: inset;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #dfe4e4;
 }
 .div-container{
-	border-radius: 10px;
+	border-radius: 1rem;
 	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 fieldset{
-	border-radius: 11px;
+	border-radius: 1.1rem;
 }
 select,option, input{
-	width: 195px;
+	width: 19.5rem;
 }
 
 input{
-	border-radius: 5px;
+	border-radius: .2rem;
 	border: 1px solid rgb(141, 140, 140);
 }
 
@@ -63,6 +69,79 @@ input{
 }
 
 .img_resize{
-	width:50px;
-	height:50px;
+	width:5rem;
+	height:5rem;
 }
+
+
+th:last-child, td:last-child {
+    border-right: none;
+}
+
+.float-child{
+	width:50%;
+	float:left;
+	padding:.5rem;
+	height:65px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.adjust{
+	height: 28px !important;
+	border-radius: 8px;
+}
+
+/* .toggle-button{
+	position:absolute;
+	top:.75rem;
+	right:1rem;
+	display:none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30px;
+	height:21px;
+}
+.toggle-button .bar{
+	height:3px;
+	width:100%;
+	background-color: white;
+	border-radius: 10px;
+}
+@media(max-width:998px){
+	html{
+		font-size: 55%;
+	}
+}
+@media(max-width:768px){
+	html{
+		font-size:45%;
+	}
+}
+@media(max-width:700px){
+	.toggle-button{
+		display:flex;
+		
+	}
+	.navbar_link{
+		display:none;
+		width:100%;
+	}
+    .navbar{
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.navbar_link ul{
+     flex-direction: column;
+	 width: 100%;
+	}
+	.navbar_link li{
+		text-align: center;
+	}
+	.navbar_link li a{
+		padding: .5rem 1rem;
+	}
+	.navbar_link.active{
+		display: flex;
+	}
+} */
