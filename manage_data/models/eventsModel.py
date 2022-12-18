@@ -1,6 +1,7 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
 from rest_framework import serializers
+
 # Create your models here.
 
 class Events(models.Model):
