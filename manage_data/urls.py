@@ -1,7 +1,9 @@
 from django.urls import path
 from .views.eventViews import *
+from .views.commonViews import *
 
 urlpatterns = [
+    # Event URLs
     path('',display_events,name='display_events'),
     path('display_events',display_events,name='display_events'),
     path('add_event',add_event,name='add_event'),
@@ -16,4 +18,7 @@ urlpatterns = [
     path('save_event/<int:pk>',save_event,name = 'save_event'),
     path('edit_event',edit_event,name = 'edit_event'),
     path('filter_event',filter_event,name = 'filter_event'),
+
+    # Report URLs
+    path('display_report',display_report,name='display_report'),
 ]
