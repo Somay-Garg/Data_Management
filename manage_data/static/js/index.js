@@ -110,9 +110,9 @@ function insertAfter(newNode, existingNode) {
 
 function displaySponsors() {
   let spons_names = document.querySelectorAll(".sponsored_by_name");
-  console.log(spons_names);
+  // console.log(spons_names);
   let spons_amts = document.querySelectorAll(".spons_amt_individually");
-  console.log(spons_amts);
+  // console.log(spons_amts);
   let textarea = document.querySelector(".spons_text");
   textarea.value = "";
   let value = textarea.value;
@@ -156,118 +156,129 @@ $(document).ready(function () {
 
   //disabled future dates
   $(function () {
-    var dtToday = new Date();
+    if(document.getElementsByClassName('event').length > 0){
+      var dtToday = new Date();
 
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
+      var month = dtToday.getMonth() + 1;
+      var day = dtToday.getDate();
+      var year = dtToday.getFullYear();
 
-    if (month < 10) month = "0" + month.toString();
-    if (day < 10) day = "0" + day.toString();
+      if (month < 10) month = "0" + month.toString();
+      if (day < 10) day = "0" + day.toString();
 
-    var maxDate = year + "-" + month + "-" + day;
-    $(".datesettup").attr("max", maxDate);
+      var maxDate = year + "-" + month + "-" + day;
+      $(".datesettup").attr("max", maxDate);
+    }
   });
   // end date set
   $(function () {
-    let fieldvalue = document.querySelector("#end-date-setter").innerHTML;
-    // Nov. 19, 2022
+    if(document.getElementsByClassName('event').length > 0){
+      let fieldvalue = document.querySelector("#end-date-setter").innerHTML;
+      // Nov. 19, 2022
 
-    let values = fieldvalue.split(" ");
+      let values = fieldvalue.split(" ");
 
-    let mon = values[0].substring(0, 3);
-    let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
+      let mon = values[0].substring(0, 3);
+      let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
 
-    let day_ = values[1].split(",")[0];
-    let year_ = values[2];
+      let day_ = values[1].split(",")[0];
+      let year_ = values[2];
 
-    if (month1 < 10) month1 = "0" + month1.toString();
-    if (day_ < 10) day_ = "0" + day_.toString();
+      if (month1 < 10) month1 = "0" + month1.toString();
+      if (day_ < 10) day_ = "0" + day_.toString();
 
-    let datePattern = year_ + "-" + month1 + "-" + day_;
-    console.log(datePattern);
-    document.getElementById("end_date").value = datePattern;
+      let datePattern = year_ + "-" + month1 + "-" + day_;
+      console.log(datePattern);
+      document.getElementById("end_date").value = datePattern;
+    }
   });
-  // strt date set
+  // start date set
   $(function () {
-    let fieldvalue = document.querySelector("#start-date-setter").innerHTML;
-    // Nov. 19, 2022
+    if(document.getElementsByClassName('event').length > 0){
+      let fieldvalue = document.querySelector("#start-date-setter").innerHTML;
+      // Nov. 19, 2022
 
-    let values = fieldvalue.split(" ");
+      let values = fieldvalue.split(" ");
 
-    let mon = values[0].substring(0, 3);
-    let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
+      let mon = values[0].substring(0, 3);
+      let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
 
-    let day_ = values[1].split(",")[0];
-    let year_ = values[2];
+      let day_ = values[1].split(",")[0];
+      let year_ = values[2];
 
-    if (month1 < 10) month1 = "0" + month1.toString();
-    if (day_ < 10) day_ = "0" + day_.toString();
+      if (month1 < 10) month1 = "0" + month1.toString();
+      if (day_ < 10) day_ = "0" + day_.toString();
 
-    let datePattern = year_ + "-" + month1 + "-" + day_;
-    console.log(datePattern);
+      let datePattern = year_ + "-" + month1 + "-" + day_;
+      console.log(datePattern);
 
-    document.getElementById("start_date").value = datePattern;
+      document.getElementById("start_date").value = datePattern;
+    }
   });
 
   // societyOPtions
   $(function () {
-    let selectedvalues = document
-      .querySelector("#all_society")
-      .value.split(",");
-    let options = document.querySelectorAll("#society > *");
-    // console.log(options)
+    if(document.getElementsByClassName('event').length > 0){
+      let selectedvalues = document
+        .querySelector("#all_society")
+        .value.split(",");
+      let options = document.querySelectorAll("#society > *");
+      // console.log(options)
 
-    for (let i = 0; i < options.length; i++) {
-      let optionvalue = options[i].value;
-      // console.log(optionvalue)
-      for (let j = 0; j < selectedvalues.length; j++) {
-        let selectedValue = selectedvalues[j];
-        // console.log("selected value ====         "+selectedValue)
-        if (selectedValue == optionvalue) {
-          // console.log("matched")
-          // console.log(options[i])
-          options[i].setAttribute("selected", "true");
+      for (let i = 0; i < options.length; i++) {
+        let optionvalue = options[i].value;
+        // console.log(optionvalue)
+        for (let j = 0; j < selectedvalues.length; j++) {
+          let selectedValue = selectedvalues[j];
+          // console.log("selected value ====         "+selectedValue)
+          if (selectedValue == optionvalue) {
+            // console.log("matched")
+            // console.log(options[i])
+            options[i].setAttribute("selected", "true");
+          }
         }
       }
+      // this.selectedValues = []
+      getSocieties();
     }
-    // this.selectedValues = []
-    getSocieties();
   });
 
   //departments option
   $(function () {
-    let selectedValues = document
-      .querySelector("#all_department")
-      .value.split(",");
-    let options = document.querySelectorAll("#department > *");
-    // console.log(options)
+    if(document.getElementsByClassName('event').length > 0){
+      let selectedValues = document
+        .querySelector("#all_department")
+        .value.split(",");
+      let options = document.querySelectorAll("#department > *");
+      // console.log(options)
 
-    for (let i = 0; i < options.length; i++) {
-      let optionvalue = options[i].value;
-      // console.log(optionvalue)
-      for (let j = 0; j < selectedValues.length; j++) {
-        let selectedValue = selectedValues[j];
-        // console.log("selected value ====         "+selectedValue)
-        if (selectedValue == optionvalue) {
-          // console.log("matched")
-          // console.log(options[i])
-          options[i].setAttribute("selected", "true");
-          options[i].click();
+      for (let i = 0; i < options.length; i++) {
+        let optionvalue = options[i].value;
+        // console.log(optionvalue)
+        for (let j = 0; j < selectedValues.length; j++) {
+          let selectedValue = selectedValues[j];
+          // console.log("selected value ====         "+selectedValue)
+          if (selectedValue == optionvalue) {
+            // console.log("matched")
+            // console.log(options[i])
+            options[i].setAttribute("selected", "true");
+            options[i].click();
+          }
         }
       }
+      getDepartments();
     }
-    getDepartments();
   });
 
   $(function () {
-    let spondataJSON = document.querySelector("#sponDets").value;
-    // console.log(spondataJSON);
-    let parentDiv = document.querySelector("#insertSponsDets");
-    let sponData = JSON.parse(spondataJSON);
-    console.log(sponData);
-    let arr = Object.entries(sponData);
-    console.log(arr);
+    if(document.getElementsByClassName('event').length > 0){
+      let spondataJSON = document.querySelector("#sponDets").value;
+      // console.log(spondataJSON);
+      let parentDiv = document.querySelector("#insertSponsDets");
+      let sponData = JSON.parse(spondataJSON);
+      console.log(sponData);
+      let arr = Object.entries(sponData);
+      console.log(arr);
       for (let i = 0; i < arr.length; i++) {
         let sponName = arr[i][0];
         let sponAmt = arr[i][1];
@@ -284,7 +295,8 @@ $(document).ready(function () {
         let child = document.createElement("div");
         child.innerHTML = template;
         parentDiv.appendChild(child);
-      }
+      } 
+    }
   });
 });
 
