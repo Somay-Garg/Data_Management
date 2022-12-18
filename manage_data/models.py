@@ -1,5 +1,6 @@
 from unittest.util import _MAX_LENGTH
 from django.db import models
+from django.core.validators import RegexValidator
 # Create your models here.
 
 class Events(models.Model):
@@ -64,3 +65,6 @@ class Events(models.Model):
 
     def __str__(self):
         return self.event_name
+
+
+
