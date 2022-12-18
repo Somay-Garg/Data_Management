@@ -147,6 +147,13 @@ $(document).ready(function () {
     $(this).select2();
   });
 
+  // Report sidebar start
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
+      $(this).toggleClass('active');
+    });
+  // Report sidebar end
+
   //disabled future dates
   $(function () {
     var dtToday = new Date();
@@ -420,3 +427,76 @@ function showAllCols(){
   $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
   $("#no_of_cols").val('14');
 }
+
+// Report JS Code Start-------------------------------------------------------------------------------------------------------------------------
+
+var id = '';
+
+function edit_content(ele){
+  let text = ele.innerHTML;
+  $('.modal-bg').removeClass('d-none');
+  $('.edit-modal').removeClass('d-none');
+  $('.modal-text').val(text);
+  id = "id" + Math.random().toString(16).slice(2);
+  ele.classList.add(id);
+}
+
+function close_modal(){
+  $('.modal-bg').addClass('d-none');
+  $('.edit-modal').addClass('d-none');
+  $('.'+id).removeClass(id);
+}
+
+function save_modal_text(){
+  let new_text = $('.modal-text').val();
+  $('.'+id).html(new_text);
+  $('.'+id).removeClass(id);
+  $('.modal-bg').addClass('d-none');
+  $('.edit-modal').addClass('d-none');
+}
+
+function clear_sec_text(){
+  $('.modal-text').val('');
+}
+
+async function preview_report(){	
+
+  const downloadPDF = (elements, options) => {
+    let worker = html2pdf()
+      .set(options)
+      .from(elements[0])
+
+    if (elements.length > 1) {
+      worker = worker.toPdf() // worker is now a jsPDF instance
+
+      // add each element/page individually to the PDF render process
+      elements.slice(1).forEach((element, index) => {
+        worker = worker
+          .get('pdf')
+          .then(pdf => {
+            pdf.addPage()
+          })
+          .from(element)
+          .toContainer()
+          .toCanvas()
+          .toPdf()
+      })
+    }
+
+    worker = worker.save()
+  }
+
+  const pages = Array.from(document.querySelectorAll('div[aria-label^="pdf-page-"]'));
+  const pdfOptions = {     
+        filename: 'report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { dpi: 96, letterRendering: true },
+        margin: [0.46,0.23,0.46,0.23],//[0.23,0.23,0.23,0.23],
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: 'avoid-all', after: '#page-break' } 
+      };
+  await downloadPDF(pages, pdfOptions)
+
+}
+
+// Report JS Code End---------------------------------------------------------------------------------------------------------------------------
