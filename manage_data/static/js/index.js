@@ -49,8 +49,8 @@ function addColumns(cols) {
           <option value="start_date">Start Date</option>
           <option value="end_date">End Date</option>
           <option value="no_of_participants">No of Participants</option>
-          <option value="upload_attendance">Upload Attendance</option>
-          <option value="upload_report">Upload Report</option>
+          <option value="upload_attendance">Download Attendance</option>
+          <option value="upload_report">Download Report</option>
       </select>
     </div>    
   `;
@@ -149,166 +149,151 @@ $(document).ready(function () {
 
   //disabled future dates
   $(function () {
-    var dtToday = new Date();
+    if(document.getElementsByClassName('event').length > 0){
+        var dtToday = new Date();
 
-    var month = dtToday.getMonth() + 1;
-    var day = dtToday.getDate();
-    var year = dtToday.getFullYear();
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
 
-    if (month < 10) month = "0" + month.toString();
-    if (day < 10) day = "0" + day.toString();
+        if (month < 10) month = "0" + month.toString();
+        if (day < 10) day = "0" + day.toString();
 
-    var maxDate = year + "-" + month + "-" + day;
-    $(".datesettup").attr("max", maxDate);
+        var maxDate = year + "-" + month + "-" + day;
+        $(".datesettup").attr("max", maxDate);
+    }
   });
   // end date set
   $(function () {
-    let fieldvalue = document.querySelector("#end-date-setter").innerHTML;
-    // Nov. 19, 2022
+    if(document.getElementsByClassName('event').length > 0){
+        let fieldvalue = document.querySelector("#end-date-setter").innerHTML;
+        // Nov. 19, 2022
 
-    let values = fieldvalue.split(" ");
+        let values = fieldvalue.split(" ");
 
-    let mon = values[0].substring(0, 3);
-    let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
+        let mon = values[0].substring(0, 3);
+        let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
 
-    let day_ = values[1].split(",")[0];
-    let year_ = values[2];
+        let day_ = values[1].split(",")[0];
+        let year_ = values[2];
 
-    if (month1 < 10) month1 = "0" + month1.toString();
-    if (day_ < 10) day_ = "0" + day_.toString();
+        if (month1 < 10) month1 = "0" + month1.toString();
+        if (day_ < 10) day_ = "0" + day_.toString();
 
-    let datePattern = year_ + "-" + month1 + "-" + day_;
-    console.log(datePattern);
-    document.getElementById("end_date").value = datePattern;
+        let datePattern = year_ + "-" + month1 + "-" + day_;
+        console.log(datePattern);
+        document.getElementById("end_date").value = datePattern;
+    }
   });
   // strt date set
   $(function () {
-    let fieldvalue = document.querySelector("#start-date-setter").innerHTML;
-    // Nov. 19, 2022
+    if(document.getElementsByClassName('event').length > 0){
+        let fieldvalue = document.querySelector("#start-date-setter").innerHTML;
+        // Nov. 19, 2022
 
-    let values = fieldvalue.split(" ");
+        let values = fieldvalue.split(" ");
 
-    let mon = values[0].substring(0, 3);
-    let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
+        let mon = values[0].substring(0, 3);
+        let month1 = "JanFebMarAprMayJunJulAugSepOctNovDec".indexOf(mon) / 3 + 1;
 
-    let day_ = values[1].split(",")[0];
-    let year_ = values[2];
+        let day_ = values[1].split(",")[0];
+        let year_ = values[2];
 
-    if (month1 < 10) month1 = "0" + month1.toString();
-    if (day_ < 10) day_ = "0" + day_.toString();
+        if (month1 < 10) month1 = "0" + month1.toString();
+        if (day_ < 10) day_ = "0" + day_.toString();
 
-    let datePattern = year_ + "-" + month1 + "-" + day_;
-    console.log(datePattern);
+        let datePattern = year_ + "-" + month1 + "-" + day_;
+        console.log(datePattern);
 
-    document.getElementById("start_date").value = datePattern;
+        document.getElementById("start_date").value = datePattern;
+    }
   });
 
   // societyOPtions
   $(function () {
-    let selectedvalues = document
-      .querySelector("#all_society")
-      .value.split(",");
-    let options = document.querySelectorAll("#society > *");
-    // console.log(options)
+    if(document.getElementsByClassName('event').length > 0){
+        let selectedvalues = document
+        .querySelector("#all_society")
+        .value.split(",");
+        let options = document.querySelectorAll("#society > *");
+        // console.log(options)
 
-    for (let i = 0; i < options.length; i++) {
-      let optionvalue = options[i].value;
-      // console.log(optionvalue)
-      for (let j = 0; j < selectedvalues.length; j++) {
-        let selectedValue = selectedvalues[j];
-        // console.log("selected value ====         "+selectedValue)
-        if (selectedValue == optionvalue) {
-          // console.log("matched")
-          // console.log(options[i])
-          options[i].setAttribute("selected", "true");
+        for (let i = 0; i < options.length; i++) {
+        let optionvalue = options[i].value;
+        // console.log(optionvalue)
+        for (let j = 0; j < selectedvalues.length; j++) {
+            let selectedValue = selectedvalues[j];
+            // console.log("selected value ====         "+selectedValue)
+            if (selectedValue == optionvalue) {
+            // console.log("matched")
+            // console.log(options[i])
+            options[i].setAttribute("selected", "true");
+            }
         }
-      }
+        }
+        // this.selectedValues = []
+        getSocieties();
     }
-    // this.selectedValues = []
-    getSocieties();
-  });
-
+    });
+ 
   //departments option
   $(function () {
-    let selectedValues = document
-      .querySelector("#all_department")
-      .value.split(",");
-    let options = document.querySelectorAll("#department > *");
-    // console.log(options)
+    if(document.getElementsByClassName('event').length > 0){
+      let selectedValues = document
+        .querySelector("#all_department")
+        .value.split(",");
+      let options = document.querySelectorAll("#department > *");
+      // console.log(options)
 
-    for (let i = 0; i < options.length; i++) {
-      let optionvalue = options[i].value;
-      // console.log(optionvalue)
-      for (let j = 0; j < selectedValues.length; j++) {
-        let selectedValue = selectedValues[j];
-        // console.log("selected value ====         "+selectedValue)
-        if (selectedValue == optionvalue) {
-          // console.log("matched")
-          // console.log(options[i])
-          options[i].setAttribute("selected", "true");
-          options[i].click();
+      for (let i = 0; i < options.length; i++) {
+        let optionvalue = options[i].value;
+        // console.log(optionvalue)
+        for (let j = 0; j < selectedValues.length; j++) {
+          let selectedValue = selectedValues[j];
+          // console.log("selected value ====         "+selectedValue)
+          if (selectedValue == optionvalue) {
+            // console.log("matched")
+            // console.log(options[i])
+            options[i].setAttribute("selected", "true");
+            options[i].click();
+          }
         }
       }
+      getDepartments();
     }
-    getDepartments();
   });
 
   $(function () {
-    let spondataJSON = document.querySelector("#sponDets").value;
-    // console.log(spondataJSON);
-    let parentDiv = document.querySelector("#insertSponsDets");
-    let sponData = JSON.parse(spondataJSON);
-    console.log(sponData);
-    let arr = Object.entries(sponData);
-    console.log(arr);
-      for (let i = 0; i < arr.length; i++) {
-        let sponName = arr[i][0];
-        let sponAmt = arr[i][1];
-        let template = ` <div class="sponsors" >
-          <div class="form-group  align-center float-child">
-          <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
-          <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name" oninput = "findTotal();displaySponsors()" value = ${sponName} >
-          </div>
-          <div class="form-group  align-center float-child">  
-          <label class=" w-25 spon_amt required_asterisk" style="width:153px;"  for="exampleFormControlInput1">Sponsored Amount</label>
-          <input type="number" name="spons_amount" id="" style="height:32px; border-radius: 4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()"  value =${sponAmt} required>
-          </div>
-        <div>`
-        let child = document.createElement("div");
-        child.innerHTML = template;
-        parentDiv.appendChild(child);
-      }
+    if(document.getElementsByClassName('event').length > 0){
+        let spondataJSON = document.querySelector("#sponDets").value;
+        // console.log(spondataJSON);
+        let parentDiv = document.querySelector("#insertSponsDets");
+        let sponData = JSON.parse(spondataJSON);
+        console.log(sponData);
+        let arr = Object.entries(sponData);
+        console.log(arr);
+        for (let i = 0; i < arr.length; i++) {
+            let sponName = arr[i][0];
+            let sponAmt = arr[i][1];
+            let template = ` <div class="sponsors" >
+            <div class="form-group  align-center float-child">
+            <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
+            <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name" oninput = "findTotal();displaySponsors()" value = ${sponName} >
+            </div>
+            <div class="form-group  align-center float-child">  
+            <label class=" w-25 spon_amt required_asterisk" style="width:153px;"  for="exampleFormControlInput1">Sponsored Amount</label>
+            <input type="number" name="spons_amount" id="" style="height:32px; border-radius: 4px;" class = "w-30 m-1 spons_amt_individually" oninput = "findTotal();displaySponsors()"  value =${sponAmt} required>
+            </div>
+            <div>`
+            let child = document.createElement("div");
+            child.innerHTML = template;
+            parentDiv.appendChild(child);
+        }
+    }
   });
 });
 
-function loadFileIcon() {
-  let attendanceLinks = document.querySelectorAll(".atten_file");
-  let reportLinks = document.querySelectorAll(".report_file");
-  console.log(attendanceLinks);
-  for (let i = 0; i < attendanceLinks.length; i++) {
-    let href1 = attendanceLinks[i].getAttribute("href");
-    let href2 = reportLinks[i].getAttribute("href");
-    let ext = href1.split(".")[1];
-    let ext2 = href2.split(".")[1];
-    console.log(ext);
-    // let icon = document.createElement("i")
-    if (ext == "pdf") {
-      let icontemplate = `<i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i>`;
-      attendanceLinks[i].appendChild(icontemplate);
-    } else if (ext == "csv" || ext == "xls" || ext == "docx") {
-      let icontemplate = `<i class="fa-solid fa-file-csv" style = "font-size:2rem; color: green;"></i>`;
-      attendanceLinks[i].appendChild(icontemplate);
-    }
 
-    if (ext2 == "pdf") {
-      let icontemplate = `<i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i>`;
-      reportLinks[i].appendChild(icontemplate);
-    } else if (ext2 == "csv" || ext2 == "xls") {
-      let icontemplate = `<i class="fa-solid fa-file-csv" style = "font-size:2rem; color: green;"></i>`;
-      reportLinks[i].appendChild(icontemplate);
-    }
-  }
-}
 function getSocieties() {
   $("#all_society").val($("#society").val().toString());
   console.log($("#all_society").val());
@@ -368,28 +353,28 @@ function showTable(){
   $("#table-fields").removeClass("d-none");
 }
 
-function deleteRow(id){
-  console.log(document.URL);
-  let url = document.URL.split("/")
-  console.log(url);
-  let newurl = url[0]+'//'+url[2]+'/deleteEvent';
-  console.log(newurl);
-  // let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
-  // window.location.href = redirectingUrl;
-  // urlobj = '{% url deleteEvent %}'
-  $.ajax({
-    url : newurl,
-    method :"POST",
-    data : { "id" : id},
-    success : function(response){
-      let data = JSON.parse(response)
-      if(data.success ){
-        $("#event_row_id_"+id).addClass('d-none')
-      }
-      console.log(data.success)
-    }
-  })
-}
+// function deleteRow(id){
+//   console.log(document.URL);
+//   let url = document.URL.split("/")
+//   console.log(url);
+//   let newurl = url[0]+'//'+url[2]+'/deleteEvent';
+//   console.log(newurl);
+//   // let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
+//   // window.location.href = redirectingUrl;
+//   // urlobj = '{% url deleteEvent %}'
+//   $.ajax({
+//     url : newurl,
+//     method :"POST",
+//     data : { "id" : id},
+//     success : function(response){
+//       let data = JSON.parse(response)
+//       if(data.success ){
+//         $("#event_row_id_"+id).addClass('d-none')
+//       }
+//       console.log(data.success)
+//     }
+//   })
+// }
 
 function submitHiddenForm(id){  
   let columns = document.querySelector("#columns_dets").value;
@@ -406,20 +391,20 @@ function submitHiddenForm(id){
 }
 
 function fillDefaultValues(){
-  if($("#min_amount").val() == ''){
+  if($("#min_amount").length > 0 && $("#min_amount").val() == ''){
     $("#min_amount").val('0');
     console.log($("#min_amount").val('0'));
   }
-  if($("#max_amount").val() == ''){
+
+  if($('#max_amount').length> 0 &&  $("#max_amount").val() == ''){
     $("#max_amount").val('1000000000');
     console.log($("#max_amount").val('1000000000'));
   }
+
+  
+
 }
 
-function showAllCols(){
-  $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
-  $("#no_of_cols").val('14');
-}
 
 //////////////////////////////// students //////////////////////////////////////////
 
@@ -451,7 +436,7 @@ function addStudentColumns(cols){
           <option value="team_size">Team Size</option>
           <option value="level">Level of Competition</option>
           <option value="date_of_award">Award Date</option>
-          <option value="upload_proof">Upload Proof</option>
+          <option value="upload_proof">Award Proof</option>
       </select>
     </div>    
   `;
@@ -467,11 +452,31 @@ function addStudentColumns(cols){
   
 }
 
-function showAllStudentsCols(){
-  $('#fillColumns').val('id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,team_size,level,date_of_award,upload_proof');
-  $('#no_of_col').val('17');
+
+function triggerAlert(){
+  console.log("heiiiii");
+//   alert('added successfully')
+//   $('#students_table').addClass('alert')
+  
 }
 
-function fillTextarea(){
-  console.log("true clicked");
+function restrictLength(val,len){
+    let value = parseInt(val);
+    if(value>len){
+        return false;
+    }
 }
+
+function phoneno(){          
+    $('#phone').keypress(function(e) {
+        var a = [];
+        var k = e.which;
+
+        for (i = 48; i < 58; i++)
+            a.push(i);
+
+        if (!(a.indexOf(k)>=0))
+            e.preventDefault();
+    });
+}
+

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body%}
     <div class="container">
-        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; ">Student's Entry</h1>
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="event">Student's Entry</h1>
         <div class = "div-container">
             <form enctype="multipart/form-data" method="post" action="{% url 'add_student' %}" style="padding: 18px;
              margin: 7px;">
@@ -59,8 +59,8 @@
 
                     <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Mobile Number</label>
-                        <input class="w-30 " type="number" name="mobile_no" id="" required style = "height: 32px;
-                        border-radius: 4px;">
+                        <input class="w-30 " type="number" name="mobile_no" id="phone" required style = "height: 32px;
+                        border-radius: 4px;" maxlength="10" pattern="[1-9]{1}[0-9]{9}" oninput="phoneno()">
                     </div>
 
                     <div class="form-group  align-center float-child">
@@ -71,7 +71,7 @@
                 </fieldset>               
                 <br>
                 <fieldset class="border border-2 p-3">
-                    <legend  class="float-none w-auto">Prizes Won</legend>
+                    <legend  class="float-none w-auto">Event's Details</legend>
                     <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Name</label>
                         <input class="w-30 " type="text" name="event_name" id="" required style = "height: 32px;
@@ -146,19 +146,20 @@
 
                     <div class="form-group align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Award Date</label>
-                        <input class="w-30 m-1" type="date" name="date_of_award" id="" required  style = "height: 32px;
+                        <!-- <input class="w-30 m-1" type="date" name="date_of_award" id="" required  style = "height: 32px;                        border-radius: 4px;">-->
+                        <input class="w-30 m-1 datesettup" type="date" name="date_of_award" id="event_date" min ="1600-01-01" max = "3020-12-31" required  style = "height: 32px;
                         border-radius: 4px;">
                     </div>
 
                     <div class="form-group align-center  float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof</label>
-                        <input class="w-30 m-1" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
+                        <input class="w-30 m-1" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
                         border-radius: 4px;">
                     </div>  
                 </fieldset>
                 <textarea name="columns_details" class="d-none" id="selected_columns" cols="30" rows="10"></textarea>
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white; width: 10rem; " onclick = "fillTextarea()"/>
+                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white; width: 10rem; " onclick="triggerAlert()" />
                 </div>
             </form>
         </div>

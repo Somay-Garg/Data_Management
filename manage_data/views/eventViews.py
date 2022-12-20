@@ -17,7 +17,8 @@ def index(request):
 def display_events(request):
     fields = Events._meta.fields
     event_data = Events.objects.all().values()
-    
+    columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
+    columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
     filter_data = {
         'Event Name': set(),
         'Event Type': set(),
@@ -64,19 +65,25 @@ def display_events(request):
         'header' : 'Events',
         'filter_data' : filter_data,
         'sponsors' : sponsor,
+        'columns':columns,
+        'display':True,
+        'columns_str':columns_str,
     }
 
+    
     return render(request,'events/index.html',context)
 
 # display the selected columns
 def display_columns(request):
     fields = Events._meta.fields
-    columns = []
+    columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
+    columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
     # print(' ---------  ',type(columns))
     if(request.method == "POST"):
-        if( 'columns_details' in request.POST):
+        if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
             print('cols_dets' , type(request.POST['columns_details']))
             columns = request.POST['columns_details'].split(',')
+            # print("colsss",columns)
 
         elif('passingColumns' in request.POST):
             # print('passing ' , request.POST['passingColumns'])
@@ -141,6 +148,7 @@ def display_columns(request):
         'filter_data' : filter_data,
         'sponsors' : sponsor,
         'display' : True,
+        'columns_str':columns_str,
     }
 
     if 'columns_details' in request.POST:
@@ -218,8 +226,8 @@ def filter_event(request):
 
         if(request.POST['filter'] == "export"):
             return export_data(request)
-        columns = []
-        if('columns_details' in request.POST):
+        columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
+        if('columns_details' in request.POST and request.POST['columns_details'] != ''):
             columns = request.POST['columns_details'].split(",")
 
         event_name = request.POST['Event Name']
@@ -252,8 +260,7 @@ def filter_event(request):
             'Sponsors' : '-1',
             ########changes###
             'Total Sponsored Amount' : '-1',
-            # 'max_amount':'-1',
-            # 'min_amount':'-1',
+            
         }
 
         if(event_name != "-1"):
@@ -358,9 +365,7 @@ def filter_event(request):
         
         if('columns_details' in request.POST):
             context['columns_str'] = request.POST['columns_details']
-            if request.POST['columns_details'] == '' :
-                context['display'] = False
-               
+            
         return render(request,'events/index.html',context)
     else:
         return render(request,'events/addEvent.html',{})
@@ -376,17 +381,11 @@ def open_file_report(request,file):
 def export_data(request):
     filter_data = request.POST['filter_data']
     req_col = []
-    
-    if request.POST['display_columns'] == 'All':
-        fields = Events._meta.fields
-        for field in fields:
-            if field.name != "id" and field.name != "upload_attendance" and field.name != "upload_report" and field.name != "uploaded_at":
-                req_col.append(field.name)
-    else:
-        if 'columns_details' in request.POST:
-            req_col = request.POST['columns_details'].split(',')
-            print('required cols',req_col)
 
+    if 'columns_details' in request.POST:
+        req_col = request.POST['columns_details'].split(',')
+        print('required cols',req_col)
+        req_col.remove('id')
     query = Q()
     print(filter_data)
     if filter_data == "All":
@@ -447,20 +446,20 @@ def export_data(request):
     return response
 
 # deleting the entry
-@csrf_exempt
-def deleteEvent(request):
-    delete_entry(request,request.POST['id'],Events,"Events")
-    return HttpResponse(json.dumps({'success':True}))
+# @csrf_exempt
+# def deleteEvent(request):
+#     delete_entry(request,request.POST['id'],Events,"Events")
+#     return HttpResponse(json.dumps({'success':True}))
 
-def delete_entry(request,pk,model,header):
-    item = get_object_or_404(model,pk=pk)
-    fs_attendance = FileSystemStorage(location='attendance/event_attendances/')
-    path_atten = str(item.upload_attendance)
-    fs_attendance.delete(path_atten)
-    fs_report = FileSystemStorage(location='report/event_reports/')
-    path_report = str(item.upload_report)
-    fs_report.delete(path_report)
-    model.objects.filter(id=pk).delete()
+# def delete_entry(request,pk,model,header):
+#     item = get_object_or_404(model,pk=pk)
+#     fs_attendance = FileSystemStorage(location='attendance/event_attendances/')
+#     path_atten = str(item.upload_attendance)
+#     fs_attendance.delete(path_atten)
+#     fs_report = FileSystemStorage(location='report/event_reports/')
+#     path_report = str(item.upload_report)
+#     fs_report.delete(path_report)
+#     model.objects.filter(id=pk).delete()
 
 # for updating /editing 
 def save_event(request,pk):
@@ -514,3 +513,21 @@ def edit_event(request):
         'id':id
         }
     return render(request,'events/edit_event.html',context)
+
+def delete_event_entry(request):
+    if request.method == "POST":
+        id = request.POST['id_details']
+        columns = request.POST['columns_details'].split(',')
+        item = get_object_or_404(Events,pk=id)
+        fs_attendance = FileSystemStorage(location='attendance/event_attendances/')
+        path_atten = str(item.upload_attendance)
+        fs_attendance.delete(path_atten)
+        fs_report = FileSystemStorage(location='report/event_reports/')
+        path_report = str(item.upload_report)
+        fs_report.delete(path_report)
+        # print("helo",path_)
+        Events.objects.filter(id=id).delete()
+        return display_columns(request)
+    else:
+        return HttpResponse(True)
+

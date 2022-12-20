@@ -16,7 +16,7 @@
                             {% else %}
                                 {% if sel_fil_val %}
                                     {% for k,v in sel_fil_val.items %}
-                                        {% if key == 'Total Sponsored Amount'  %}                                                                               
+                                        {% if key == 'Total Sponsored Amount'  %}                                                    
                                             <div class="col-lg m-2 d-none">
                                                 <select class="w-100" name="{{key}}"> 
                                                     <option value="-1" class="text-secondary">Select {{key}}</option>
@@ -80,14 +80,14 @@
                         <div class="form-group row m-2" >
                             <label class="col-sm-2 col-form-label text-left" style="padding-left:7px ;  width:max-content;"> Start From: </label>
                          
-                            <div class="col-sm-4"  style="width:41%; margin-left:2px;">
+                            <div class="col-sm-4"  style="width:26.8rem; margin-left:2px;">
                                 <input style="border: 1px solid #9ea0a2;
                                 height: 30px;" class="form-control" type="date" name="after" id="" value="{% if sel_fil_val and sel_fil_val.start_date %}{{sel_fil_val.start_date}}{% endif %}">
                             </div>
                             
                             <label class="col-sm-1 col-form-label text-left" style = "padding-left: 31px;
                             "> Upto: </label>
-                            <div class="col-sm-4" style="width:42%; margin-left:2px;">
+                            <div class="col-sm-4" style="width:28.1rem; margin-left:2px;">
                                 <input class="form-control" type="date" name="upto" id="" value="{% if sel_fil_val and sel_fil_val.end_date %}{{sel_fil_val.end_date}}{% endif %}" style="border: 1px solid #9ea0a2;
                                 height: 30px;">
                             </div>
@@ -97,7 +97,7 @@
                             <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues()">Filter</button>
                             <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
                             <!-- export btn changes -->
-                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Export</button>
+                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>
                             <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> -->
                     </div>
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
@@ -106,34 +106,6 @@
                 </form>
                 <br>
             </fieldset>
-        
-            <!-- <div> -->
-            <!-- <fieldset class="border p-2">
-                <legend class="float-none w-auto p-2">Hide Columns</legend>
-                <div class="checkbox-grid">
-                    {% for field in fields %}
-                    {% if field.name != "id" %}
-                    <li class="form-check form-check-inline display_columns" style="list-style: none;"><input
-                            type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col"
-                            onchange="hide_show_table(this.id);"> {{ field.name }}</li>
-                    {% endif %}
-                    {% endfor %}
-                </div> -->
-            <!-- </fieldset> -->
-            <!-- old html -->
-            <!-- <fieldset class="border p-2">
-                <legend class="float-none w-auto p-2">Hide Columns</legend>
-                    <div class="checkbox-grid">
-                        {% for field in fields %}
-                            {% if field.name == 'max_amount' or field.name == 'min_amount'%} 
-                                empty show nothing 
-                            {% elif field.name != "id"   %}
-                                <li class="form-check form-check-inline display_columns" style="list-style: none;"><input type="checkbox" value="hide" name="{{field.name}}_col" id="{{ field.name }}_col" style="width: 12px;" onchange="hide_show_table(this.id);">  {{ field.name }}</li>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-            </fieldset>
-            </div> -->
             <br>
             <!-- changes start -->
             <fieldset  class="border border-2 p-2">
@@ -152,7 +124,7 @@
                     <div class="form-group w-100" style = "margin-top : 15px;">
                         <!-- <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white;" onclick = "showTable()"/> -->
                         <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Add</button>
-                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showAllCols()" style="background-color: #052e6a;float:right;">Add All</button>
+                        <!-- <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showAllCols()" style="background-color: #052e6a;float:right;">Add All</button> -->
                     </div>
                 </form>
             </fieldset>
@@ -168,8 +140,30 @@
                                 <th style="color: white;" id="{{field.name}}_col_head">Attendance</th>
                             {% elif col == "upload_report"%}
                                 <th style="color: white;" id="{{field.name}}_col_head">Report</th>
-                            {% elif col != "id" and col != '' %}
-                                <th style="color: white;" id="{{field.name}}_col_head">{{col}}</th>
+                            {% elif col == "event_name"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Event Name</th>
+                            {% elif col == "type_of_event"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Event Type</th>
+                            {% elif col == "Organized_by"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Organized By</th>
+                            {% elif col == "Conducted_by"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Conducted By</th>
+                            {% elif col == "sponsors_details"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Sponsors Details</th>
+                            {% elif col == "total_sponsored_amt"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Total Sponsored Amount</th>
+                            {% elif col == "start_date"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Start Date</th>
+                            {% elif col == "end_date"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">End Date</th>
+                            {% elif col == "no_of_participants"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">No of Participants</th>
+                            {% elif col == 'Audience' %}
+                                <th style="color: white;" id="{{field.name}}_col_head">Audience</th>
+                            {% elif col == 'Societies' %}
+                                <th style="color: white;" id="{{field.name}}_col_head">Societies</th>
+                            {% elif col == 'Departments' %}
+                                <th style="color: white;" id="{{field.name}}_col_head">Departments</th>
                             {% endif %}
                         {% endfor %}
                         <th style="color: white;">Action</th>
@@ -231,7 +225,13 @@
                                 </form>
                                 <textarea name="columns_dets"  class = "d-none" id="columns_dets" cols="30" rows="10" >{{columns_str}}</textarea>   
                                 <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit"  onclick = "submitHiddenForm('{{event.id}}')" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
-                                <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span>
+                                
+                                <!-- <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span> -->
+                                <form action="{% url 'delete_event_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+                                    {% csrf_token %}
+                                    <input name = "id_details" class = "d-none" value = "{{event.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
+                                    <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
+                                </form>
                             </td>
                         </tr>
                     {% endfor %}

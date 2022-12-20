@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
     <div class="container">
-        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; ">Event Entry</h1>
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="event" >Event Entry</h1>
         <div class = "div-container">
             <form enctype="multipart/form-data" method="post" action="{% url 'add_event' %}" style="padding: 18px;
              margin: 7px;">
@@ -126,18 +126,18 @@
                     <legend  class="float-none w-auto">Upload Attendance/Report</legend>
                     <div class="form-group align-center  float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Attendance</label>
-                        <input class="w-30 m-1" type="file" name="upload_atten" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
+                        <input class="w-30 m-1" type="file" name="upload_atten" accept ="application/pdf" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
                         border-radius: 4px;">
                     </div>
                     <div class="form-group align-center  float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Report</label>
-                        <input class="w-30 m-1" type="file" name="upload_report" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
+                        <input class="w-30 m-1" type="file" accept ="application/pdf" name="upload_report" class="form-control-file" id="exampleFormControlFile1" style = "height: 32px;
                         border-radius: 4px;">
                     </div>                    
                 </fieldset>
                 <br>
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white; width: 10rem;"/>
+                    <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white; width: 10rem;" onclick = 'triggerAlert()'/>
                 </div>
             </form>
         </div>

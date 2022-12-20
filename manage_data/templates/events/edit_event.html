@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
     <div class="container">
-        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; ">Event Entry </h1>
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="event">Event Entry </h1>
         <div class = "div-container">
             <form enctype="multipart/form-data" method="post" action="{% url 'save_event' id %}" style="padding: 18px;
              margin: 7px;">
@@ -65,7 +65,7 @@
                         {% elif field.label == "No of sponsors" %}
                             <div class="form-group align-center pt-3" >
                                 <label class=" required_asterisk" for="exampleFormControlInput1" id=" no_of_sponsors"  style = "margin-left: 4.8rem;width: 5rem">Number of Sponsors</label>
-                                <input class="w-30" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required style = "height: 32px;border-radius: 4px;margin-left: 3.76rem;" />
+                                <input class="w-30" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required style = "height: 32px;border-radius: 4px;margin-left: 3.76rem;"/>
                             </div>
                             <div id="insertSponsDets"></div>
                             <!-- <div class="actual_sponsors" style = "display :none;">
@@ -91,10 +91,6 @@
                         <label id = "start-date-setter" class ="d-none">{{field.value}}</label>
                         </div>
 
-                        <!-- <div class="form-group mb-2 align-center">
-                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Start Date</label>
-                            <input class="w-30 m-1" type="date" name="start_date" id="" required>
-                        </div> -->
                         
                         {% elif field.label == "End date"%}
                         <div class="form-group mb-2 align-center float-child">
@@ -102,10 +98,7 @@
                             <input class="w-30 m-1 datesettup" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
                             <label id = "end-date-setter" class="d-none">{{field.value}}</label>
                         </div>
-                        <!-- <div class="form-group mb-2 align-center">
-                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">End Date</label>
-                            <input class="w-30 m-1" type="date" name="end_date" id="" required>
-                        </div> -->
+                        
                         {% endif %}
                     {% endfor %}
                  </fieldset>
@@ -116,18 +109,18 @@
                     {% for field in form %}
                         <div class="form-group align-center">
                         {% if field.label == "Upload attendance"  %}
-                        <div class="form-group align-center " style="display: flex;">
-                            <label for="id_{{ field.name }}" class="col-2 col-form-label  " > {{ field.label }} </label>
-                            <!-- {{field.name}} -->
-                            <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
-                                <label for="">Previously Uploaded :</label>
-                                <label for="">{{field.value}}</label>
-                                <div>
-                                    <label for="">Change File :</label>
-                                    <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                            <div class="form-group align-center " style="display: flex;">
+                                <label for="id_{{ field.name }}" class="col-2 col-form-label  " > {{ field.label }} </label>
+                                
+                                <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
+                                    <label for="">Previously Uploaded :</label>
+                                    <label for="">{{field.value}}</label>
+                                    <div>
+                                        <label for="">Change File :</label>
+                                        <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         {% endif %}
                         </div>
                     {% endfor %}
@@ -139,7 +132,7 @@
                         {% if field.label == "Upload report"  %}
                             <div class="form-group  align-center" style="display: flex;">
                                 <label for="id_{{ field.name }}" class="col-2 col-form-label" > {{ field.label }} </label>
-                                <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
+                                <div id = "attendance_div" >
                                     <label for="">Previously Uploaded :</label>
                                     <label for="">{{field.value}}</label>
                                     <div>
@@ -152,7 +145,7 @@
                         {% endif %}
                     {% endfor %}
                  </fieldset>     
-                 <textarea name="passingColumns" class = "d-none" id="passingColumns" cols="30" rows="10">{{columns}}</textarea> 
+               
                  <input type="text" class="d-none" name = "id_details" id = "id_details" value = "{{id}}">          
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
                     <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>

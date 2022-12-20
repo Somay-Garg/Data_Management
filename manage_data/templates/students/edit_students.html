@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="event">Student Entry </h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" method="post" action="{% url 'save_student_entry' id%}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Student Details</legend>
+                    {% for field in form %}  
+                        <!-- {{field.name}} -->
+                        <!-- name eroll_no semester Departments Class mobile_no mail_id event_name event_type event_date organized_by host_institute position team_size level date_of_award upload_proof -->
+                        {% if  field.name == 'Class'%}
+                            <div class="form-group  align-center float-child" >
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Class/Section</label>
+                                <select id="" name="Class" class="m-1 w-30" value = {{field.value}}  >
+                                    <option value="1" >I</option>
+                                    <option value="2" >II</option>
+                                    <option value="3">III</option>
+                                    <option value="Evening">Evening</option>
+                                </select>
+                            </div>
+                        {% elif field.name == 'name' or field.name == 'eroll_no' or field.name == 'Departments'  or field.name == 'mobile_no' or field.name == 'mail_id' %}
+                            <div class="form-group mb-2 align-center float-child">
+                            <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
+                            {{field}}
+                            </div>
+                        {% elif field.name == 'semester' %}
+                            <div class="form-group  align-center float-child" >
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Semester</label>
+                                <select id="" name="semester" class="m-1 w-30" value = {{field.value}}  >
+                                    <option value="1" >1</option>
+                                    <option value="2" >2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>                                    
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                    <br>
+                    <fieldset class="border border-2 p-2">
+                        <legend  class="float-none w-auto">Event Details</legend>
+                        {% for field in form %}  
+                            {% if field.name == 'event_name' or field.name == 'event_type' or field.name == 'organized_by' or field.name == 'host_institute' %}
+                                <div class="form-group mb-2 align-center float-child">
+                                    <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
+                                    {{field}}
+                                </div> 
+                            {% elif field.name == 'event_date' %}
+                                <div class="form-group mb-2 align-center float-child">
+                                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Date</label>
+                                    <input class="w-30 m-1 datesettup" type="date" name="event_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
+                                    <label id = "end-date-setter" class="d-none">{{field.value}}</label>
+                                </div>                            
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>                
+                 <br>
+                 <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Prize Won</legend>
+                    {% for field in form %}
+                        
+                            <!-- {{field.name}} -->
+                            <!-- position
+                            team_size
+                            level
+                            date_of_award -->
+                        {% if  field.name == 'team_size' or field.name == 'level' %}
+                            <div class="form-group mb-2 align-center float-child">
+                                <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
+                                {{field}}
+                            </div> 
+                        {% elif field.name == 'position'%}
+                            <div class="form-group  align-center float-child" >
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Position Obtained</label>
+                                <select id="" name="position" class="m-1 w-30" value = {{field.value}}  >
+                                    <option value="1" >I</option>
+                                    <option value="2" >II</option>
+                                    <option value="3">III</option>
+                                    <option value="Runner up">Runner Up</option>
+                                </select>
+                            </div>  
+                            {% elif field.name == 'date_of_award'%}
+                                <div class="form-group mb-2 align-center float-child">
+                                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Award</label>
+                                    <input class="w-30 m-1 datesettup" type="date" name="date_of_award" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
+                                    <label id = "start-date-setter" class ="d-none">{{field.value}}</label>
+                                </div>                      
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% for field in form %}
+                            {% if field.name == "upload_proof"  %}
+                            <div class="form-group align-center float-child" style="height: 8rem;" >
+                                <label for="id_{{ field.name }}" class="w-25 required_asterisk" style="margin-left: 3.5rem;"> {{ field.label }} </label>
+                                <div id = "attendance_div" style="margin-left:5rem">
+                                    <div style="display: flex;align-items: center;justify-content: space-between;">
+                                        <label for="">Previously Uploaded :</label>
+                                        <label for="">{{field.value}}</label>
+                                    </div>
+                                    <div style="display: flex;align-items: center;justify-content: center;"> 
+                                        <label for="">Change File</label>
+                                        <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                                    </div>                                    
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                 </fieldset>
+                 <br>                
+                 
+                 <input type="text" class="d-none" name = "id_details" id = "id_details" value = "{{id}}">          
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>
+                </div>
+                <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
+            </form>
+        </div>
+    </div>     
+{% endblock %}
