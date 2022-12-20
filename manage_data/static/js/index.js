@@ -25,8 +25,6 @@ function addSponsors(spon) {
   }
 }
 
-
-
 function addColumns(cols) {
   let ncols = parseInt(cols);
   if(ncols >14){
@@ -387,28 +385,28 @@ function showTable(){
   $("#table-fields").removeClass("d-none");
 }
 
-function deleteRow(id){
-  console.log(document.URL);
-  let url = document.URL.split("/")
-  console.log(url);
-  let newurl = url[0]+'//'+url[2]+'/deleteEvent';
-  console.log(newurl);
-  let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
-  window.location.href = redirectingUrl;
-  // urlobj = '{% url deleteEvent %}'
-  $.ajax({
-    url : newurl,
-    method :"POST",
-    data : { "id" : id},
-    success : function(response){
-      let data = JSON.parse(response)
-      if(data.success ){
-        $("#event_row_id_"+id).addClass('d-none')
-      }
-      console.log(data.success)
-    }
-  })
-}
+// function deleteRow(id){
+//   console.log(document.URL);
+//   let url = document.URL.split("/")
+//   console.log(url);
+//   let newurl = url[0]+'//'+url[2]+'/deleteEvent';
+//   console.log(newurl);
+//   let redirectingUrl = url[0]+'//'+url[2]+'/display_columns'
+//   window.location.href = redirectingUrl;
+//   // urlobj = '{% url deleteEvent %}'
+//   $.ajax({
+//     url : newurl,
+//     method :"POST",
+//     data : { "id" : id},
+//     success : function(response){
+//       let data = JSON.parse(response)
+//       if(data.success ){
+//         $("#event_row_id_"+id).addClass('d-none')
+//       }
+//       console.log(data.success)
+//     }
+//   })
+// }
 
 function submitHiddenForm(id){  
   let columns = document.querySelector("#columns_dets").value;
@@ -425,14 +423,16 @@ function submitHiddenForm(id){
 }
 
 function fillDefaultValues(){
-  if($("#min_amount").val() == ''){
-    $("#min_amount").val('0');
-    console.log($("#min_amount").val('0'));
-  }
-  if($("#max_amount").val() == ''){
-    $("#max_amount").val('1000000000');
-    console.log($("#max_amount").val('1000000000'));
-  }
+    if($("#min_amount").length > 0 && $("#min_amount").val() == ''){
+        $("#min_amount").val('0');
+        console.log($("#min_amount").val('0'));
+    }
+
+    if($('#max_amount').length> 0 &&  $("#max_amount").val() == ''){
+        $("#max_amount").val('1000000000');
+        console.log($("#max_amount").val('1000000000'));
+    } 
+
 }
 
 function showAllCols(){
@@ -440,7 +440,7 @@ function showAllCols(){
   $("#no_of_cols").val('14');
 }
 
-// Report JS Code Start-------------------------------------------------------------------------------------------------------------------------
+// ----------------------Report JS Code Start -------------------------
 
 var id = '';
 
@@ -511,4 +511,51 @@ async function preview_report(){
 
 }
 
-// Report JS Code End---------------------------------------------------------------------------------------------------------------------------
+//------------------------- Report JS Code End ---------------
+
+
+// ------------------------students js code begins----------------------------
+function addStudentColumns(cols){
+  let ncols = parseInt(cols);
+  if(ncols >17){
+    // alert("Not more than 14 columns are allowed");
+    return false;
+  }
+  let inputColumns = document.querySelector("#insert_student_Fields");
+  let template = `
+    <div class = "field_student_columns" style = "display: flex; margin-bottom: 20px; width: 78%; align-items: center;  justify-content: center;">
+      <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this)" style = "height: 30px;border-radius: 4px;">
+          <option value="-1">Select Values</option>
+          <option value="name">Student Name</option>
+          <option value="eroll_no">Enrollment No.</option>
+          <option value="semester">Semester</option>
+          <option value="Departments">Departments</option>
+          <option value="Class">Class</option>
+          <option value="organized_by">Organized By</option>
+          <option value="mobile_no">Mobile Number</option>
+          <option value="mail_id">E-mail Id</option>
+          <option value="event_name">Event Name</option>
+          <option value="event_type">Type of Event</option>
+          <option value="event_date">Event Date</option>
+          <option value="host_institute">Host Institute</option>
+          <option value="team_size">Team Size</option>
+          <option value="level">Level of Competition</option>
+          <option value="date_of_award">Award Date</option>
+          <option value="upload_proof">Award Proof</option>
+      </select>
+    </div>    
+  `;
+
+  // console.log(ncols)
+  removeChildren(document.getElementsByClassName("field_student_columns"));
+  for (let i = 0; i < ncols; i++) {
+    let child = document.createElement("div");
+    child.style = 'display: inline-block;width: 40%; margin-left: 98px;box-sizing: border-box;';
+    child.innerHTML = template;
+    inputColumns.append(child);
+  }
+  
+}
+
+// --------------------------students js code ends------------------------------
