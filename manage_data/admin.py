@@ -13,5 +13,7 @@ from django.apps import apps
 #         pass
 
 @admin.register(Events)
+@admin.register(Students)
+
 class ViewAdmin(ImportExportModelAdmin):
     pass
