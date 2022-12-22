@@ -47,6 +47,13 @@
                 </div>
               </li>
               <li class="nav-item">
+                <a href="#" class="nav-link dropdown-toggle" style="color: white;"  id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="button">Placements</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown03">
+                  <a class="dropdown-item" href="{% url 'placements' %}">Details</a>
+                  <a class="dropdown-item" href="{% url 'placements/add_placement_details/' %}">Add Student Details</a>
+                </div>
+              </li>
+              <li class="nav-item">
                 <a href="{% url 'display_report' %}" class="nav-link" style="color: white;" role="button">Report</a>
               </li>
             </ul>

@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include, re_path
 from .views.eventViews import *
 from .views.commonViews import *
 from .views.studentViews import *
+from .views.placementViews import *
+
 
 urlpatterns = [
+    # Report URLs
+    path('display_report',display_report,name='display_report'),
+
     # Event URLs
     path('',display_events,name='display_events'),
     path('display_events',display_events,name='display_events'),
@@ -16,8 +21,6 @@ urlpatterns = [
     path('edit_event',edit_event,name = 'edit_event'),
     path('filter_event',filter_event,name = 'filter_event'),
     path('delete_event_entry',delete_event_entry,name = 'delete_event_entry'),
-    # Report URLs
-    path('display_report',display_report,name='display_report'),
 
     # Students url begin
     path('display_students',display_students,name = 'display_students'),
@@ -28,5 +31,13 @@ urlpatterns = [
     path('save_student_entry/<int:pk>',save_student_entry,name = 'save_student_entry'),
     path('open_file_proof/<str:file>',open_file_proof,name='open_file_proof'),
     path('filter_student',filter_student,name = 'filter_student'),
-    # students url end
+
+    # Placements URLs
+    path('placements/',placements,name="placements"),
+    path('placements/add_placement_details/',add_placement_details,name="placements/add_placement_details/"),
+    path('placements/display_columns/',display_placement_columns,name="placements/display_columns/"),
+    path('placement/add_student_placement_detail/',add_student_placement_detail,name="placement/add_student_placement_detail/"),
+    path('placement/edit_placement_detail/',edit_placement_detail,name="placement/edit_placement_detail/"),
+    path('placement/delete_placement_entry/',delete_placement_entry,name="placement/delete_placement_entry/"),
+    
 ]
