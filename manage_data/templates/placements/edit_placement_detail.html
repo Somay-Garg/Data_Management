@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+{% block body%}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="placement">Student Placement Detail Entry</h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" id="placement_detail_editform" method="post" action="{% url 'placements/save_student_placement_detail/' %}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+
+                <fieldset class="border border-2 p-3" id="if_placed">
+                    <legend  class="float-none w-auto">Student Details</legend>
+                    <input type="hidden" name="student_id" value="{{studentDetail.id}}">
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Student Name</label>
+                        <input class="w-30 " type="text" name="student_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.name}}">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Enrollment Number</label>
+                        <input class="w-30 " type="number" name="enrollment_no" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.enrollmentno}}">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Department Name</label>
+                        <input class="w-30 " type="text" name="department_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.department}}">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Section</label>
+                        <select class="m-1 w-30" name="section">
+                            <option value="I" {% if studentDetail.section == 'I' %}selected{% endif %}>I</option>
+                            <option value="II" {% if studentDetail.section == 'II' %}selected{% endif %}>II</option>
+                            <option value="III" {% if studentDetail.section == 'III' %}selected{% endif %}>III</option>
+                            <option value="IV" {% if studentDetail.section == 'IV' %}selected{% endif %}>IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Passout</label>
+                        <input type="hidden" name="" id="hidden_passout" value="{{studentDetail.passout}}">
+                        <select class="m-1 w-30" id="select_year" name="passout_year">
+                        </select>
+                    </div>
+                </fieldset>               
+                <br><br>
+
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">If Placed</legend>
+                    <div class="existing_offer_details">
+                        {% if studentDetail.is_placed %}
+                            {% for offer in studentOfferDetail %}
+                                <fieldset class="border border-2 p-3 existing_offers remove_offer_{{offer.id}}" id="if_placed">
+                                    <legend class="float-none w-auto">Offer - {{ forloop.counter }} Details </legend>
+                                    <input type="hidden" name="" class="existing_offer_detail" value="{{offer.id}}">
+                                    <div class="form-group  align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
+                                        <input class="w-30 company_name" type="text" name="company_name" id="" required style = "height:32px;border-radius: 4px;" value="{{ offer.company_name }}">
+                                    </div>
+                                    <div class="form-group  align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Package in LPA</label>
+                                        <input class="w-30 package" type="number" name="package" id="" required style = "height: 32px;border-radius: 4px;" value="{{ offer.package_in_lpa }}">
+                                    </div>
+                                    <div class="form-group align-center float-child" id="">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">On/Off Campus</label>
+                                        <select class="m-1 w-30 on_off_campus" id="" name="on_off_campus">
+                                            <option value="on-campus" {% if offer.on_off_campus == "on-campus" %}selected{% endif %}>On-Campus</option>
+                                            <option value="off-campus" {% if offer.on_off_campus == "off-campus" %}selected{% endif %}>Off-Campus</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group  align-center float-child px-5">
+                                        <label class="w-25" for="exampleFormControlInput1">Prev. Uploaded Proof:</label>
+                                        <a href="{% url 'placements/open_offer_proof/' offer.job_proof %}" class="btn btn-sm atten_file w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                                    </div>
+                                    <div class="form-group align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload New Proof: </label>
+                                        <input class="w-30 m-1 upload_proof" type="file" name="upload_proof_{{forloop_counter}}" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+                                    </div>
+                                    <div class="form-group align-center float-child" style="width: 100%;">
+                                        <button class="btn btn-danger remove_offer" style="float:right;position: relative;left: auto;right: auto;width: 12%;bottom: -21%;" type="button" id="remove_offer_{{offer.id}}" onclick="removeOffer(this.id)">Remove</button>
+                                    </div>
+                                </fieldset>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="placed_form">
+                        <div class="form-group align-center float-child w-100 my-3">
+                            <input class="d-none existing_no_of_offers" type="hidden" name="" value="{{ studentOfferDetail|length }}">
+                            <label class="w-50 required_asterisk px-5 text-center" for="exampleFormControlInput1">Add more Number of Offers</label>
+                            <input class="" type="number" name="no_of_offers" id="no_of_offers" required style = "height: 32px;
+                            border-radius: 4px;" oninput="offerDetails(this.value)">
+                        </div>
+                        <div class="offer_details">
+                            
+                        </div>
+                    </div>
+                </fieldset>               
+                <br><br>
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Appeared For Any Exam</legend>
+                    <div class="exisiting_exam_details">
+                        {% if studentDetail.appeared_for_exams %}
+                            {% for exam in studentExamDetail %}
+                                <fieldset class="border border-2 p-3 existing_exams remove_exam_{{exam.id}}" id="">
+                                    <legend class="float-none w-auto">Exam - {{ forloop.counter }} Details</legend>
+                                    <input type="hidden" name="" class="existing_exam_detail" value="{{exam.id}}">
+                                    <div class="form-group  align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Name</label>
+                                        <input class="w-30 exam_name" type="text" name="exam_name" id="" required style = "height: 32px;
+                                        border-radius: 4px;" value="{{ exam.exam_name }}">
+                                    </div>
+                                    <div class="form-group align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Roll Number</label>
+                                        <input class="w-30 exam_roll_no" type="number" name="exam_roll_no" id="" required style = "height: 32px;
+                                        border-radius: 4px;" value="{{ exam.exam_roll_no }}">
+                                    </div>
+                                    <div class="form-group align-center float-child">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Exam</label>
+                                        <input class="w-30 exam_date" type="date" name="exam_date" id="" required style = "height: 32px;
+                                        border-radius: 4px;" value="{{ exam.exam_date }}">
+                                    </div>
+                                    <div class="form-group align-center float-child" id="">
+                                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Qualified?</label>
+                                        <select class="m-1 w-30 qualified" id='exam_no_{{forloop.counter}}' onchange="examResultDeclared(this.id)">
+                                        <option value="yes" {% if exam.qualified == "yes" %}selected{% endif %}>Yes</option>
+                                        <option value="no" {% if exam.qualified == "no" %}selected{% endif %}>No</option>
+                                        <option value="not_declared"  {% if exam.qualified == "not_declared" %}selected{% endif %}>Not Declared</option>
+                                        </select>
+                                    </div>
+                                    
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
+                                            <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
+                                            border-radius: 4px;" value="{{ exam.score }}">
+                                        </div>
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
+                                            <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
+                                            border-radius: 4px;" value="{{ exam.rank }}">
+                                        </div>
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
+                                            <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
+                                            border-radius: 4px;" value="{{ exam.date_of_result }}">
+                                        </div>
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}dont_show d-none{% endif %} px-5">
+                                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof: </label>
+                                            <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                                        </div>
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload New Result Proof</label>
+                                            <input class="w-30 m-1 result_proof" type="file" name="result_proof_{{exam.id}}" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+                                        </div>
+                                    <div class="form-group align-center float-child " style="width: 100%;">
+                                        <button class="btn btn-danger remove_exam" style="float:right;position: relative;left: auto;right: auto;width: 12%;bottom: -21%;" type="button" id="remove_exam_{{exam.id}}" onclick="removeExam(this.id)">Remove</button>
+                                    </div>
+                                </fieldset>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="exam_form">
+                        <div class="form-group align-center float-child w-100 my-3">
+                            <input class="d-none existing_no_of_exams" type="hidden" name="" value="{{ studentExamDetail|length }}">
+                            <label class="w-50 required_asterisk px-5 text-center" for="exampleFormControlInput1">Add more Exams Appeared in</label>
+                            <input class="" type="number" name="no_of_exams" id="no_of_exams" required style = "height: 32px;
+                            border-radius: 4px;" oninput="examDetails(this.value)">
+                        </div>
+                        <div class="exam_details">
+                            
+                        </div>
+                    </div>
+                </fieldset>
+                <br><br>
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Current Status</legend>
+                    <div class="form-group align-center float-child" id="currentStatusBox">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Current Status</label>
+                        <select id=""  name="currentstatus" class="m-1 w-30" onchange="showStatusForm(this.value)">
+                            <option value="-1" disabled selected>Select Status</option>
+                            <option value="Job" {% if studentDetail.current_status == "Job" %}selected{% endif %} >Job</option>
+                            <option value="Higher Education" {% if studentDetail.current_status == "Higher Education" %}selected{% endif %}>Higher Education</option>
+                            <option value="Entreprenurship" {% if studentDetail.current_status == "Entreprenurship" %}selected{% endif %}>Entreprenurship</option>
+                            <option value="Others" {% if studentDetail.current_status == "entrance_exam" or studentDetail.current_status == "jobs" %}selected{% endif %}>Others</option>
+                        </select>
+                        <br>
+                    </div>
+                    <div class="status_details">
+                        {% if studentDetail.current_status == "Job" %}
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
+                            <input class="w-30 " type="text" name="job_company_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{ studentCurrentStatusDetail.company_name}}">
+                          </div>
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Joining</label>
+                            <input class="w-30 " type="date" name="joining_date" id="" required style ="height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.date_of_joining}}">
+                          </div>
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Address</label>
+                            <input class="w-30 " type="text" name="company_address" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.address}}">
+                          </div>
+                          <div class="form-group align-center float-child px-5">
+                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof(LOJ OR I-Card):</label>
+                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.joining_proof %}" class="btn btn-sm  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                          </div>
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card)</label>
+                            <input class="w-30 m-1" type="file" name="job_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+                          </div>
+                        {% elif studentDetail.current_status == "Higher Education" %}
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Name</label>
+                            <input class="w-30 " type="text" name="college_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{ studentCurrentStatusDetail.college_name }}">
+                          </div>
+                          <input type="hidden" name="" id="high_edu_country" value="{{ studentCurrentStatusDetail.country_name }}">
+                          <div class="form-group  align-center float-child">
+                            <!-- <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+                            <input class="w-30 " type="text" name="country" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.country_name }}"> -->
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+                            <select class="m-1 w-30 country" name="country">
+                            </select>
+                          </div>
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Address</label>
+                            <input class="w-30 " type="text" name="college_address" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.college_address }}">
+                          </div>
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Course Name</label>
+                            <input class="w-30 " type="text" name="course_name" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.course_name }}">
+                          </div>
+                          <div class="form-group align-center float-child px-5">
+                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof(LOJ OR I-Card):</label>
+                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.id_proof %}" class="btn btn-sm w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                          </div>
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)</label>
+                            <input class="w-30 m-1" type="file" name="college_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+                          </div>
+                        {% elif studentDetail.current_status == "Entreprenurship" %}
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Startup Name</label>
+                            <input class="w-30 " type="text" name="startup_name" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.startup_name}}">
+                          </div>
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Address</label>
+                            <input class="w-30 " type="text" name="startup_company_address" id="" required style = "height: 32px;
+                            border-radius: 4px;" value="{{ studentCurrentStatusDetail.address}}">
+                          </div>
+                          <input type="hidden" name="" id="entrepre_country" value="{{ studentCurrentStatusDetail.startup_country }}">
+                          <div class="form-group align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+                            <select class="m-1 w-30 country" name="startup_country">
+                            </select>
+                          </div>
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Working Sector</label>
+                            <input class="w-30 " type="text" name="working_Sector" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.sector}}">
+                          </div>
+                          <!-- <div class="form-group  align-center float-child px-5">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Old Website Link:</label>
+                            <a href="{{ studentCurrentStatusDetail.website }}" style="display: grid;" class="w-30 text-start p-0" role="button" target="_blank">{{ studentCurrentStatusDetail.website}} <input type="text" class="border-0 bg-white" disabled></a>
+                          </div> -->
+                          <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Website Link:</label>
+                            <input class="w-30 " type="text" name="website_link" id="" required style = "height: 32px;
+                            border-radius: 4px;" value="{{ studentCurrentStatusDetail.website}}">
+                          </div>
+                        {% else %}
+                          <div class="form-group align-center float-child" id="">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Others</label>
+                            <select class="m-1 w-30" name="other">
+                              <option value="entrance_exam" {% if studentDetail.current_status == "entrance_exam" %}selected{% endif %} >Preparing for Entrance Exam</option>
+                              <option value="jobs" {% if studentDetail.current_status == "jobs" %}selected{% endif %} >Jobs</option>
+                            </select>
+                          </div>
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <br><br>
+
+                <textarea class="d-none" name="removed_offers" id="removed_offer_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="removed_exams" id="removed_exam_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="existing_offers" id="existing_offer_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="existing_exams" id="existing_exam_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="offer_details" id="student_offer_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="exam_details" id="student_exam_data" cols="30" rows="10"></textarea>
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" type="button" value="Save" style="background-color: #080885;color: white; width: 10rem; " onclick="saveNewPlacementData()" />
+                </div>
+                <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
+                <textarea name="passingColumns" class = "d-none" id="passingColumns" cols="30" rows="10">{{columns}}</textarea> 
+            </form>
+        </div>
+    </div>     
+{% endblock %}

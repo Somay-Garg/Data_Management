@@ -152,6 +152,40 @@ $(document).ready(function () {
     });
   // Report sidebar end
 
+    // ---------------Placement code start----------
+      // Code for years
+  const date = new Date();
+  const year = date.getFullYear();
+  for (let i = 0; i <= 50; i++) {
+    const option = document.createElement('option');
+    option.textContent = year - i;
+    $('#select_year').append(option);
+  }
+  for (let i = 1; i <= 100; i++) {
+    const option = document.createElement('option');
+    option.textContent = year + i;
+    $('#select_year').append(option);
+  }
+  passout_year = parseInt($('#hidden_passout').val());
+  if(!isNaN(passout_year)){
+    $('#select_year').val(passout_year);
+  }
+
+  // Code for countries
+  if(document.getElementById('high_edu_country')){
+    console.log($('#high_edu_country').val());
+    addCountryNames($('#high_edu_country').val());
+  }
+  if(document.getElementById('entrepre_country')){
+    addCountryNames($('#entrepre_country').val());
+  }
+
+  $("#message-alert").fadeTo(2000, 500).slideUp(500, function() {
+    $("#message-alert").slideUp(500);
+  });
+
+  // ---------------Placement code end----------
+
   //disabled future dates
   $(function () {
     if(document.getElementsByClassName('event').length > 0){
@@ -559,3 +593,520 @@ function addStudentColumns(cols){
 }
 
 // --------------------------students js code ends------------------------------
+
+// --------------------------Placement JS Code Start----------------------------
+function addPlacementColumns(cols){
+  let ncols = parseInt(cols);
+  if(ncols > 6){
+    // alert("Not more than 14 columns are allowed");
+    return false;
+  }
+  let inputColumns = document.querySelector("#insert_placement_Fields");
+  let template = `
+    <div class = "field_placement_columns" style = "display: flex; margin-bottom: 20px; width: 78%; align-items: center;  justify-content: center;">
+      <label class="w-25 required_asterisk" for="exampleFormControlInput1">Field:</label>
+      <select class="fill-columns" class="w-30 m-1" oninput="getFields()" onmouseover = "disableFields(this)" style = "height: 30px;border-radius: 4px;">
+          <option value="-1">Select Values</option>
+          <option value="name">Student Name</option>
+          <option value="enrollmentno">Enrollment Number</option>
+          <option value="department">Department Name</option>
+          <option value="section">Section</option>
+          <option value="passout">Passout Year</option>
+      </select>
+    </div>    
+  `;
+
+  // console.log(ncols)
+  removeChildren(document.getElementsByClassName("field_placement_columns"));
+  for (let i = 0; i < ncols; i++) {
+    let child = document.createElement("div");
+    child.style = 'display: inline-block;width: 40%; margin-left: 98px;box-sizing: border-box;';
+    child.innerHTML = template;
+    inputColumns.append(child);
+  }
+  $("select").each(function () {
+    $(this).select2();
+  });
+}
+
+function showPlacedForm(is_placed){
+  if(is_placed == "yes"){
+    let offer_div = `
+      <div class="form-group align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Number of Offers</label>
+          <input class="w-30 " type="number" name="no_of_offers" id="no_of_offers" required style = "height: 32px;
+          border-radius: 4px;" oninput="offerDetails(this.value)">
+      </div>
+    `;
+    $('.placed_form').prepend(offer_div);
+  }else{
+    $('.placed_form').html('');
+    $('.offer_details').html('');
+  }
+}
+
+function offerDetails(noOfOffers){
+  $('.offer_details').html('');
+  noOfOffers = parseInt(noOfOffers)
+  if(isNaN(noOfOffers)){
+    return;
+  }
+  let offers = parseInt($('.existing_no_of_offers').val());
+  if(isNaN(offers)){
+    offers=0;
+  }
+  let i = offers;
+  for(;i<noOfOffers+offers;i++){
+    let offer = `<br>
+      <fieldset class="border border-2 p-3 offer_detail" id="if_placed">
+        <legend class="float-none w-auto">Offer - `+ (i+1) +` Details</legend>
+        <div class="form-group  align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
+          <input class="w-30 company_name" type="text" name="company_name" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group  align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Package in LPA</label>
+          <input class="w-30 package" type="number" name="package" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child" id="">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">On/Off Campus</label>
+          <select class="m-1 w-30 on_off_campus" id="">
+            <option value="on-campus">On-Campus</option>
+            <option value="off-campus">Off-Campus</option>
+          </select>
+        </div>
+        <div class="form-group align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof</label>
+          <input class="w-30 m-1 upload_proof" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+        </div>
+      </fieldset>
+    `;
+    $('.offer_details').append(offer);
+  }
+  $("select").each(function () {
+    $(this).select2();
+  });
+}
+
+function showExamForm(has_appeared){
+  if(has_appeared == "yes"){
+    let exam_div = `
+      <div class="form-group align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Number of Exams Appeared in</label>
+          <input class="w-30 " type="number" name="no_of_exams" id="no_of_exams" required style = "height: 32px;
+          border-radius: 4px;" oninput="examDetails(this.value)">
+      </div>
+    `;
+    $('.exam_form').prepend(exam_div);
+  }else{
+    $('.exam_form').html('');
+    $('.exam_details').html('');
+  }
+}
+
+function examDetails(noOfExams){
+  $('.exam_details').html('');
+  noOfExams = parseInt(noOfExams);
+  if(isNaN(noOfExams)){
+    return;
+  }
+  let exams = parseInt($('.existing_no_of_exams').val());
+  if(isNaN(exams)){
+    exams=0;
+  }
+  let i = exams;
+  for(;i<noOfExams+exams;i++){
+    let unique_id = Math.random().toString(16).slice(2);
+    let offer = `<br>
+      <fieldset class="border border-2 p-3 exam_detail" id="">
+        <legend class="float-none w-auto">Exam - `+ (i+1) +` Details</legend>
+        <div class="form-group  align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Name</label>
+          <input class="w-30 exam_name" type="text" name="exam_name" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Roll Number</label>
+          <input class="w-30 exam_roll_no" type="number" name="exam_roll_no" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Exam</label>
+          <input class="w-30 exam_date" type="date" name="exam_date" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child" id="">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Qualified?</label>
+          <select class="m-1 w-30 qualified" id=`+ unique_id +` onchange="examResultDeclared(this.id)">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+            <option value="not_declared" selected>Not Declared</option>
+          </select>
+        </div>
+        <div class="form-group align-center float-child `+ unique_id +` d-none">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
+          <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child `+ unique_id +` d-none">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
+          <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child `+ unique_id +` d-none">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
+          <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child `+ unique_id +` d-none">
+          <label class="w-25 required_asterisk" for="exampleFormControlFile1">Result Proof</label>
+          <input class="w-30 m-1 result_proof" type="file" name="result_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+        </div>
+      </fieldset>
+    `;
+    $('.exam_details').append(offer);
+  }
+  $("select").each(function () {
+    $(this).select2();
+  });
+}
+
+function examResultDeclared(ele_id){
+  if($('#'+ele_id).val() != 'not_declared'){
+    // console.log($('#'+ele_id).val());
+    $('.'+ele_id).each(function(){
+      if(!$(this).hasClass('dont_show')){
+        $(this).removeClass('d-none');
+        $(this).find('input').val('');
+      }
+    })
+  }
+  else{
+    $('.'+ele_id).each(function(){
+      if(!$(this).hasClass('d-none')){
+        $(this).addClass('d-none');
+        $(this).find('input').val('');
+      }
+    })
+  }
+}
+
+function showStatusForm(status){
+  let status_details = ``;
+  // console.log(status);
+  if(status == "Job"){
+    status_details = `
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
+        <input class="w-30 " type="text" name="job_company_name" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Joining</label>
+        <input class="w-30 " type="date" name="joining_date" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Address</label>
+        <input class="w-30 " type="text" name="company_address" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card)</label>
+        <input class="w-30 m-1" type="file" name="job_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+      </div>
+    `;
+  }else if(status == "Higher Education"){
+    var countryData = $.fn.countrySelect.getCountryData();
+    let countrySelectData = ``;
+    for(let i=0;i<countryData.length;i++){
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
+    status_details = `
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Name</label>
+        <input class="w-30 " type="text" name="college_name" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Address</label>
+        <input class="w-30 " type="text" name="college_address" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+        <select class="m-1 w-30 country" name="country">
+        </select>
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Course Name</label>
+        <input class="w-30 " type="text" name="course_name" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)</label>
+        <input class="w-30 m-1" type="file" name="college_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
+      </div>
+    `;
+  }else if(status == "Entreprenurship"){
+    var countryData = $.fn.countrySelect.getCountryData();
+    let countrySelectData = ``;
+    for(let i=0;i<countryData.length;i++){
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
+    status_details = `
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Startup Name</label>
+        <input class="w-30 " type="text" name="startup_name" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Address</label>
+        <input class="w-30 " type="text" name="startup_company_address" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+        <select class="m-1 w-30 country" name="startup_country">
+        </select>
+      </div>
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Working Sector</label>
+        <input class="w-30 " type="text" name="working_Sector" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+      <div class="form-group  align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Website Link</label>
+        <input class="w-30 " type="text" name="website_link" id="" required style = "height: 32px;
+        border-radius: 4px;">
+      </div>
+    `;
+  }else{
+    status_details = `
+      <div class="form-group align-center float-child" id="">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Others</label>
+        <select class="m-1 w-30" name="other">
+          <option value="entrance_exam">Preparing for Entrance Exam</option>
+          <option value="jobs">Jobs</option>
+        </select>
+      </div>
+    `;
+  }
+  $('.status_details').html(status_details);
+  $("select").each(function () {
+    $(this).select2();
+  });
+  var countryData = $.fn.countrySelect.getCountryData();
+  for(let i=0;i<countryData.length;i++){
+    console.log(countryData[i]['name'])
+  }
+  addCountryNames('');
+}
+
+function submitPlacementData(){
+  let is_placed = $('#is_placed').val();
+  if(is_placed=='yes'){
+    let offers = parseInt($('#no_of_offers').val());
+    if(isNaN(offers) || offers==0 || offers < 0){
+      alert('Please add offer details');
+    }else{
+      let offer_details = {};
+      let i = 1;
+      $('.offer_detail').each(function(){
+        let current_offer = {
+          'company_name' : '',
+          'package' : '',
+          'on_off_campus' : '',
+        }
+        current_offer['company_name'] = $(this).find('.company_name').val();
+        current_offer['package'] = $(this).find('.package').val();
+        current_offer['on_off_campus'] = $(this).find('.on_off_campus').val();
+        offer_details[i] = current_offer;
+        $(this).find('.upload_proof').attr('name','upload_proof_'+i);
+        i++;
+      });
+      $('#student_offer_data').val(JSON.stringify(offer_details));
+    }
+  }
+
+  let has_appeared = $('#has_appeared').val();
+  if(has_appeared == 'yes'){
+    let exams = parseInt($('#no_of_exams').val());
+    if(isNaN(exams) || exams==0 || exams < 0){
+      alert('Please add exam details');
+    }else{
+      let exam_details = {};
+      let i = 1;
+      $('.exam_detail').each(function(){
+        let current_exam = {
+          'exam_name' : '',
+          'exam_roll_no' : '',
+          'exam_date' : '',
+          'qualified' : '',
+          'exam_score' : 'Not Declared',
+          'exam_rank' : 'Not Declared',
+          'date_of_result' : '',
+        }
+        current_exam['exam_name'] = $(this).find('.exam_name').val();
+        current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
+        current_exam['exam_date'] = $(this).find('.exam_date').val();
+        current_exam['qualified'] = $(this).find('.qualified').val();
+        if(current_exam['qualified'] != 'not_declared'){
+          current_exam['exam_score'] = $(this).find('.exam_score').val();
+          current_exam['exam_rank'] = $(this).find('.exam_rank').val();
+          current_exam['date_of_result'] = $(this).find('.date_of_result').val();
+          exam_details[i] = current_exam;
+          $(this).find('.result_proof').attr('name','result_proof_'+i);
+        }else{
+          exam_details[i] = current_exam;
+        }
+        i++;
+      });
+      $('#student_exam_data').val(JSON.stringify(exam_details));
+    }
+  }
+
+  $('#placement_detail_form').submit();
+}
+function removeOffer(id){
+  $('.'+id).remove();
+  if($('#removed_offer_data').val() != ''){
+    $('#removed_offer_data').val($('#removed_offer_data').val()+','+id.split('_')[2]);
+  }else{
+    $('#removed_offer_data').val(id.split('_')[2]);
+  }
+}
+function removeExam(id){
+  $('.'+id).remove();
+  if($('#removed_exam_data').val() != ''){
+    $('#removed_exam_data').val($('#removed_exam_data').val()+','+id.split('_')[2]);
+  }else{
+    $('#removed_exam_data').val(id.split('_')[2]);
+  }
+}
+function saveNewPlacementData(){
+  // For existing offers
+  let existing_offer = {};
+  let i = 1;
+  $('.existing_offers').each(function(){
+      let offer = {
+        'offer_id' : $(this).find('.existing_offer_detail').val(),
+        'company_name' : '',
+        'package' : '',
+        'on_off_campus' : '',
+      }
+      offer['company_name'] = $(this).find('.company_name').val();
+      offer['package'] = $(this).find('.package').val();
+      offer['on_off_campus'] = $(this).find('.on_off_campus').val();
+      existing_offer[i] = offer;
+      $(this).find('.upload_proof').attr('name','upload_proof_'+i);
+      i++;
+  });
+  $('#existing_offer_data').val(JSON.stringify(existing_offer));
+  // console.log($('#existing_offer_data').val());
+
+  // For new Offers
+  let offers = parseInt($('#no_of_offers').val());
+  if(!isNaN(offers) && offers!=0 && offers > 0){
+    let offer_details = {};
+    $('.offer_detail').each(function(){
+      let current_offer = {
+        'company_name' : '',
+        'package' : '',
+        'on_off_campus' : '',
+      }
+      current_offer['company_name'] = $(this).find('.company_name').val();
+      current_offer['package'] = $(this).find('.package').val();
+      current_offer['on_off_campus'] = $(this).find('.on_off_campus').val();
+      offer_details[i] = current_offer;
+      $(this).find('.upload_proof').attr('name','upload_proof_'+i);
+      i++;
+    });
+    $('#student_offer_data').val(JSON.stringify(offer_details));
+    // console.log($('#student_offer_data').val());
+  }
+  
+
+  // For existing exams
+  let existing_exam = {};
+  i = 1;
+  $('.existing_exams').each(function(){
+    let exam = {
+      'exam_id' : $(this).find('.existing_exam_detail').val(),
+      'exam_name' : '',
+      'exam_roll_no' : '',
+      'exam_date' : '',
+      'qualified' : '',
+      'exam_score' : 'Not Declared',
+      'exam_rank' : 'Not Declared',
+      'date_of_result' : '',
+    }
+    exam['exam_name'] = $(this).find('.exam_name').val();
+    exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
+    exam['exam_date'] = $(this).find('.exam_date').val();
+    exam['qualified'] = $(this).find('.qualified').val();
+    if(exam['qualified'] != 'not_declared'){
+      exam['exam_score'] = $(this).find('.exam_score').val();
+      exam['exam_rank'] = $(this).find('.exam_rank').val();
+      exam['date_of_result'] = $(this).find('.date_of_result').val();
+      existing_exam[i] = exam;
+      $(this).find('.result_proof').attr('name','result_proof_'+i);
+    }else{
+      existing_exam[i] = exam;
+    }
+    i++;
+  });
+  $('#existing_exam_data').val(JSON.stringify(existing_exam));
+  // console.log($('#existing_exam_data').val());
+
+  // For New Exams
+  let exams = parseInt($('#no_of_exams').val());
+  if(!isNaN(exams) && exams!=0 && exams > 0){
+    let exam_details = {};
+    $('.exam_detail').each(function(){
+      let current_exam = {
+        'exam_name' : '',
+        'exam_roll_no' : '',
+        'exam_date' : '',
+        'qualified' : '',
+        'exam_score' : 'Not Declared',
+        'exam_rank' : 'Not Declared',
+        'date_of_result' : '',
+      }
+      current_exam['exam_name'] = $(this).find('.exam_name').val();
+      current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
+      current_exam['exam_date'] = $(this).find('.exam_date').val();
+      current_exam['qualified'] = $(this).find('.qualified').val();
+      if(current_exam['qualified'] != 'not_declared'){
+        current_exam['exam_score'] = $(this).find('.exam_score').val();
+        current_exam['exam_rank'] = $(this).find('.exam_rank').val();
+        current_exam['date_of_result'] = $(this).find('.date_of_result').val();
+        exam_details[i] = current_exam;
+        $(this).find('.result_proof').attr('name','result_proof_'+i);
+      }else{
+        exam_details[i] = current_exam;
+      }
+      i++;
+    });
+    $('#student_exam_data').val(JSON.stringify(exam_details));
+    // console.log($('#student_exam_data').val());
+  }
+  $('#placement_detail_editform').submit();
+}
+function addCountryNames(country){
+  var countryData = $.fn.countrySelect.getCountryData();
+  let countrySelectData = ``;
+  for(let i=0;i<countryData.length;i++){
+    if(country == countryData[i]['name']){
+      countrySelectData += `<option value="`+countryData[i]['name']+`" selected>`+countryData[i]['name']+`</option>`;
+    }else{
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
+  }
+  $('.country').each(function(){
+    $(this).html(countrySelectData);
+  });
+}
+// --------------------------Placement JS Code End------------------------------
