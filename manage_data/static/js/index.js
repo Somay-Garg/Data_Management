@@ -152,11 +152,10 @@ $(document).ready(function () {
     });
   // Report sidebar end
 
-  // ---------------Placement Year code start----------
-
+  // ---------------Placement code start----------
+      // Code for years
   const date = new Date();
   const year = date.getFullYear();
-  // console.log(year);
   for (let i = 0; i <= 50; i++) {
     const option = document.createElement('option');
     option.textContent = year - i;
@@ -167,8 +166,25 @@ $(document).ready(function () {
     option.textContent = year + i;
     $('#select_year').append(option);
   }
+  passout_year = parseInt($('#hidden_passout').val());
+  if(!isNaN(passout_year)){
+    $('#select_year').val(passout_year);
+  }
 
-  // ---------------Placement Year code start----------
+  // Code for countries
+  if(document.getElementById('high_edu_country')){
+    console.log($('#high_edu_country').val());
+    addCountryNames($('#high_edu_country').val());
+  }
+  if(document.getElementById('entrepre_country')){
+    addCountryNames($('#entrepre_country').val());
+  }
+
+  $("#message-alert").fadeTo(2000, 500).slideUp(500, function() {
+    $("#message-alert").slideUp(500);
+  });
+
+  // ---------------Placement code end----------
 
   //disabled future dates
   $(function () {
@@ -631,10 +647,16 @@ function showPlacedForm(is_placed){
 
 function offerDetails(noOfOffers){
   $('.offer_details').html('');
+  noOfOffers = parseInt(noOfOffers)
   if(isNaN(noOfOffers)){
     return;
   }
-  for(let i=0;i<noOfOffers;i++){
+  let offers = parseInt($('.existing_no_of_offers').val());
+  if(isNaN(offers)){
+    offers=0;
+  }
+  let i = offers;
+  for(;i<noOfOffers+offers;i++){
     let offer = `<br>
       <fieldset class="border border-2 p-3 offer_detail" id="if_placed">
         <legend class="float-none w-auto">Offer - `+ (i+1) +` Details</legend>
@@ -686,13 +708,19 @@ function showExamForm(has_appeared){
 
 function examDetails(noOfExams){
   $('.exam_details').html('');
+  noOfExams = parseInt(noOfExams);
   if(isNaN(noOfExams)){
     return;
   }
-  for(let i=0;i<noOfExams;i++){
+  let exams = parseInt($('.existing_no_of_exams').val());
+  if(isNaN(exams)){
+    exams=0;
+  }
+  let i = exams;
+  for(;i<noOfExams+exams;i++){
     let unique_id = Math.random().toString(16).slice(2);
     let offer = `<br>
-      <fieldset class="border border-2 p-3 exam_detail" id="if_placed">
+      <fieldset class="border border-2 p-3 exam_detail" id="">
         <legend class="float-none w-auto">Exam - `+ (i+1) +` Details</legend>
         <div class="form-group  align-center float-child">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Name</label>
@@ -728,6 +756,11 @@ function examDetails(noOfExams){
           border-radius: 4px;">
         </div>
         <div class="form-group align-center float-child `+ unique_id +` d-none">
+          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
+          <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
+          border-radius: 4px;">
+        </div>
+        <div class="form-group align-center float-child `+ unique_id +` d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlFile1">Result Proof</label>
           <input class="w-30 m-1 result_proof" type="file" name="result_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
         </div>
@@ -742,14 +775,20 @@ function examDetails(noOfExams){
 
 function examResultDeclared(ele_id){
   if($('#'+ele_id).val() != 'not_declared'){
-    console.log($('#'+ele_id).val());
+    // console.log($('#'+ele_id).val());
     $('.'+ele_id).each(function(){
-      $(this).removeClass('d-none');
+      if(!$(this).hasClass('dont_show')){
+        $(this).removeClass('d-none');
+        $(this).find('input').val('');
+      }
     })
   }
   else{
     $('.'+ele_id).each(function(){
-      $(this).addClass('d-none');
+      if(!$(this).hasClass('d-none')){
+        $(this).addClass('d-none');
+        $(this).find('input').val('');
+      }
     })
   }
 }
@@ -780,6 +819,11 @@ function showStatusForm(status){
       </div>
     `;
   }else if(status == "Higher Education"){
+    var countryData = $.fn.countrySelect.getCountryData();
+    let countrySelectData = ``;
+    for(let i=0;i<countryData.length;i++){
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
     status_details = `
       <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Name</label>
@@ -787,13 +831,18 @@ function showStatusForm(status){
         border-radius: 4px;">
       </div>
       <div class="form-group align-center float-child">
-        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Course Name</label>
-        <input class="w-30 " type="text" name="course_name" id="" required style = "height: 32px;
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">College Address</label>
+        <input class="w-30 " type="text" name="college_address" id="" required style = "height: 32px;
         border-radius: 4px;">
       </div>
       <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
-        <input class="w-30 " type="text" name="country" id="" required style = "height: 32px;
+        <select class="m-1 w-30 country" name="country">
+        </select>
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Course Name</label>
+        <input class="w-30 " type="text" name="course_name" id="" required style = "height: 32px;
         border-radius: 4px;">
       </div>
       <div class="form-group align-center float-child">
@@ -802,6 +851,11 @@ function showStatusForm(status){
       </div>
     `;
   }else if(status == "Entreprenurship"){
+    var countryData = $.fn.countrySelect.getCountryData();
+    let countrySelectData = ``;
+    for(let i=0;i<countryData.length;i++){
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
     status_details = `
       <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Startup Name</label>
@@ -812,6 +866,11 @@ function showStatusForm(status){
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Address</label>
         <input class="w-30 " type="text" name="startup_company_address" id="" required style = "height: 32px;
         border-radius: 4px;">
+      </div>
+      <div class="form-group align-center float-child">
+        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Country</label>
+        <select class="m-1 w-30 country" name="startup_country">
+        </select>
       </div>
       <div class="form-group  align-center float-child">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Working Sector</label>
@@ -830,16 +889,20 @@ function showStatusForm(status){
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Others</label>
         <select class="m-1 w-30" name="other">
           <option value="entrance_exam">Preparing for Entrance Exam</option>
-          <option value="family_business">Family-Business</option>
+          <option value="jobs">Jobs</option>
         </select>
       </div>
     `;
   }
-  // console.log(status_details);
   $('.status_details').html(status_details);
   $("select").each(function () {
     $(this).select2();
   });
+  var countryData = $.fn.countrySelect.getCountryData();
+  for(let i=0;i<countryData.length;i++){
+    console.log(countryData[i]['name'])
+  }
+  addCountryNames('');
 }
 
 function submitPlacementData(){
@@ -849,7 +912,6 @@ function submitPlacementData(){
     if(isNaN(offers) || offers==0 || offers < 0){
       alert('Please add offer details');
     }else{
-      // let offer_details = [];
       let offer_details = {};
       let i = 1;
       $('.offer_detail').each(function(){
@@ -861,15 +923,11 @@ function submitPlacementData(){
         current_offer['company_name'] = $(this).find('.company_name').val();
         current_offer['package'] = $(this).find('.package').val();
         current_offer['on_off_campus'] = $(this).find('.on_off_campus').val();
-        // offer_details.push(JSON.stringify(current_offer));
-        // $(this).find('.upload_proof').attr('name','upload_proof_'+(offer_details.length-1));
         offer_details[i] = current_offer;
         $(this).find('.upload_proof').attr('name','upload_proof_'+i);
         i++;
       });
-      // $('#student_offer_data').val(offer_details);
       $('#student_offer_data').val(JSON.stringify(offer_details));
-      console.log($('#student_offer_data').val());
     }
   }
 
@@ -879,7 +937,6 @@ function submitPlacementData(){
     if(isNaN(exams) || exams==0 || exams < 0){
       alert('Please add exam details');
     }else{
-      // let exam_details = [];
       let exam_details = {};
       let i = 1;
       $('.exam_detail').each(function(){
@@ -890,6 +947,7 @@ function submitPlacementData(){
           'qualified' : '',
           'exam_score' : 'Not Declared',
           'exam_rank' : 'Not Declared',
+          'date_of_result' : '',
         }
         current_exam['exam_name'] = $(this).find('.exam_name').val();
         current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
@@ -898,20 +956,157 @@ function submitPlacementData(){
         if(current_exam['qualified'] != 'not_declared'){
           current_exam['exam_score'] = $(this).find('.exam_score').val();
           current_exam['exam_rank'] = $(this).find('.exam_rank').val();
-          // exam_details.push(JSON.stringify(current_exam));
-          // $(this).find('.result_proof').attr('name','result_proof_'+(exam_details.length-1));
+          current_exam['date_of_result'] = $(this).find('.date_of_result').val();
           exam_details[i] = current_exam;
           $(this).find('.result_proof').attr('name','result_proof_'+i);
+          i++;
         }else{
           exam_details[i] = current_exam;
         }
       });
-      // $('#student_exam_data').val(exam_details);
       $('#student_exam_data').val(JSON.stringify(exam_details));
-      console.log($('#student_exam_data').val());
     }
   }
 
   $('#placement_detail_form').submit();
+}
+function removeOffer(id){
+  $('.'+id).remove();
+  if($('#removed_offer_data').val() != ''){
+    $('#removed_offer_data').val($('#removed_offer_data').val()+','+id.split('_')[2]);
+  }else{
+    $('#removed_offer_data').val(id.split('_')[2]);
+  }
+}
+function removeExam(id){
+  $('.'+id).remove();
+  if($('#removed_exam_data').val() != ''){
+    $('#removed_exam_data').val($('#removed_exam_data').val()+','+id.split('_')[2]);
+  }else{
+    $('#removed_exam_data').val(id.split('_')[2]);
+  }
+}
+function saveNewPlacementData(){
+  // For existing offers
+  let existing_offer = {};
+  let i = 1;
+  $('.existing_offers').each(function(){
+      let offer = {
+        'offer_id' : $(this).find('.existing_offer_detail').val(),
+        'company_name' : '',
+        'package' : '',
+        'on_off_campus' : '',
+      }
+      offer['company_name'] = $(this).find('.company_name').val();
+      offer['package'] = $(this).find('.package').val();
+      offer['on_off_campus'] = $(this).find('.on_off_campus').val();
+      existing_offer[i] = offer;
+      $(this).find('.upload_proof').attr('name','upload_proof_'+i);
+      i++;
+  });
+  $('#existing_offer_data').val(JSON.stringify(existing_offer));
+  // console.log($('#existing_offer_data').val());
+
+  // For new Offers
+  let offers = parseInt($('#no_of_offers').val());
+  if(!isNaN(offers) && offers!=0 && offers > 0){
+    let offer_details = {};
+    $('.offer_detail').each(function(){
+      let current_offer = {
+        'company_name' : '',
+        'package' : '',
+        'on_off_campus' : '',
+      }
+      current_offer['company_name'] = $(this).find('.company_name').val();
+      current_offer['package'] = $(this).find('.package').val();
+      current_offer['on_off_campus'] = $(this).find('.on_off_campus').val();
+      offer_details[i] = current_offer;
+      $(this).find('.upload_proof').attr('name','upload_proof_'+i);
+      i++;
+    });
+    $('#student_offer_data').val(JSON.stringify(offer_details));
+    // console.log($('#student_offer_data').val());
+  }
+  
+
+  // For existing exams
+  let existing_exam = {};
+  i = 1;
+  $('.existing_exams').each(function(){
+    let exam = {
+      'exam_id' : $(this).find('.existing_exam_detail').val(),
+      'exam_name' : '',
+      'exam_roll_no' : '',
+      'exam_date' : '',
+      'qualified' : '',
+      'exam_score' : 'Not Declared',
+      'exam_rank' : 'Not Declared',
+      'date_of_result' : '',
+    }
+    exam['exam_name'] = $(this).find('.exam_name').val();
+    exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
+    exam['exam_date'] = $(this).find('.exam_date').val();
+    exam['qualified'] = $(this).find('.qualified').val();
+    if(exam['qualified'] != 'not_declared'){
+      exam['exam_score'] = $(this).find('.exam_score').val();
+      exam['exam_rank'] = $(this).find('.exam_rank').val();
+      exam['date_of_result'] = $(this).find('.date_of_result').val();
+      existing_exam[i] = exam;
+      $(this).find('.result_proof').attr('name','result_proof_'+i);
+    }else{
+      existing_exam[i] = exam;
+    }
+    i++;
+  });
+  $('#existing_exam_data').val(JSON.stringify(existing_exam));
+  // console.log($('#existing_exam_data').val());
+
+  // For New Exams
+  let exams = parseInt($('#no_of_exams').val());
+  if(!isNaN(exams) && exams!=0 && exams > 0){
+    let exam_details = {};
+    $('.exam_detail').each(function(){
+      let current_exam = {
+        'exam_name' : '',
+        'exam_roll_no' : '',
+        'exam_date' : '',
+        'qualified' : '',
+        'exam_score' : 'Not Declared',
+        'exam_rank' : 'Not Declared',
+        'date_of_result' : '',
+      }
+      current_exam['exam_name'] = $(this).find('.exam_name').val();
+      current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
+      current_exam['exam_date'] = $(this).find('.exam_date').val();
+      current_exam['qualified'] = $(this).find('.qualified').val();
+      if(current_exam['qualified'] != 'not_declared'){
+        current_exam['exam_score'] = $(this).find('.exam_score').val();
+        current_exam['exam_rank'] = $(this).find('.exam_rank').val();
+        current_exam['date_of_result'] = $(this).find('.date_of_result').val();
+        exam_details[i] = current_exam;
+        $(this).find('.result_proof').attr('name','result_proof_'+i);
+      }else{
+        exam_details[i] = current_exam;
+      }
+      i++;
+    });
+    $('#student_exam_data').val(JSON.stringify(exam_details));
+    // console.log($('#student_exam_data').val());
+  }
+  $('#placement_detail_editform').submit();
+}
+function addCountryNames(country){
+  var countryData = $.fn.countrySelect.getCountryData();
+  let countrySelectData = ``;
+  for(let i=0;i<countryData.length;i++){
+    if(country == countryData[i]['name']){
+      countrySelectData += `<option value="`+countryData[i]['name']+`" selected>`+countryData[i]['name']+`</option>`;
+    }else{
+      countrySelectData += `<option value="`+countryData[i]['name']+`">`+countryData[i]['name']+`</option>`;
+    }
+  }
+  $('.country').each(function(){
+    $(this).html(countrySelectData);
+  });
 }
 // --------------------------Placement JS Code End------------------------------

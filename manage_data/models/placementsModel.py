@@ -114,7 +114,7 @@ class StudentPlacement(models.Model):
     passout = models.DateField(default=False)
     is_placed = models.BooleanField(blank=False,default=False)
     appeared_for_exams = models.BooleanField(blank=False,default=False)
-    current_status = models.CharField(max_length=20,blank=False,choices=statusChoices,default=None)
+    current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default=None)
     
     def _str_(self):
         return self.name
@@ -123,7 +123,7 @@ class StudentOfferDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
     company_name = models.CharField(max_length=100, default=False)
     package_in_lpa = models.IntegerField(default=None,blank=False)
-    on_off_campus = models.CharField(max_length=5, default=None, blank=False)
+    on_off_campus = models.CharField(max_length=15, default=None, blank=False)
     job_proof = models.CharField(max_length=255,blank=False)
 
     def _str_(self):
@@ -133,11 +133,12 @@ class StudentExamDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
     exam_name = models.CharField(max_length=100, default=False)
     exam_roll_no = models.BigIntegerField(default=None,blank=False)
-    exam_date = models.DateField(default=False)
+    exam_date = models.DateField(blank=False)
     qualified = models.CharField(max_length=20, default=False)
-    score = models.IntegerField(default=None,blank=True)
-    rank = models.IntegerField(default=None,blank=True)
-    result_proof = models.CharField(max_length=255,blank=True)
+    score = models.IntegerField(default=None,blank=True ,null=True)
+    rank = models.IntegerField(default=None,blank=True,null=True)
+    date_of_result = models.DateField(blank=True,null=True)
+    result_proof = models.CharField(max_length=255,blank=True,null=True)
 
     def _str_(self):
         return self.exam_name
@@ -157,6 +158,7 @@ class StudentCurrentStatusHighEduDetails(models.Model):
     college_name = models.CharField(max_length=100, default=False)
     course_name = models.CharField(max_length=100, default=False)
     country_name = models.CharField(max_length=100, default=False)
+    college_address = models.CharField(max_length=255, default=False)
     id_proof = models.CharField(max_length=255,blank=True)
 
     def _str_(self):
@@ -166,20 +168,10 @@ class StudentCurrentStatusEntrepreDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
     startup_name = models.CharField(max_length=100, default=False)
     address = models.CharField(max_length=255, default=False)
+    startup_country = models.CharField(max_length=100, default=False)
     sector = models.CharField(max_length=100, default=False)
     website = models.URLField(max_length=200)
 
     def _str_(self):
         return self.startup_name
 
-otherChoices = (
-    ('Preparing for Entrance Exams','Preparing for Entrance Exams'),
-    ('Family Business','Family Business'),
-)
-
-class StudentCurrentStatusOtherDetails(models.Model):
-    enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    other = models.CharField(max_length=40,default=None,blank=True)
-
-    def _str_(self):
-        return self.other

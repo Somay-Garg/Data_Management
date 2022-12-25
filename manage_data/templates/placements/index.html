@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block body %}
+    {% if msg != '' %}
+    <div class="alert alert-success" id="message-alert">
+        <p>{{msg}}</p>
+    </div>
+    {% endif %}
     <div class="table">
         <div id="wrapper">
             <br>
@@ -7,7 +12,7 @@
             <br>
             <fieldset class="border border-2 p-2">
                 <legend class="float-none w-auto p-2">Filter Data</legend>
-                <form class="overflow-hidden" action="{% url 'filter_event'%}" method="POST">
+                <form class="overflow-hidden" action="{% url 'placements/filter_placement/'%}" method="POST">
                     {% csrf_token %}
                     <div class="form-group row">
                         {% for key,filter in filter_data.items %}
@@ -44,43 +49,12 @@
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
-
-                        <!-- ### changes strt #### -->
-                        <!-- <div class="form-group row m-2" >
-                            <div class="col-lg m-2" style="padding-left:0px;display: flex; align-items: center;width: 50%;">
-                                <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
-                                margin-right: 10px;"> Minimum Amount: </label>
-                                <input class="form-control" type="number" name="min_amount" id="min_amount"  placeholder="Enter the Minimum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 76%;">
-                            </div> 
-                            <div class="col-lg m-2" style=" display: flex; align-items: center;  width: 50%;">
-                                <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
-                                margin-right: 10px;"> Maximum Amount: </label>
-                                <input  class="form-control" type="number" name="max_amount" id="max_amount" placeholder="Enter the Maximum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 77%;" val="100000000">
-                            </div>
-                        </div>         -->
-                        <!--###changes-end#### -->
-                        <!-- <div class="form-group row m-2" >
-                            <label class="col-sm-2 col-form-label text-left" style="padding-left:7px ;  width:max-content;"> Start From: </label>
-                         
-                            <div class="col-sm-4"  style="width:26.8rem; margin-left:2px;">
-                                <input style="border: 1px solid #9ea0a2;
-                                height: 30px;" class="form-control" type="date" name="after" id="" value="{% if sel_fil_val and sel_fil_val.start_date %}{{sel_fil_val.start_date}}{% endif %}">
-                            </div>
-                            
-                            <label class="col-sm-1 col-form-label text-left" style = "padding-left: 31px;
-                            "> Upto: </label>
-                            <div class="col-sm-4" style="width:28.1rem; margin-left:2px;">
-                                <input class="form-control" type="date" name="upto" id="" value="{% if sel_fil_val and sel_fil_val.end_date %}{{sel_fil_val.end_date}}{% endif %}" style="border: 1px solid #9ea0a2;
-                                height: 30px;">
-                            </div>
-                        </div> -->
                     </div>
                     <div class="m-2 float-right">
                             <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues()">Filter</button>
                             <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
                             <!-- export btn changes -->
                             <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>
-                            <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> -->
                     </div>
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
@@ -131,8 +105,8 @@
                     </tr>
                     
                     {% for placement in placement_data %}
-                        <tr class="table-light" id = "placement_row_id_{{event.id}}">
-                            <td>{{ forloop.counter }}</td>
+                        <tr class="table-light" id = "placement_row_id_{{placement.id}}">
+                            <td><a href="{% url 'placements/show_placement_detail/' placement.id %}" style="text-decoration: none;">{{ forloop.counter }}</a></td>
                             {% for col in columns %}
                                 {% if col == 'name' %}
                                     <td class="name_col" >{{ placement.name }}</td>
@@ -147,16 +121,16 @@
                                 {% endif %}
                             {% endfor %}
                             <td>       
-                                <form action="{% url 'placement/edit_placement_detail/' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "d-none" id ='columnsDataform'>
+                                <form action="{% url 'placements/edit_placement_detail/' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "d-none" id ='columnsDataform'>
                                     {% csrf_token %}
                                     <div id = "insertForm"></div>                             
                                 </form>
                                 <textarea name="columns_dets"  class = "d-none" id="columns_dets" cols="30" rows="10" >{{columns_str}}</textarea>   
                                 <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit"  onclick = "submitHiddenForm('{{placement.id}}')" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
                                 
-                                <form action="{% url 'placement/delete_placement_entry/' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+                                <form action="{% url 'placements/delete_placement_entry/' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
                                     {% csrf_token %}
-                                    <input name = "id_details" class = "d-none" value = "{{event.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
+                                    <input name = "id_details" class = "d-none" value = "{{placement.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                     <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
                                 </form>
                             </td>
