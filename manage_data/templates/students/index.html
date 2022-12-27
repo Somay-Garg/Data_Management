@@ -1,102 +1,119 @@
 {% extends 'base.html' %}
 {% block body %}
-
+    {% if msg != '' %}
+        <div class="alert alert-success" id="message-alert">
+            <p>{{msg}}</p>
+        </div>
+    {% endif %}
     <div id="table">
         <div id="wrapper">
-            <h3>Currently viewing {{ header }}</h3>
-            <fieldset class="border border-2 p-2">
+            <div style="display: flex;justify-content: space-between;">
+                <h3>Currently viewing {{ header }}</h3>
+                <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;" name="" value="" type="button" onclick = 'showFilters();'>Filter Data</button>
+            </div>
+            <fieldset id = 'filterDataDiv'  class="border border-2 p-2 {% if not showFilters %} d-none {% endif %}">
                 <legend class="float-none w-auto p-2">Filter Data</legend>
                 <form class="overflow-hidden" action="{% url 'filter_student' %}" method="POST">
                     {% csrf_token %}
-                    <div class="form-group row">
-                        {% for key,filter in filter_data.items %}
-                            {% if 'break' in key %}
-                                <div class="w-100"></div>
-                            {% else %}
-                                {% if sel_fil_val %}
-                                    {% for k,v in sel_fil_val.items %}
-                                        <!-- {{k}} -->
-                                        <!-- <div>{{ key }}
-                                            <p>{{k}}</p>
-                                        </div> -->
-                                        {% if key == 'E-mail Id' and k == 'E-mail Id' %}   
-                                        <div class="col-lg m-2" >
-                                            <input class="form-control" type="email" name="{{key}}" id="mail_id"  placeholder="Enter the email address" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                        </div>     
-                                        {% elif key == 'Mobile No' and k == 'Mobile No' %}
-                                        <div class="col-lg m-2" >
-                                            <input class="form-control" type="number" name="{{key}}" id="mobile_no"  placeholder="Enter the mobile no" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                        </div>                
-                                        {% elif key == 'Award Date' and k == 'Award Date' %}
-                                        <div class="col-lg m-2" >
-                                            <input class="form-control" type="date" name="{{key}}" id="award_date"  placeholder="Enter the Award Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                        </div> 
-                                        {% elif key == 'Event Date' and k == 'Event Date' %}
+                    <div class="form-group row " >
+                        <div class="form-group row">
+                            {% for key,filter in filter_data.items %}
+                                {% if 'break' in key %}
+                                    <div class="w-100"></div>
+                                {% else %}
+                                    {% if sel_fil_val %}
+                                        {% for k,v in sel_fil_val.items %}
+                                            <!-- {{k}} -->
+                                            <!-- <div>{{ key }}
+                                                <p>{{k}}</p>
+                                            </div> -->
+                                            {% if key == 'E-mail Id' and k == 'E-mail Id' %}   
                                             <div class="col-lg m-2" >
-                                                <input class="form-control" type="date" name="{{key}}" id="event_date"  placeholder="Enter the Event Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                            </div> 
-                                        {% elif key == 'Enrollment No' and k == 'Enrollment No' %}
+                                                <input class="form-control" type="email" name="{{key}}" id="mail_id"  placeholder="Enter the email address" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                            </div>     
+                                            {% elif key == 'Mobile No' and k == 'Mobile No' %}
                                             <div class="col-lg m-2" >
-                                                <input class="form-control" type="number" name="{{key}}" id="event_date"  placeholder="Enter the Event Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                                <input class="form-control" type="number" name="{{key}}" id="mobile_no"  placeholder="Enter the mobile no" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                            </div>                
+                                            {% elif key == 'Award Date' and k == 'Award Date' %}
+                                            <div class="col-lg m-2" >
+                                                <input class="form-control" type="date" name="{{key}}" id="award_date"  placeholder="Enter the Award Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
                                             </div> 
-                                        {% elif key == k %}
-                                        <div class="col-lg m-2">
-                                            <select class="w-100" name="{{key}}"> 
-                                                <option value="-1" class="text-secondary" >Select {{key}}</option>
-                                                {% for value in filter %}
-                                                    {% if v == value and v != -1 %}
-                                                        <option value="{{value}}" selected>{{value}}</option>
-                                                    {% else %}
-                                                        <option value="{{value}}">{{value}}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </select>
-                                        </div>                                    
-                                        {% endif %}
-                                    {% endfor %}
-                                {% elif key == 'E-mail Id'   %}
-                                <div class="col-lg m-2" >
-                                    <input class="form-control" type="email" name="{{key}}" id="mail_id"  placeholder="Enter the email address" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                </div> 
-                                {% elif key == 'Mobile No'%} 
-                                <div class="col-lg m-2" >
-                                    <input class="form-control" type="number" name="{{key}}" id="mail_id"  placeholder="Enter the mobile no" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                </div> 
-                                {% elif key == 'Award Date' %}
-                                <div class="col-lg m-2" style="display: flex;align-items: center;" >
-                                    <label class="col-sm-2 col-form-label text-left" style="width: fit-content;margin-right: 10px;"> {{key}} </label>
-                                    <input class="form-control" type="date" name="{{key}}" id="date_of_award"  style="border-color: rgb(167, 165, 165);height: 30px;width: 84%;">
-                                </div>  
-                                {% elif key == 'Event Date' %}
+                                            {% elif key == 'Event Date' and k == 'Event Date' %}
+                                                <div class="col-lg m-2" >
+                                                    <input class="form-control" type="date" name="{{key}}" id="event_date"  placeholder="Enter the Event Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                                </div> 
+                                            {% elif key == 'Enrollment No' and k == 'Enrollment No' %}
+                                                <div class="col-lg m-2" >
+                                                    <input class="form-control" type="number" name="{{key}}" id="event_date"  placeholder="Enter the Event Date" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                                </div> 
+                                            {% elif key == k %}
+                                            <div class="col-lg m-2">
+                                                <select class="w-100" name="{{key}}"  style="width: 100%;"> 
+                                                    <option value="-1" class="text-secondary" >Select {{key}}</option>
+                                                    {% for value in filter %}
+                                                        {% if v == value and v != -1 %}
+                                                            <option value="{{value}}" selected>{{value}}</option>
+                                                        {% else %}
+                                                            <option value="{{value}}">{{value}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>                                    
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% elif key == 'E-mail Id'   %}
+                                    <div class="col-lg m-2" >
+                                        <input class="form-control" type="email" name="{{key}}" id="mail_id"  placeholder="Enter the email address" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                    </div> 
+                                    {% elif key == 'Mobile No'%} 
+                                    <div class="col-lg m-2" >
+                                        <input class="form-control" type="number" name="{{key}}" id="mail_id"  placeholder="Enter the mobile no" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                    </div> 
+                                    {% elif key == 'Award Date' %}
                                     <div class="col-lg m-2" style="display: flex;align-items: center;" >
                                         <label class="col-sm-2 col-form-label text-left" style="width: fit-content;margin-right: 10px;"> {{key}} </label>
-                                        <input class="form-control" type="date" name="{{key}}" id="event_date"  style="border-color: rgb(167, 165, 165);height: 30px;width: 84%;">
-                                    </div> 
-                                {% elif key == 'Enrollment No' %}
-                                    <div class="col-lg m-2" >
-                                        <input class="form-control" type="number" name="{{key}}" id="eroll_no"  placeholder="Enter the Enrollment No" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
-                                    </div> 
-                                {% else %}
-                                    <div class="col-lg m-2 ">
-                                        <select class="w-100" name="{{key}}"> 
-                                            <option value="-1" class="text-secondary">Select {{key}}</option>
-                                            {% for value in filter %}
-                                                <option value="{{value}}">{{value}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                                        <input class="form-control" type="date" name="{{key}}" id="date_of_award"  style="border-color: rgb(167, 165, 165);height: 30px;width: 84%;">
+                                    </div>  
+                                    {% elif key == 'Event Date' %}
+                                        <div class="col-lg m-2" style="display: flex;align-items: center;" >
+                                            <label class="col-sm-2 col-form-label text-left" style="width: fit-content;margin-right: 10px;"> {{key}} </label>
+                                            <input class="form-control" type="date" name="{{key}}" id="event_date"  style="border-color: rgb(167, 165, 165);height: 30px;width: 84%;">
+                                        </div> 
+                                    {% elif key == 'Enrollment No' %}
+                                        <div class="col-lg m-2" >
+                                            <input class="form-control" type="number" name="{{key}}" id="eroll_no"  placeholder="Enter the Enrollment No" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
+                                        </div> 
+                                    {% else %}
+                                        <div class="col-lg m-2 ">
+                                            <select class="w-100" name="{{key}}"  style="width: 100%;"> 
+                                                <option value="-1" class="text-secondary">Select {{key}}</option>
+                                                {% for value in filter %}
+                                                    <option value="{{value}}">{{value}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}                    
-                    </div>
-                    <div class="m-2 float-right">
+                            {% endfor %}                    
+                        </div>
+                        <!-- <div class="m-2 float-right">
                             <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick = "fillDefaultValuesInform()">Filter</button>
                             <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
                             <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>    
+                        </div> -->
+                        <div class="m-2 float-right">
+                            <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues();showFilters();">Filter</button>
+                            <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit" onclick = "showFilters()">Reset</button>
+                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>   
+                        </div>
                     </div>
+
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
                     <textarea class = "d-none" name="columns_details" id="columns_details" cols="30" rows="10">{{columns_str}}</textarea>
+                    <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                
                 </form>
                 <br>
             </fieldset>
@@ -112,11 +129,12 @@
                                 <input class="w-30 m-1" type="number" name="" id="no_of_col" val="1" required oninput="addStudentColumns(this.value)" min = "0" max = "17" />
                                 <div class="form-group mb-2 align-center" id = "insert_student_Fields" style="margin-top: 20px;"></div>
                                 <textarea id = "fillColumns" name = "columns_details" class="d-none"></textarea>
+                                <textarea class = 'show_filter_data d-none '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                                <textarea class="d-none" name="filter_data" >{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                             </div>
                         </div>
                         <div class="form-group w-100" style = "margin-top : 15px;">
-                            <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Add</button>
-                            <!-- <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showAllStudentsCols()" style="background-color: #052e6a;float:right;">Add All</button> -->
+                            <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Apply</button>
                         </div>
                     </form>
                 </fieldset>
@@ -213,11 +231,13 @@
                                         {% csrf_token %}
                                         <input name = "id_details" class = "d-none" value = "{{student.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                         <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
+                                        <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
                                     </form>
                                     <form action="{% url 'delete_student_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
                                         {% csrf_token %}
                                         <input name = "id_details" class = "d-none" value = "{{student.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                         <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
+                                        <textarea class = 'show_filter_data d-none '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
                                     </form>
                                 </td>
                             </tr>

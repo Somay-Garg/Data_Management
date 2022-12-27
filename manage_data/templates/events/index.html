@@ -1,108 +1,114 @@
 {% extends 'base.html' %}
 {% block body %}
+    {% if msg != '' %}
+        <div class="alert alert-success" id="message-alert">
+            <p>{{msg}}</p>
+        </div>
+    {% endif %}
     <div class="table">
         <div id="wrapper">
-            <br>
-            <h3>Currently viewing {{ header }}</h3>
-            <br>
-            <fieldset class="border border-2 p-2">
+            <div style="display: flex;justify-content: space-between;">
+                <h3>Currently viewing {{ header }}</h3>
+                <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Filter Data</button>
+            </div>
+            
+            <fieldset id = 'filterDataDiv' class="border border-2 p-2 {% if not showFilters %} d-none {% endif %}" >
                 <legend class="float-none w-auto p-2">Filter Data</legend>
                 <form class="overflow-hidden" action="{% url 'filter_event'%}" method="POST">
                     {% csrf_token %}
-                    <div class="form-group row">
-                        {% for key,filter in filter_data.items %}
-                            {% if 'break' in key %}
-                                <div class="w-100"></div>
-                            {% else %}
-                                {% if sel_fil_val %}
-                                    {% for k,v in sel_fil_val.items %}
-                                        {% if key == 'Total Sponsored Amount'  %}                                                    
-                                            <div class="col-lg m-2 d-none">
-                                                <select class="w-100" name="{{key}}"> 
-                                                    <option value="-1" class="text-secondary">Select {{key}}</option>
-                                                    {% for value in filter %}
-                                                        <option value="{{value}}">{{value}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                        {% elif key == k %}
-                                            <div class="col-lg m-2">
-                                                <select class="w-100" name="{{key}}"> 
-                                                    <option value="-1" class="text-secondary" >Select {{key}}</option>
-                                                    {% for value in filter %}
-                                                        {% if v == value and v != -1 %}
-                                                            <option value="{{value}}" selected>{{value}}</option>
-                                                        {% else %}
+                    <!-- <h1>Mansi ->{{showFilters}}</h1>/ -->
+                    <div class = 'form-group row m-2 '>
+                        <div class="form-group row ">
+                            {% for key,filter in filter_data.items %}
+                                {% if 'break' in key %}
+                                    <div class="w-100"></div>
+                                {% else %}
+                                    {% if sel_fil_val %}
+                                        {% for k,v in sel_fil_val.items %}
+                                            {% if key == 'Total Sponsored Amount'  %}                                                    
+                                                <div class="col-lg m-2 d-none">
+                                                    <select class="w-100" name="{{key}}" style="width: 100%;"> 
+                                                        <option value="-1" class="text-secondary">Select {{key}}</option>
+                                                        {% for value in filter %}
                                                             <option value="{{value}}">{{value}}</option>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-                                            
-                                        {% endif %}
-                                    {% endfor %}
-                                {% elif key == 'Total Sponsored Amount' or key == ''  %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            {% elif key == k %}
+                                                <div class="col-lg m-2">
+                                                    <select class="w-100" name="{{key}}" style="width: 100%;"> 
+                                                        <option value="-1" class="text-secondary" >Select {{key}}</option>
+                                                        {% for value in filter %}
+                                                            {% if v == value and v != -1 %}
+                                                                <option value="{{value}}" selected>{{value}}</option>
+                                                            {% else %}
+                                                                <option value="{{value}}">{{value}}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>                                            
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% elif key == 'Total Sponsored Amount' or key == '' %}
                                         <div class="col-lg m-2 d-none">
-                                            <select class="w-100" name="{{key}}"> 
+                                            <select class="w-100" name="{{key}}" style="width: 100%;"> 
                                                 <option value="-1" class="text-secondary">Select {{key}}</option>
                                                 {% for value in filter %}
                                                     <option value="{{value}}">{{value}}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
-                                {% else %}
-                                    <div class="col-lg m-2 ">
-                                        <select class="w-100" name="{{key}}"> 
-                                            <option value="-1" class="text-secondary">Select {{key}}</option>
-                                            {% for value in filter %}
-                                                <option value="{{value}}">{{value}}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
+                                    {% else %}
+                                        <div class="col-lg m-2 ">
+                                            <select class="w-100" name="{{key}}" style="width: 100%;"> 
+                                                <option value="-1" class="text-secondary">Select {{key}}</option>
+                                                {% for value in filter %}
+                                                    <option value="{{value}}">{{value}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        {% endfor %}
-
-                        <!-- ### changes strt #### -->
-                        <div class="form-group row m-2" >
-                            <div class="col-lg m-2" style="padding-left:0px;display: flex; align-items: center;width: 50%;">
-                                <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
-                                margin-right: 10px;"> Minimum Amount: </label>
-                                <input class="form-control" type="number" name="min_amount" id="min_amount"  placeholder="Enter the Minimum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 76%;">
-                            </div> 
-                            <div class="col-lg m-2" style=" display: flex; align-items: center;  width: 50%;">
-                                <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
-                                margin-right: 10px;"> Maximum Amount: </label>
-                                <input  class="form-control" type="number" name="max_amount" id="max_amount" placeholder="Enter the Maximum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 77%;" val="100000000">
-                            </div>
-                        </div>        
-                        <!--###changes-end#### -->
-                        <div class="form-group row m-2" >
-                            <label class="col-sm-2 col-form-label text-left" style="padding-left:7px ;  width:max-content;"> Start From: </label>
-                         
-                            <div class="col-sm-4"  style="width:26.8rem; margin-left:2px;">
-                                <input style="border: 1px solid #9ea0a2;
-                                height: 30px;" class="form-control" type="date" name="after" id="" value="{% if sel_fil_val and sel_fil_val.start_date %}{{sel_fil_val.start_date}}{% endif %}">
-                            </div>
-                            
-                            <label class="col-sm-1 col-form-label text-left" style = "padding-left: 31px;
-                            "> Upto: </label>
-                            <div class="col-sm-4" style="width:28.1rem; margin-left:2px;">
-                                <input class="form-control" type="date" name="upto" id="" value="{% if sel_fil_val and sel_fil_val.end_date %}{{sel_fil_val.end_date}}{% endif %}" style="border: 1px solid #9ea0a2;
-                                height: 30px;">
+                            {% endfor %}
+    
+                            <!-- ### changes strt #### -->
+                            <div class="form-group row m-2" >
+                                <div class="col-lg m-2" style="padding-left:0px;display: flex; align-items: center;width: 50%;">
+                                    <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
+                                    margin-right: 10px;"> Minimum Amount: </label>
+                                    <input class="form-control" type="number" name="min_amount" id="min_amount"  placeholder="Enter the Minimum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 76%;">
+                                </div> 
+                                <div class="col-lg m-2" style=" display: flex; align-items: center;  width: 50%;">
+                                    <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
+                                    margin-right: 10px;"> Maximum Amount: </label>
+                                    <input  class="form-control" type="number" name="max_amount" id="max_amount" placeholder="Enter the Maximum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 77%;" val="100000000">
+                                </div>
+                            </div>        
+                            <!--###changes-end#### -->
+                            <div class="form-group row m-2" >
+                                <div class="col-sm-4" style=" display: flex; align-items: center;  width: 49%;">
+                                    <label class="col-sm-2 col-form-label text-left"> Start From: </label>
+                                    <input style="border: 1px solid #9ea0a2;
+                                    height: 30px;" class="form-control" type="date" name="after" id="" value="{% if sel_fil_val and sel_fil_val.start_date %}{{sel_fil_val.start_date}}{% endif %}">
+                                </div>
+                                
+                                <div class="col-sm-4" style=" display: flex; align-items: center; margin-left: 0.55rem; width: 50%;">
+                                    <label class="col-sm-1 col-form-label text-left"> Upto: </label>
+                                    <input class="form-control" type="date" name="upto" id="" value="{% if sel_fil_val and sel_fil_val.end_date %}{{sel_fil_val.end_date}}{% endif %}" style="border: 1px solid #9ea0a2;
+                                    height: 30px;">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="m-2 float-right">
-                            <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues()">Filter</button>
-                            <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
-                            <!-- export btn changes -->
-                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>
-                            <!-- <button class="btn btn-primary float-right" style="float: right;" name="filter" value="export" type="submit">Export</button> -->
+                        <div class="m-2 float-right">
+                            <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues();showFilters();">Filter</button>
+                            <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit" onclick = "showFilters()">Reset</button>
+                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>                               
+                        </div>
                     </div>
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
                     <textarea class = "d-none" name="columns_details" id="columns_details" cols="30" rows="10">{{columns_str}}</textarea>
+                    <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
                 </form>
                 <br>
             </fieldset>
@@ -117,16 +123,16 @@
                         <div class="form-group mb-2 align-center" >
                             <label class="mx-4 required_asterisk" for="exampleFormControlInput1" id="no_of_columns">No of Columns</label>
                             <input class="w-30 m-1" type="number" name="" id="no_of_cols" val="1" required oninput="addColumns(this.value)" min = "0" max = "14" />
-                            <div class="form-group mb-2 align-center" id = "inputColumns" style="margin-top: 20px;"></div>
+                            <div class="form-group mb-2 align-center" id = "inputColumns" style="margin-top: 20px;" ></div>
                             <textarea id = "fillColumns" name = "columns_details" class="d-none"></textarea>
                         </div>
                     </div>
                     <div class="form-group w-100" style = "margin-top : 15px;">
-                        <!-- <input class="btn  btn-sm" type="submit" value="Add" style="background-color: #080885;color: white;" onclick = "showTable()"/> -->
-                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Add</button>
-                        <!-- <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showAllCols()" style="background-color: #052e6a;float:right;">Add All</button> -->
+                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Apply</button>
+                        <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                        <textarea class="d-none" name="filter_data" >{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     </div>
-                </form>
+                </form> 
             </fieldset>
             <br>
 
@@ -221,14 +227,18 @@
                             <td>       
                                 <form action="{% url 'edit_event' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "d-none" id ='columnsDataform'>
                                     {% csrf_token %}
-                                    <div id = "insertForm"></div>                             
+                                    <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                                    <div id = "insertForm"></div>  
                                 </form>
                                 <textarea name="columns_dets"  class = "d-none" id="columns_dets" cols="30" rows="10" >{{columns_str}}</textarea>   
                                 <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit"  onclick = "submitHiddenForm('{{event.id}}')" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
                                 
                                 <!-- <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span> -->
                                 <form action="{% url 'delete_event_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+
                                     {% csrf_token %}
+                                    <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+
                                     <input name = "id_details" class = "d-none" value = "{{event.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                     <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
                                 </form>
