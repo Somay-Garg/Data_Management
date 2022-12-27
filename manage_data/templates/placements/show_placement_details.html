@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block body%}
+    <div class="container show_placement">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="show_placement">Student Placement Detail Entry</h1>
+        <div class = "div-container">
+            <div style="padding: 18px;margin: 7px;">
+                {% csrf_token %}
+
+                <fieldset class="border border-2 p-3" id="if_placed">
+                    <legend  class="float-none w-auto">Student Details</legend>
+                    <div class="form-group align-center float-child w-100">
+                        <label class="w-29 text-start" style="font-weight: bold;" for="exampleFormControlInput1">Student Name:</label>
+                        <input disabled class="w-65 text-start border-0 bg-white " type="text" name="student_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.name}}">
+                    </div>
+                    <div class="form-group align-center float-child w-100 ">
+                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Enrollment Number:</label>
+                        <input disabled class="w-65 text-start  border-0 bg-white " type="number" name="enrollment_no" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.enrollmentno}}">
+                    </div>
+                    <div class="form-group align-center float-child w-100 ">
+                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Department Name:</label>
+                        <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="department_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.department}}">
+                    </div>
+                    <div class="form-group align-center float-child w-100 ">
+                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Section:</label>
+                        <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="department_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.section}}">
+                    </div>
+                    <div class="form-group align-center float-child w-100 ">
+                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Passout:</label>
+                        <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="department_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{studentDetail.passout}}">
+                    </div>
+                </fieldset>               
+                <br><br>
+
+                {% if studentDetail.is_placed and studentOfferDetail.count %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">If Placed</legend>
+                    <div class="existing_offer_details">
+                        {% for offer in studentOfferDetail %}
+                            <fieldset class="border border-2 p-3 existing_offers remove_offer_{{offer.id}}" id="if_placed">
+                                <legend class="float-none w-auto">Offer - {{ forloop.counter }} Details </legend>
+                                <div class="form-group align-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Company Name:</label>
+                                    <input disabled class="w-65 text-start  border-0 bg-white  company_name" type="text" name="company_name" id="" required style = "height:32px;border-radius: 4px;" value="{{ offer.company_name }}">
+                                </div>
+                                <div class="form-groupalign-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Package in LPA:</label>
+                                    <input disabled class="w-65 text-start  border-0 bg-white  package" type="number" name="package" id="" required style = "height: 32px;border-radius: 4px;" value="{{ offer.package_in_lpa }}">
+                                </div>
+                                <div class="form-group align-center float-child w-100 " id="">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">On/Off Campus:</label>
+                                    <input disabled class="w-65 text-start  border-0 bg-white  package" type="text" name="package" id="" required style = "height: 32px;border-radius: 4px;" value="{{ offer.on_off_campus }}">
+                                </div>
+                                <div class="form-group align-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Uploaded Proof:</label>
+                                    <a href="{% url 'placements/open_offer_proof/' offer.job_proof %}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                                </div>
+                            </fieldset>
+                        {% endfor %}
+                    </div>
+                </fieldset>               
+                <br><br>
+                {% endif %}
+
+                {% if studentDetail.appeared_for_exams and studentExamDetail.count %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Appeared For Any Exam</legend>
+                    <div class="exisiting_exam_details">
+                        {% for exam in studentExamDetail %}
+                            <fieldset class="border border-2 p-3 existing_exams remove_exam_{{exam.id}}" id="">
+                                <legend class="float-none w-auto">Exam - {{ forloop.counter }} Details</legend>
+                                <div class="form-group align-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Name:</label>
+                                    <input disabled class="w-65 text-start  border-0 bg-white  exam_name" type="text" name="exam_name" id="" required style = "height: 32px;
+                                    border-radius: 4px;" value="{{ exam.exam_name }}">
+                                </div>
+                                <div class="form-group align-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Roll Number:</label>
+                                    <input disabled class="w-65 text-start border-0 bg-white exam_roll_no" type="number" name="exam_roll_no" id="" required style = "height: 32px;
+                                    border-radius: 4px;" value="{{ exam.exam_roll_no }}">
+                                </div>
+                                <div class="form-group align-center float-child w-100 ">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Date of Exam:</label>
+                                    <input disabled class="w-65 text-start border-0 bg-white exam_date" type="date" name="exam_date" id="" required style = "height: 32px;
+                                    border-radius: 4px;" value="{{ exam.exam_date }}">
+                                </div>
+                                <div class="form-group align-center float-child w-100 " id="">
+                                    <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Qualified?:</label>
+                                    <input disabled class="w-65 text-start border-0 bg-white exam_date" type="text" name="exam_date" id="" required style = "height: 32px;
+                                    border-radius: 4px;" value="{{ exam.qualified }}">
+                                </div>
+                                
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Score:</label>
+                                        <input disabled class="w-65 text-start  border-0 bg-white  exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
+                                        border-radius: 4px;" value="{{ exam.score }}">
+                                    </div>
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Rank:</label>
+                                        <input disabled class="w-65 text-start  border-0 bg-white  exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
+                                        border-radius: 4px;" value="{{ exam.rank }}">
+                                    </div>
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                      <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Date of Result:</label>
+                                      <input disabled class="w-65 text-start  border-0 bg-white  date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
+                                      border-radius: 4px;" value="{{ exam.date_of_result }}">
+                                  </div>
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}dont_show d-none{% endif %}">
+                                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof: </label>
+                                        <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                                    </div>
+                            </fieldset>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+                <br><br>
+                {% endif %}
+
+                {% if studentDetail.current_status != '' %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Current Status</legend>
+                    <div class="form-group align-center float-child w-100 " id="currentStatusBox">
+                        <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Current Status:</label>
+                        <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'entrance_exam' or studentDetail.current_status == 'entrance_exam' %}Other{% else %}{{studentDetail.current_status}}{% endif %}" disabled>
+                        <br>
+                    </div>
+                    <div class="status_details">
+                        {% if studentDetail.current_status == "Job" %}
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Company Name:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="job_company_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{ studentCurrentStatusDetail.company_name}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Date of Joining:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="date" name="joining_date" id="" required style ="height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.date_of_joining}}">
+                          </div>
+                          <div class="form-group  align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Company Address:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="company_address" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.address}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof(LOJ OR I-Card):</label>
+                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.joining_proof %}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                          </div>
+                        {% elif studentDetail.current_status == "Higher Education" %}
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">College Name:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="college_name" id="" required style = "height: 32px; border-radius: 4px;" value="{{ studentCurrentStatusDetail.college_name }}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Country:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="country" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.country_name }}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">College Address:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="college_address" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.college_address }}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Course Name:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="course_name" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.course_name }}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof(LOJ OR I-Card):</label>
+                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.id_proof %}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                          </div>
+                        {% elif studentDetail.current_status == "Entreprenurship" %}
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Startup Name:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="startup_name" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.startup_name}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Company Address:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="startup_company_address" id="" required style = "height: 32px;
+                            border-radius: 4px;" value="{{ studentCurrentStatusDetail.address}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Country:</label>
+                            <input disabled class="w-65 text-start border-0 bg-white " type="text" name="startup_country" id="" required style = "height: 32px;
+                            border-radius: 4px;" value="{{ studentCurrentStatusDetail.startup_country}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Working Sector:</label>
+                            <input disabled class="w-65 text-start  border-0 bg-white " type="text" name="working_Sector" id="" required style = "height: 32px;border-radius: 4px;" value="{{ studentCurrentStatusDetail.sector}}">
+                          </div>
+                          <div class="form-group align-center float-child w-100 ">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Website Link:</label>
+                            <a href="{{ studentCurrentStatusDetail.website }}" class="w-65 text-start p-0" role="button" target="_blank">{{ studentCurrentStatusDetail.website}}</a>
+                          </div>
+                        {% else %}
+                          <div class="form-group align-center float-child w-100 " id="">
+                            <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Others:</label>
+                            <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'entrance_exam' %}Preparing for Entrance Exam{%elif studentDetail.current_status == 'jobs' %}Jobs{% endif %}" disabled>
+                          </div>
+                        {% endif %}
+                    </div>
+                </fieldset>
+                {% endif %}
+                <br><br>
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <a href="{% url 'placements' %}"><input class="btn btn-sm" type="button" value="Home" style="background-color: #080885;color: white; width: 10rem; "/></a>
+                </div>
+                <textarea class = 'show_filter_data d-none '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+            </div>
+        </div>
+    </div>     
+{% endblock %}

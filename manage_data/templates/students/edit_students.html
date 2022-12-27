@@ -76,11 +76,21 @@
                             team_size
                             level
                             date_of_award -->
-                        {% if  field.name == 'team_size' or field.name == 'level' %}
+                        {% if  field.name == 'level' %}
                             <div class="form-group mb-2 align-center float-child">
                                 <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
                                 {{field}}
                             </div> 
+                        {% elif field.name == 'team_size'%}
+                           
+                        <div class="form-group  align-center float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Team Size</label>
+                            <select class="w-30 m-1" name="team_size" class="form-control" value = {{field.value}} >
+                                <option value="Team" >Team</option>
+                                <option value="Individual" >Individual</option>
+                            </select>
+                        </div>
+    
                         {% elif field.name == 'position'%}
                             <div class="form-group  align-center float-child" >
                                 <label class="w-25 required_asterisk" for="exampleFormControlInput1">Position Obtained</label>
@@ -122,9 +132,10 @@
                  
                  <input type="text" class="d-none" name = "id_details" id = "id_details" value = "{{id}}">          
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>
+                    <input class="btn  btn-sm" type="submit" value="Save" style="background-color: #080885;color: white;"/>
                 </div>
                 <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
+                <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
             </form>
         </div>
     </div>     
