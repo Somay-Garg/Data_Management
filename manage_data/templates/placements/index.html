@@ -7,6 +7,7 @@
     {% endif %}
     <div class="table">
         <div id="wrapper">
+<<<<<<< HEAD
             <div style="display: flex;justify-content: space-between;">
                 <h3>Currently viewing {{ header }}</h3>
                 <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right; margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Filter Data</button>
@@ -56,11 +57,64 @@
                                 <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
                                 <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>
                         </div>
+=======
+            <br>
+            <h3>Currently viewing {{ header }}</h3>
+            <br>
+            <fieldset class="border border-2 p-2">
+                <legend class="float-none w-auto p-2">Filter Data</legend>
+                <form class="overflow-hidden" action="{% url 'placements/filter_placement/'%}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        {% for key,filter in filter_data.items %}
+                            {% if 'break' in key %}
+                                <div class="w-100"></div>
+                            {% else %}
+                                {% if sel_fil_val %}
+                                    {% for k,v in sel_fil_val.items %}
+                                        {% if key == k %}
+                                            <div class="col-lg m-2">
+                                                <select class="w-100" name="{{key}}"> 
+                                                    <option value="-1" class="text-secondary" >Select {{key}}</option>
+                                                    {% for value in filter %}
+                                                        {% if v == value and v != -1 %}
+                                                            <option value="{{value}}" selected>{{value}}</option>
+                                                        {% else %}
+                                                            <option value="{{value}}">{{value}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-lg m-2" style="width: 10px;">
+                                        <select class="w-100" name="{{key}}"> 
+                                            <option value="-1" class="text-secondary">Select {{key}}</option>
+                                            {% for value in filter %}
+                                                <option value="{{value}}">{{value}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="m-2 float-right">
+                            <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues()">Filter</button>
+                            <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit">Reset</button>
+                            <!-- export btn changes -->
+                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>
+>>>>>>> b72dfc27d1c3a30617acd01fb37a01f806d13142
                     </div>
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
                     <textarea class = "d-none" name="columns_details" id="columns_details" cols="30" rows="10">{{columns_str}}</textarea>
+<<<<<<< HEAD
                     <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+=======
+>>>>>>> b72dfc27d1c3a30617acd01fb37a01f806d13142
                 </form>
                 <br>
             </fieldset>

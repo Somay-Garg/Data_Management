@@ -39,12 +39,17 @@ def placements(request,msg=''):
         'display':True,
         'columns_str':columns_str,
         'msg':msg,
+<<<<<<< HEAD
         'showFilters':False,
     }
 
     if context['msg'] == 'Filters Removed.' or context['msg'] == 'Filters Added':
         context['showFilters'] = True
     
+=======
+    }
+
+>>>>>>> b72dfc27d1c3a30617acd01fb37a01f806d13142
     return render(request,'placements/index.html',context)
 
 def display_placement_columns(request,msg=''):
@@ -786,7 +791,6 @@ def show_placement_detail(request,pk,showFilters):
         studentCurrentStatusDetail = StudentCurrentStatusHighEduDetails.objects.get(enrollmentno = studentDetail.enrollmentno)
     if current_status == "Entreprenurship":
         studentCurrentStatusDetail = StudentCurrentStatusEntrepreDetails.objects.get(enrollmentno = studentDetail.enrollmentno)
-
     context = {
         'studentDetail':studentDetail,
         'studentOfferDetail':studentOfferDetail,
