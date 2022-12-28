@@ -17,6 +17,7 @@ def placements(request,msg=''):
     placement_data = StudentPlacement.objects.all().values()
     columns = ['id','enrollmentno','name','department','section','passout']
     columns_str = 'id,enrollmentno,name,department,section,passout'
+    
     filter_data = {
         'Department': set(),
         'Passout Year': set(),
@@ -39,17 +40,12 @@ def placements(request,msg=''):
         'display':True,
         'columns_str':columns_str,
         'msg':msg,
-<<<<<<< HEAD
         'showFilters':False,
     }
 
     if context['msg'] == 'Filters Removed.' or context['msg'] == 'Filters Added':
         context['showFilters'] = True
     
-=======
-    }
-
->>>>>>> b72dfc27d1c3a30617acd01fb37a01f806d13142
     return render(request,'placements/index.html',context)
 
 def display_placement_columns(request,msg=''):
