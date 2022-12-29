@@ -13,7 +13,7 @@
             </div>
             <fieldset id = 'filterDataDiv'  class="border border-2 p-2 {% if not showFilters %} d-none {% endif %}">
                 <legend class="float-none w-auto p-2">Filter Data</legend>
-                <form class="overflow-hidden" action="{% url 'filter_student' %}" method="POST">
+                <form class="overflow-hidden" action="" method="POST">
                     {% csrf_token %}
                     <div class="form-group row " >
                         <div class="form-group row">
@@ -23,10 +23,6 @@
                                 {% else %}
                                     {% if sel_fil_val %}
                                         {% for k,v in sel_fil_val.items %}
-                                            <!-- {{k}} -->
-                                            <!-- <div>{{ key }}
-                                                <p>{{k}}</p>
-                                            </div> -->
                                             {% if key == 'E-mail Id' and k == 'E-mail Id' %}   
                                             <div class="col-lg m-2" >
                                                 <input class="form-control" type="email" name="{{key}}" id="mail_id"  placeholder="Enter the email address" style="border-color: rgb(167, 165, 165);height: 30px; width: 100%;">
@@ -183,61 +179,46 @@
                             {% endfor %}
                             <th style="color: white;">Action</th>
                         </tr>
-                        {% for student in students_data %}
-                            <tr class="table-light" id = "event_row_id_{{event.id}}">
+                        {% for event in event_data %}
+                        <!-- <h1>{{event}}</h1> -->
+                            <tr class="table-light" >
                                 <td>{{ forloop.counter }}</td>
                                 {% for col in columns %}
-                                    {% if col == 'name' %}
-                                        <td class="event_name_col" >{{ student.name }}</td>
-                                    {% elif col == 'eroll_no' %}
-                                        <td class="eroll_no_col">{{ student.eroll_no }}</td>
-                                    {% elif col == 'semester' %}
-                                        <td class="semester_col" >{{ student.semester }}</td>
-                                    {% elif col == 'Departments' %}
-                                        <td class="Departments_col" >{{ student.Departments }}</td>
-                                    {% elif col == 'Class' %}
-                                        <td class="Class_col" >{{ student.Class }}</td>
-                                    {% elif col == 'organized_by' %}
-                                        <td class="organized_by_col" >{{ student.organized_by }}</td>
-                                    {% elif col == 'mobile_no' %}
-                                        <td class="mobile_no_col" >{{ student.mobile_no }}</td>
-                                    {% elif col == 'mail_id' %}
-                                        <td class="mail_id_col" >{{ student.mail_id }}</td>
+                                    {% if col == 'organized_by' %}
+                                        <td class="organized_by_col" >{{ event.organized_by }}</td>
                                     {% elif col == 'event_name' %}
-                                        <td class="event_name_col" >{{ student.event_name }}</td>
+                                        <td class="event_name_col" >{{ event.event_name }}</td>
                                     {% elif col == 'event_type' %}
-                                        <td class="event_type_col" >{{ student.event_type }}</td>
+                                        <td class="event_type_col" >{{ event.event_type }}</td>
                                     {% elif col == 'event_date' %}
-                                        <td class="event_date_col" >{{ student.event_date }}</td>
+                                        <td class="event_date_col" >{{ event.event_date }}</td>
                                     {% elif col == 'host_institute' %}
-                                        <td class="host_institute_col" >{{ student.host_institute }}</td>
+                                        <td class="host_institute_col" >{{ event.host_institute }}</td>
                                     {% elif col == 'position' %}
-                                        <td class="team_size_col" >{{ student.position }}</td>
+                                        <td class="team_size_col" >{{ event.position }}</td>
                                     {% elif col == 'team_size' %}
-                                        <td class="team_size_col" >{{ student.team_size }}</td>
+                                        <td class="team_size_col" >{{ event.team_size }}</td>
                                     {% elif col == 'level' %}
-                                        <td class="level_col" >{{ student.level }}</td>
+                                        <td class="level_col" >{{ event.level }}</td>
                                     {% elif col == 'date_of_award' %}
-                                        <td class="date_of_award_col" >{{ student.date_of_award }}</td>
+                                        <td class="date_of_award_col" >{{ event.date_of_award }}</td>
                                     {% elif col == 'upload_proof' %}
-                                        <!-- <td class="upload_proof_col" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></td> -->
-                                        <td class="upload_proof_col" ><a href="{% url 'open_file_proof' student.upload_proof %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
-                                    {% endif %}
+                                        
+                                        <td class="upload_proof_col" ><a href="" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>   
+                                    {% endif %}   
                                 {% endfor %}
-                                <td>                                 
-                                    <!-- <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button> -->
-                                    <!-- <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span> -->
-                                    <form action="{% url 'edit_student_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+                                <td>     
+                                    <form action="" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
                                         {% csrf_token %}
                                         <input name = "id_details" class = "d-none" value = "{{student.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                         <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
                                         <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
                                     </form>
-                                    <form action="{% url 'delete_student_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+                                    <form action="{%url 'delete_student_entry' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
                                         {% csrf_token %}
-                                        <input name = "id_details" class = "d-none" value = "{{student.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
+                                        <input name = "id_details" class = "d-none" value = "{{event.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
                                         <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
-                                        <textarea class = 'show_filter_data d-none '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                                        <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
                                     </form>
                                 </td>
                             </tr>

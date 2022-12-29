@@ -25,6 +25,24 @@ function addSponsors(spon) {
   }
 }
 
+function uploadPDF(){
+  $("input[type='file']").each(function(){
+    $(this).on('change',function(){
+      myFile = $(this).val();
+        console.log(myFile);
+      var upld = myFile.split('.').pop();
+      if(upld=='pdf'){
+        alert("File uploaded is pdf")
+      }else{
+        alert("Only PDF are allowed")
+        $(this).val('');
+      }
+
+    });
+  });
+}
+
+
 function addColumns(cols) {
   let ncols = parseInt(cols);
   if(ncols >14){
@@ -145,6 +163,8 @@ $(document).ready(function () {
     $(this).select2();
   });
 
+  // upload pdf only 
+    uploadPDF();
   // Report sidebar start
     $('#sidebarCollapse').on('click', function () {
       $('#sidebar').toggleClass('active');
@@ -327,7 +347,9 @@ $(document).ready(function () {
         let child = document.createElement("div");
         child.innerHTML = template;
         parentDiv.appendChild(child);
+
       } 
+      uploadPDF();
     }
   });
 
@@ -470,10 +492,6 @@ function fillDefaultValues(){
 
 }
 
-function showAllCols(){
-  $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
-  $("#no_of_cols").val('14');
-}
 
 // ----------------------Report JS Code Start -------------------------
 
@@ -677,6 +695,8 @@ function AddMemberDetails(size){
     </fieldset> <br>   
     `
         $("#insert_member_details").append(tmp);
+        
+
     }
 }
 
@@ -786,7 +806,7 @@ function offerDetails(noOfOffers){
     let offer = `
     <br>
       <fieldset class="border border-2 p-3 offer_detail" id="if_placed">
-        <legend class="float-none w-auto">Offer - `+ (i+1) +` Details</legend>
+        <legend class="float-none w-auto">Offer - ${i+1} Details</legend>
         <div class="form-group  align-center float-child">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
           <input class="w-30 company_name" type="text" name="company_name" id="" required style = "height: 32px;
@@ -812,6 +832,7 @@ function offerDetails(noOfOffers){
     `;
     $('.offer_details').append(offer);
   }
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -848,7 +869,7 @@ function examDetails(noOfExams){
     let unique_id = Math.random().toString(16).slice(2);
     let offer = `<br>
       <fieldset class="border border-2 p-3 exam_detail" id="">
-        <legend class="float-none w-auto">Exam - `+ (i+1) +` Details</legend>
+        <legend class="float-none w-auto">Exam - ${i+1} Details</legend>
         <div class="form-group  align-center float-child">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Name</label>
           <input class="w-30 exam_name" type="text" name="exam_name" id="" required style = "height: 32px;
@@ -866,28 +887,28 @@ function examDetails(noOfExams){
         </div>
         <div class="form-group align-center float-child" id="">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Qualified?</label>
-          <select class="m-1 w-30 qualified" id=`+ unique_id +` onchange="examResultDeclared(this.id)">
+          <select class="m-1 w-30 qualified" id=${unique_id} onchange="examResultDeclared(this.id)">
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="not_declared" selected>Not Declared</option>
           </select>
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
           <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
           <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
           <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlFile1">Result Proof</label>
           <input class="w-30 m-1 result_proof" type="file" name="result_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
         </div>
@@ -895,6 +916,7 @@ function examDetails(noOfExams){
     `;
     $('.exam_details').append(offer);
   }
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -1022,6 +1044,7 @@ function showStatusForm(status){
     `;
   }
   $('.status_details').html(status_details);
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -1235,5 +1258,7 @@ function addCountryNames(country){
   $('.country').each(function(){
     $(this).html(countrySelectData);
   });
+  
+
 }
 // --------------------------Placement JS Code End------------------------------

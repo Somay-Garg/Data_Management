@@ -61,25 +61,25 @@ streamchoices = (
 class Student(models.Model):
     type = models.CharField(max_length=10, choices= typechoices ,default='Regular')
     enrollmentno = models.IntegerField(null = True, default=None , blank=True)
-    name = models.CharField(max_length=100, default=False)
+    name = models.CharField(max_length=100, blank=False)
     management = models.BooleanField(default = False)
-    yearofadmission = models.DateTimeField(default=False)
-    appno = models.CharField(default=False, max_length=200)
-    Fname = models.CharField(max_length=200, default=False)
-    Mname = models.CharField(max_length=200, default=False)
-    stream = models.CharField(max_length=200, choices= streamchoices,default=False)
-    DOB = models.DateField(default=False)
-    gender = models.CharField(max_length=50,choices= genderchoices ,default=False)
-    category = models.CharField(max_length=5,choices= categorychoices ,default=False)
-    subcategory = models.CharField(max_length=10, choices= subcategorychoices ,default=False)
-    region = models.CharField(max_length=50,choices= regionchoices ,default=False)
+    yearofadmission = models.DateTimeField(blank=False)
+    appno = models.CharField(blank=False, max_length=200)
+    Fname = models.CharField(max_length=200, blank=False)
+    Mname = models.CharField(max_length=200, blank=False)
+    stream = models.CharField(max_length=200, choices= streamchoices,blank=False)
+    DOB = models.DateField(blank=False)
+    gender = models.CharField(max_length=50,choices= genderchoices ,blank=False)
+    category = models.CharField(max_length=5,choices= categorychoices ,blank=False)
+    subcategory = models.CharField(max_length=10, choices= subcategorychoices ,blank=False)
+    region = models.CharField(max_length=50,choices= regionchoices ,blank=False)
     rank = models.IntegerField(null = True, default=None , blank=True)
-    allottedquota = models.CharField(max_length=10,choices= allotedquotachoices, default=False)
-    allottedcategory = models.CharField(max_length=10,choices= allottedcategorychoices, default=False)
+    allottedquota = models.CharField(max_length=10,choices= allotedquotachoices, blank=False)
+    allottedcategory = models.CharField(max_length=10,choices= allottedcategorychoices, blank=False)
     studentmobile = models.IntegerField(null = True, default=None , blank=True)
-    emailid = models.EmailField(max_length=20, default=False)
+    emailid = models.EmailField(max_length=20, blank=False)
     fathermobile = models.IntegerField(null = True, default=None , blank=True)
-    address = models.CharField(max_length=200, default=False)
+    address = models.CharField(max_length=200, blank=False)
     aggregate = models.FloatField(null = True, default=None , blank=True)
     pcm = models.FloatField(null = True, default=None , blank=True)
 
@@ -108,10 +108,10 @@ statusChoices = (
 
 class StudentPlacement(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=True)
-    name = models.CharField(max_length=100, default=False)
-    department = models.CharField(max_length=200, choices= streamchoices,default=False)
-    section = models.CharField(max_length=15,choices=sectionChoices,default=False)
-    passout = models.DateField(default=False)
+    name = models.CharField(max_length=100, blank=False)
+    department = models.CharField(max_length=200, choices= streamchoices,blank=False)
+    section = models.CharField(max_length=15,choices=sectionChoices,blank=False)
+    passout = models.DateField(blank=False)
     is_placed = models.BooleanField(blank=False,default=False)
     appeared_for_exams = models.BooleanField(blank=False,default=False)
     current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default=None)
@@ -121,7 +121,7 @@ class StudentPlacement(models.Model):
 
 class StudentOfferDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    company_name = models.CharField(max_length=100, default=False)
+    company_name = models.CharField(max_length=100, blank=False)
     package_in_lpa = models.IntegerField(default=None,blank=False)
     on_off_campus = models.CharField(max_length=15, default=None, blank=False)
     job_proof = models.CharField(max_length=255,blank=False)
@@ -131,10 +131,10 @@ class StudentOfferDetails(models.Model):
 
 class StudentExamDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    exam_name = models.CharField(max_length=100, default=False)
+    exam_name = models.CharField(max_length=100, blank=False)
     exam_roll_no = models.BigIntegerField(default=None,blank=False)
     exam_date = models.DateField(blank=False)
-    qualified = models.CharField(max_length=20, default=False)
+    qualified = models.CharField(max_length=20, blank=False)
     score = models.IntegerField(default=None,blank=True ,null=True)
     rank = models.IntegerField(default=None,blank=True,null=True)
     date_of_result = models.DateField(blank=True,null=True)
@@ -145,9 +145,9 @@ class StudentExamDetails(models.Model):
 
 class StudentCurrentStatusJobDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    company_name = models.CharField(max_length=100, default=False)
+    company_name = models.CharField(max_length=100, blank=False)
     date_of_joining = models.DateField(blank=False)
-    address = models.CharField(max_length=255, default=False)
+    address = models.CharField(max_length=255, blank=False)
     joining_proof = models.CharField(max_length=255,blank=True)
 
     def _str_(self):
@@ -155,10 +155,10 @@ class StudentCurrentStatusJobDetails(models.Model):
 
 class StudentCurrentStatusHighEduDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    college_name = models.CharField(max_length=100, default=False)
-    course_name = models.CharField(max_length=100, default=False)
-    country_name = models.CharField(max_length=100, default=False)
-    college_address = models.CharField(max_length=255, default=False)
+    college_name = models.CharField(max_length=100, blank=False)
+    course_name = models.CharField(max_length=100, blank=False)
+    country_name = models.CharField(max_length=100, blank=False)
+    college_address = models.CharField(max_length=255, blank=False)
     id_proof = models.CharField(max_length=255,blank=True)
 
     def _str_(self):
@@ -166,10 +166,10 @@ class StudentCurrentStatusHighEduDetails(models.Model):
 
 class StudentCurrentStatusEntrepreDetails(models.Model):
     enrollmentno = models.IntegerField(null = True, default=None , blank=False)
-    startup_name = models.CharField(max_length=100, default=False)
-    address = models.CharField(max_length=255, default=False)
-    startup_country = models.CharField(max_length=100, default=False)
-    sector = models.CharField(max_length=100, default=False)
+    startup_name = models.CharField(max_length=100, blank=False)
+    address = models.CharField(max_length=255, blank=False)
+    startup_country = models.CharField(max_length=100, blank=False)
+    sector = models.CharField(max_length=100, blank=False)
     website = models.URLField(max_length=200)
 
     def _str_(self):

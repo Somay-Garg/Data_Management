@@ -25,10 +25,10 @@ urlpatterns = [
     path('display_students_table',display_students_table,name = 'display_students_table'),
     path('add_student',add_student,name = 'add_student'),
     path('delete_student_entry',delete_student_entry,name = 'delete_student_entry'),
-    path('edit_student_entry',edit_student_entry,name = 'edit_student_entry'),
-    path('save_student_entry/<int:pk>',save_student_entry,name = 'save_student_entry'),
-    path('open_file_proof/<str:file>',open_file_proof,name='open_file_proof'),
-    path('filter_student',filter_student,name = 'filter_student'),
+    # path('edit_student_entry',edit_student_entry,name = 'edit_student_entry'),
+    # path('save_student_entry/<int:pk>',save_student_entry,name = 'save_student_entry'),
+    # path('open_file_proof/<str:file>',open_file_proof,name='open_file_proof'),
+    # path('filter_student',filter_student,name = 'filter_student'),
     # students url end
 
     # Placements URLs
@@ -43,9 +43,6 @@ urlpatterns = [
 
 
     path('placements/show_placement_detail/<int:pk>/<str:showFilters>',show_placement_detail,name="placements/show_placement_detail/"),
-
-
-
     path('placements/open_offer_proof/<str:file>/',open_offer_proof,name="placements/open_offer_proof/"),
     path('placements/open_exam_proof/<str:file>/',open_exam_proof,name="placements/open_exam_proof/"),
     path('placements/open_current_status_proof/<str:file>/',open_current_status_proof,name="placements/open_current_status_proof/"),

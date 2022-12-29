@@ -113,14 +113,14 @@
                     {% for field in form %}
                             {% if field.name == "upload_proof"  %}
                             <div class="form-group align-center float-child" style="height: 8rem;" >
-                                <label for="id_{{ field.name }}" class="w-25 required_asterisk" style="margin-left: 3.5rem;"> {{ field.label }} </label>
+                                <label for="id_{{ field.name }}" class="w-25 d-grid required_asterisk" style="margin-left: 3.5rem;"> {{ field.label }} <sub ><strong>(Max Size 5mb)</strong></sub></label>
                                 <div id = "attendance_div" style="margin-left:5rem">
                                     <div style="display: flex;align-items: center;justify-content: space-between;">
                                         <label for="">Previously Uploaded :</label>
                                         <label for="">{{field.value}}</label>
                                     </div>
                                     <div style="display: flex;align-items: center;justify-content: center;"> 
-                                        <label for="">Change File</label>
+                                        <label for="">Change File </label>
                                         <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
                                     </div>                                    
                                 </div>

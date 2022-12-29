@@ -1,31 +1,6 @@
 from django.db import models
 
-class Students(models.Model):
-    name = models.CharField(max_length=255,blank=False)
-    eroll_no = models.IntegerField(blank=False)
-    semester = models.IntegerField(blank=False)
-    departments = (
-            ('CSE','CSE'),
-            ('IT','IT'),
-            ('ECE','ECE'),
-            ('EEE','EEE'),
-            ('Applied Science','Applied Science'),
-            ('All','All'),
-            ('None','None'),
-        )
-   
-    Departments = models.CharField(max_length=255,choices=departments,blank=False,default="None")
-    
-    classOptions = (
-        ('I','I'),
-        ('II','II'),
-        ('III','III'),
-        ('Evening','Evening'),
-    )
-    
-    Class = models.CharField(max_length=255,choices=classOptions)
-    mobile_no = models.IntegerField(blank=False)
-    mail_id = models.EmailField(blank=False)
+class Event(models.Model):
     event_name = models.CharField(max_length=255,blank=False)
     type_of_event = (
         ('Cultural','Cultural'),
@@ -61,3 +36,31 @@ class Students(models.Model):
     level = models.CharField(max_length=30,choices=level_of_comp,blank=False,default="College")
     date_of_award = models.DateField()
     upload_proof = models.CharField(max_length=255,blank=False)
+
+class Students(models.Model):
+    name = models.CharField(max_length=255,blank=False)
+    eroll_no = models.IntegerField(blank=False)
+    semester = models.IntegerField(blank=False)
+    departments = (
+            ('CSE','CSE'),
+            ('IT','IT'),
+            ('ECE','ECE'),
+            ('EEE','EEE'),
+            ('Applied Science','Applied Science'),
+            ('All','All'),
+            ('None','None'),
+        )
+   
+    Departments = models.CharField(max_length=255,choices=departments,blank=False,default="None")
+    
+    classOptions = (
+        ('I','I'),
+        ('II','II'),
+        ('III','III'),
+        ('Evening','Evening'),
+    )
+    
+    Class = models.CharField(max_length=255,choices=classOptions)
+    mobile_no = models.IntegerField(blank=False)
+    mail_id = models.EmailField(blank=False)
+    event_id = models.IntegerField()
