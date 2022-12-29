@@ -18,34 +18,28 @@ def display_students(request,msg=''):
     columns_str = 'id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,position,team_size,level,date_of_award,upload_proof'
     
     filter_data = {
-        'Name': set(),
-        'Semester':set(),
+        'Event Name':set(),
+        'Event Type':set(),
         'break1':1,
-        'Departments':set(),
+        'Semester':set(),
         'Class':set(),
         'break2':1,
-        'Organized By':set(),
-        'Event Name':set(),
+        'Enrollment No':set(),
+        'Departments':set(),
         'break3':1,
-        'Event Type':set(),
+        'Organized By':set(),
         'Host Institute':set(),
         'break4':1,
         'Position Obtained':set(),
         'Team Size':set(),
         'break5':1,
-        'Level':set(),    
-        'E-mail Id':set(),
-        'break6':1,
-        'Mobile No':set(),
-        'Enrollment No':set(),
-        'break7':1,
         'Award Date':set(),
         'Event Date':set(),
+        'break6':1,
+        'Level':set(),    
     }
 
     for student in students_data:
-        filter_data['Name'].add(student['name'])
-        filter_data['E-mail Id'].add(student['mail_id'])
         filter_data['Semester'].add(student['semester'])
         filter_data['Departments'].add(student['Departments'])
         filter_data['Class'].add(student['Class'])
@@ -58,9 +52,7 @@ def display_students(request,msg=''):
         filter_data['Level'].add(student['level'])
         filter_data['Event Date'].add(student['event_date'])
         filter_data['Award Date'].add(student['date_of_award'])
-        filter_data['Mobile No'].add(student['mobile_no'])
         filter_data['Enrollment No'].add(student['eroll_no'])
-        filter_data['E-mail Id'].add(student['mail_id'])
 
     context = {
         'fields' : fields,
@@ -92,34 +84,28 @@ def display_students_table(request,msg=''):
     students_data_all = Students.objects.all().values()
 
     filter_data = {
-        'Name': set(),
-        'Semester':set(),
+        'Event Name':set(),
+        'Event Type':set(),
         'break1':1,
-        'Departments':set(),
+        'Semester':set(),
         'Class':set(),
         'break2':1,
-        'Organized By':set(),
-        'Event Name':set(),
+        'Enrollment No':set(),
+        'Departments':set(),
         'break3':1,
-        'Event Type':set(),
+        'Organized By':set(),
         'Host Institute':set(),
         'break4':1,
         'Position Obtained':set(),
         'Team Size':set(),
         'break5':1,
-        'Level':set(),    
-        'E-mail Id':set(),
-        'break6':1,
-        'Mobile No':set(),
-        'Enrollment No':set(),
-        'break7':1,
         'Award Date':set(),
         'Event Date':set(),
+        'break6':1,
+        'Level':set(),    
     }
 
     for student in students_data_all:
-        filter_data['Name'].add(student['name'])
-        filter_data['E-mail Id'].add(student['mail_id'])
         filter_data['Semester'].add(student['semester'])
         filter_data['Departments'].add(student['Departments'])
         filter_data['Class'].add(student['Class'])
@@ -132,10 +118,8 @@ def display_students_table(request,msg=''):
         filter_data['Level'].add(student['level'])
         filter_data['Event Date'].add(student['event_date'])
         filter_data['Award Date'].add(student['date_of_award'])
-        filter_data['Mobile No'].add(student['mobile_no'])
         filter_data['Enrollment No'].add(student['eroll_no'])
-        filter_data['E-mail Id'].add(student['mail_id'])
-    
+
     students_data = ''
     if 'filter_data' in request.POST:
         filterData = request.POST['filter_data']
@@ -146,7 +130,6 @@ def display_students_table(request,msg=''):
         else:
             filterData = json.loads(filterData)
             print(filterData)
-            name = filterData['Name']
             semester = filterData['Semester']
             Departments = filterData['Departments']
             Class = filterData['Class']
@@ -157,14 +140,12 @@ def display_students_table(request,msg=''):
             position =filterData['Position Obtained']
             team_size = filterData['Team Size']
             level = filterData['Level']
-            mail_id = filterData['E-mail Id']
             eroll_no = filterData['Enrollment No']
-            mobile_no = filterData['Mobile No']
             date_of_award = filterData['Award Date']
             event_date = filterData['Event Date']
 
-            if(name != '-1'):
-                query = query & Q(name = name)
+            if( event_name != '-1'):
+                query = query & Q(event_name = event_name)
             if( semester != '-1'):
                 query = query & Q(semester = semester)
             if( Departments != '-1'):
@@ -183,12 +164,8 @@ def display_students_table(request,msg=''):
                 query = query & Q(team_size = team_size)
             if( level != '-1'):
                 query = query & Q(level = level)
-            if( mail_id != '-1' and mail_id != ''):
-                query = query & Q(mail_id = mail_id)
             if( eroll_no != '-1' and eroll_no != ''):
                 query = query & Q(eroll_no = eroll_no)
-            if( mobile_no != '-1' and mobile_no != ''):
-                query = query & Q(mobile_no = mobile_no)
             if( event_date != '-1' and event_date != ''):
                 query = query & Q(event_date = event_date)
             if( date_of_award != '-1' and date_of_award != ''):
@@ -230,7 +207,6 @@ def filter_student(request):
         if('columns_details' in request.POST and request.POST['columns_details'] != ''):
             columns = request.POST['columns_details'].split(",")
         
-        name = request.POST['Name']
         semester = request.POST['Semester']
         Departments = request.POST['Departments']
         Class = request.POST['Class']
@@ -241,43 +217,35 @@ def filter_student(request):
         position = request.POST['Position Obtained']
         team_size = request.POST['Team Size']
         level = request.POST['Level']
-        mail_id = request.POST['E-mail Id']
         eroll_no = request.POST['Enrollment No']
-        mobile_no = request.POST['Mobile No']
         date_of_award = request.POST['Award Date']
         event_date = request.POST['Event Date']
         
         students_data_all = Students.objects.all().values()
 
         filter_data = {
-            'Name': set(),
-            'Semester':set(),
+            'Event Name':set(),
+            'Event Type':set(),
             'break1':1,
-            'Departments':set(),
+            'Semester':set(),
             'Class':set(),
             'break2':1,
-            'Organized By':set(),
-            'Event Name':set(),
+            'Enrollment No':set(),
+            'Departments':set(),
             'break3':1,
-            'Event Type':set(),
+            'Organized By':set(),
             'Host Institute':set(),
             'break4':1,
             'Position Obtained':set(),
             'Team Size':set(),
             'break5':1,
-            'Level':set(),    
-            'E-mail Id':set(),
-            'break6':1,
-            'Mobile No':set(),
-            'Enrollment No':set(),
-            'break7':1,
             'Award Date':set(),
             'Event Date':set(),
+            'break6':1,
+            'Level':set(),    
         }
 
         for student in students_data_all:
-            filter_data['Name'].add(student['name'])
-            filter_data['E-mail Id'].add(student['mail_id'])
             filter_data['Semester'].add(student['semester'])
             filter_data['Departments'].add(student['Departments'])
             filter_data['Class'].add(student['Class'])
@@ -290,14 +258,10 @@ def filter_student(request):
             filter_data['Level'].add(student['level'])
             filter_data['Event Date'].add(student['event_date'])
             filter_data['Award Date'].add(student['date_of_award'])
-            filter_data['Mobile No'].add(student['mobile_no'])
             filter_data['Enrollment No'].add(student['eroll_no'])
-            filter_data['E-mail Id'].add(student['mail_id'])
-
+        
         query = Q()        
         sel_fil_val = {
-            'Name': '-1',
-            'E-mail Id':'-1',
             'Semester':'-1',
             'Departments':'-1',
             'Class':'-1',
@@ -310,14 +274,13 @@ def filter_student(request):
             'Level':'-1',  
             'Event Date' :'-1',
             'Award Date' :'-1',
-            'Mobile No' :'-1',
             'Enrollment No' :'-1',
-            'E-mail Id' :'-1',
         }
         
-        if(name != '-1'):
-            query = query & Q(name = name)
-            sel_fil_val['Name'] = name
+        
+        if( event_name != '-1'):
+            query = query & Q(event_name = event_name)
+            sel_fil_val['Event Name'] = event_name
         if( semester != '-1'):
             query = query & Q(semester = semester)
             sel_fil_val['Semester'] = semester
@@ -345,16 +308,11 @@ def filter_student(request):
         if( level != '-1'):
             query = query & Q(level = level)
             sel_fil_val['Level'] = level
-        if( mail_id != '-1' and mail_id != ''):
-            query = query & Q(mail_id = mail_id)
-            sel_fil_val['E-mail Id'] = mail_id
+        
         if( eroll_no != '-1' and eroll_no != ''):
             query = query & Q(eroll_no = eroll_no)
             sel_fil_val['Enrollment No'] = eroll_no
-        if( mobile_no != '-1' and mobile_no != ''):
-            print("mobile",mobile_no)
-            query = query & Q(mobile_no = mobile_no)
-            sel_fil_val['Mobile No'] = mobile_no
+        
         if( event_date != '-1' and event_date != ''):
             query = query & Q(event_date = event_date)
             sel_fil_val['Event Date'] = event_date
@@ -363,7 +321,7 @@ def filter_student(request):
             sel_fil_val['Award Date'] = date_of_award
         
         students_data = Students.objects.filter(query).values()
-        print("hello",query)
+        # print("hello",query)
 
         fields = Students._meta.fields
 
@@ -389,7 +347,13 @@ def filter_student(request):
 # add a new student entry
 def add_student(request):    
     if request.method == "POST":
-        member_details_data = request.POST['member_details_data']
+        name = request.POST['name']
+        eroll_no = request.POST['eroll_no']
+        semester = request.POST['semester']
+        Class = request.POST['Class']
+        mobile_no = request.POST['mobile_no']
+        Departments = request.POST['Departments']
+        mail_id = request.POST['mail_id']
         event_name = request.POST['event_name']
         event_type = request.POST['event_type']
         event_date = request.POST['event_date']
@@ -404,36 +368,30 @@ def add_student(request):
 
         if request.method == 'POST' and request.FILES['upload_proof']:
             upload_proof = request.FILES['upload_proof']
-            # print("heelloo")
             fs = FileSystemStorage(location='proof/award_proof/')
             filename = fs.save(now.strftime("%H%M%S")+"_"+upload_proof.name, upload_proof)
             uploaded_file_url = fs.url(filename)
             upload_proof = uploaded_file_url.split('/')[-1]
-      
-        if member_details_data != '':
-            member_details_data = json.loads(member_details_data)
-            
-            for key in member_details_data:
-                student = Students()
-                student.name = member_details_data[key]['student_name']
-                student.eroll_no = member_details_data[key]['eroll_no']
-                student.semester = member_details_data[key]['semester']
-                student.Class = member_details_data[key]['class']
-                student.Departments = member_details_data[key]['department']
-                student.mail_id = member_details_data[key]['email_id']
-                student.mobile_no = member_details_data[key]['mobile_no']
-                student.event_date = event_date
-                student.event_name = event_name
-                student.event_type = event_type
-                student.organized_by = organized_by
-                student.host_institute = host_institute
-                student.position = position
-                student.level = level
-                student.date_of_award = date_of_award
-                student.team_size = team_size
-                student.upload_proof = upload_proof
-                student.save()
-                # print('details saved')
+         
+        student = Students()
+        student.name = name
+        student.eroll_no = eroll_no
+        student.semester = semester
+        student.Class = Class
+        student.Departments =Departments
+        student.mail_id = mail_id
+        student.mobile_no = mobile_no
+        student.event_date = event_date
+        student.event_name = event_name
+        student.event_type = event_type
+        student.organized_by = organized_by
+        student.host_institute = host_institute
+        student.position = position
+        student.level = level
+        student.date_of_award = date_of_award
+        student.team_size = team_size
+        student.upload_proof = upload_proof
+        student.save()                
         return display_students(request,'Details Added')
     else:
         return render(request,'students/addStudent.html',{})
@@ -442,12 +400,10 @@ def add_student(request):
 def delete_student_entry(request):
     if request.method == "POST":
         id = request.POST['id_details']
-        columns = request.POST['columns_details'].split(',')
-        # item = get_object_or_404(Students,pk=id)
-        # fs_proof = FileSystemStorage(location='proof/award_proof/')
-        # path_ = str(item.upload_proof)
-        # print("helo",path_)
-        # fs_proof.delete(path_)
+        item = get_object_or_404(Students,pk=id)
+        fs_proof = FileSystemStorage(location='proof/award_proof/')
+        path_ = str(item.upload_proof)
+        fs_proof.delete(path_)
         Students.objects.filter(id=id).delete()
         return display_students_table(request,'Entry Deleted')
     else:
@@ -523,8 +479,6 @@ def export_data(request):
         query2 = Q()
     else:
         filter_data = json.loads(filter_data)
-        
-        name = request.POST['Name']
         semester = request.POST['Semester']
         Departments = request.POST['Departments']
         Class = request.POST['Class']
@@ -535,14 +489,10 @@ def export_data(request):
         position = request.POST['Position Obtained']
         team_size = request.POST['Team Size']
         level = request.POST['Level']
-        mail_id = request.POST['E-mail Id']
         eroll_no = request.POST['Enrollment No']
-        mobile_no = request.POST['Mobile No']
         date_of_award = request.POST['Award Date']
         event_date = request.POST['Event Date']
 
-        if(name != '-1'):
-            query = query & Q(name = name)
         if( semester != '-1'):
             query = query & Q(semester = semester)
         if( Departments != '-1'):
@@ -561,12 +511,10 @@ def export_data(request):
             query = query & Q(team_size = team_size)
         if( level != '-1'):
             query = query & Q(level = level)
-        if( mail_id != '-1' and mail_id != ''):
-            query = query & Q(mail_id = mail_id)
+        if( event_name != '-1' and event_name != ''):
+            query = query & Q(event_name = event_name)
         if( eroll_no != '-1' and eroll_no != ''):
             query = query & Q(eroll_no = eroll_no)
-        if( mobile_no != '-1' and mobile_no != ''):
-            query = query & Q(mobile_no = mobile_no)
         if( event_date != '-1' and event_date != ''):
             query = query & Q(event_date = event_date)
         if( date_of_award != '-1' and date_of_award != ''):

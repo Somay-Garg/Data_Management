@@ -25,6 +25,24 @@ function addSponsors(spon) {
   }
 }
 
+function uploadPDF(){
+  $("input[type='file']").each(function(){
+    $(this).on('change',function(){
+      myFile = $(this).val();
+        console.log(myFile);
+      var upld = myFile.split('.').pop();
+      if(upld=='pdf'){
+        // alert("File uploaded is pdf")
+      }else{
+        alert("Only PDF are allowed")
+        $(this).val('');
+      }
+
+    });
+  });
+}
+
+
 function addColumns(cols) {
   let ncols = parseInt(cols);
   if(ncols >14){
@@ -145,6 +163,8 @@ $(document).ready(function () {
     $(this).select2();
   });
 
+  // upload pdf only 
+    uploadPDF();
   // Report sidebar start
     $('#sidebarCollapse').on('click', function () {
       $('#sidebar').toggleClass('active');
@@ -327,9 +347,12 @@ $(document).ready(function () {
         let child = document.createElement("div");
         child.innerHTML = template;
         parentDiv.appendChild(child);
+
       } 
+      uploadPDF();
     }
   });
+
 });
 
 function loadFileIcon() {
@@ -469,10 +492,6 @@ function fillDefaultValues(){
 
 }
 
-function showAllCols(){
-  $("#fillColumns").val("id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report");
-  $("#no_of_cols").val('14');
-}
 
 // ----------------------Report JS Code Start -------------------------
 
@@ -588,8 +607,7 @@ function addStudentColumns(cols){
     child.style = 'display: inline-block;width: 40%; margin-left: 98px;box-sizing: border-box;';
     child.innerHTML = template;
     inputColumns.append(child);
-  }
-  
+  }  
 }
 
 function numberOfMembers(val){
@@ -597,84 +615,25 @@ function numberOfMembers(val){
     $("#no_of_members").removeClass("d-none");
   }else{
     $("#no_of_members").addClass("d-none");
-    AddMemberDetails(1)
+    // AddMemberDetails(1)
   }
 }
 
-function AddMemberDetails(size){
-    size = parseInt(size)
-    if(size <= 0 || isNaN(size)){
-        size = 1;
-    }
+// function AddMemberDetails(size){
+//     size = parseInt(size)
+//     if(size <= 0 || isNaN(size)){
+//         size = 1;
+//     }
 
-    $("#member_details").removeClass("d-none");
+//     $("#member_details").removeClass("d-none");
 
-    $("#insert_member_details").html('');
-    for(let i=0;i<size;i++){
-        let tmp = `<fieldset class="border border-2 p-3 member_detail">
-        <legend  class="float-none w-auto">Member's Details</legend>
-        <div class="form-group  align-center float-child">
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Student Name</label>
-            <input required class="w-30 student_name " type="text" name="name" id=""  style = "height: 32px;
-            border-radius: 4px;">
-        </div>
-        <div class="form-group  align-center float-child">
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Enrollment Number</label>
-            <input required class="w-30 student_eroll_no" type="number" name="eroll_no" id=""  style = "height: 32px;
-            border-radius: 4px;">
-        </div>
-        
-        <div class="form-group  align-center float-child" >
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Semester</label>
-            <select required id=""  name="semester" class="m-1 w-30 semester" >
-                <option value="-1">Select Values</option>
-                <option value="1" >1</option>
-                <option value="2" >2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-            </select>
-        </div>
-        <div class="form-group  align-center float-child" id = "departments-involved">
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Departments Involved</label>
-            <select required id="department" name="Departments" class="m-1 w-30 departments">
-                <option value="-1">Select Values</option>
-                <option value="CSE" >CSE</option>
-                <option value="IT">IT</option>
-                <option value="ECE">ECE</option>
-                <option value="EEE">EEE</option>
-                <option value="Applied Science">Applied Science</option>
-            </select>
-        </div>
-                                
-        <div class="form-group  align-center float-child" >
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Class/Section</label>
-            <select required id="" name="Class" class="m-1 w-30 class_section">
-                <option value="-1">Select Values</option>
-                <option value="1" >I</option>
-                <option value="2" >II</option>
-                <option value="3">III</option>
-                <option value="Evening">Evening</option>
-            </select>
-        </div>
-        <div class="form-group  align-center float-child">
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Mobile Number</label>
-            
-            <input required type="tel"  placeholder="" pattern="[1-9]{1}[0-9]{9}" maxlength="10" class = "mobileNo" title="Ten digits code"  name="mobile_no" style = "height: 32px;border-radius: 4px;" />    
-        </div>
-        <div class="form-group  align-center float-child">
-            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Email Id</label>
-            <input required class="w-30 emailID " type="email" name="mail_id" id=""  style = "height: 32px;
-            border-radius: 4px;">
-        </div>
-    </fieldset> <br>   
-    `
-        $("#insert_member_details").append(tmp);
-    }
-}
+//     $("#insert_member_details").html('');
+//     for(let i=0;i<size;i++){
+//         let tmp = `   
+//     `
+//         $("#insert_member_details").append(tmp);
+//     }
+// }
 
 function showFilters(){
   $("#filterDataDiv").removeClass('d-none');
@@ -683,36 +642,36 @@ function showFilters(){
   });
 }
 
-function submit_member_data(){
-    let members_data = {};
-    let i=1;
-    $('.member_detail').each(function(){
-        let member = {
-            'student_name':'',
-            'eroll_no':'',
-            'semester':'',
-            'class':'',
-            'department':'',
-            'mobile_no':'',
-            'email_id':'',
-        }
+// function submit_member_data(){
+//     let members_data = {};
+//     let i=1;
+//     $('.member_detail').each(function(){
+//         let member = {
+//             'student_name':'',
+//             'eroll_no':'',
+//             'semester':'',
+//             'class':'',
+//             'department':'',
+//             'mobile_no':'',
+//             'email_id':'',
+//         }
 
-        member['student_name'] = $(this).find(".student_name").val();
-        member['eroll_no'] = $(this).find(".student_eroll_no").val();
-        member['semester'] = $(this).find(".semester").val();
-        member['class'] = $(this).find(".class_section").val();
-        member['department'] = $(this).find(".departments").val();
-        member['mobile_no'] = $(this).find(".mobileNo").val();
-        member['email_id'] = $(this).find(".emailID").val();
+//         member['student_name'] = $(this).find(".student_name").val();
+//         member['eroll_no'] = $(this).find(".student_eroll_no").val();
+//         member['semester'] = $(this).find(".semester").val();
+//         member['class'] = $(this).find(".class_section").val();
+//         member['department'] = $(this).find(".departments").val();
+//         member['mobile_no'] = $(this).find(".mobileNo").val();
+//         member['email_id'] = $(this).find(".emailID").val();
         
-        members_data[i] = member;
-        i++;
-    })
+//         members_data[i] = member;
+//         i++;
+//     })
     
-    $("#member_details_data").val(JSON.stringify(members_data));
-    console.log(JSON.stringify(members_data));
+//     $("#member_details_data").val(JSON.stringify(members_data));
+//     console.log(JSON.stringify(members_data));
 
-}
+// }
 
 // --------------------------students js code ends------------------------------
 
@@ -779,9 +738,10 @@ function offerDetails(noOfOffers){
   }
   let i = offers;
   for(;i<noOfOffers+offers;i++){
-    let offer = `<br>
+    let offer = `
+    <br>
       <fieldset class="border border-2 p-3 offer_detail" id="if_placed">
-        <legend class="float-none w-auto">Offer - `+ (i+1) +` Details</legend>
+        <legend class="float-none w-auto">Offer - ${i+1} Details</legend>
         <div class="form-group  align-center float-child">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Company Name</label>
           <input class="w-30 company_name" type="text" name="company_name" id="" required style = "height: 32px;
@@ -800,13 +760,14 @@ function offerDetails(noOfOffers){
           </select>
         </div>
         <div class="form-group align-center float-child">
-          <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof</label>
+          <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload Proof <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
           <input class="w-30 m-1 upload_proof" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
         </div>
       </fieldset>
     `;
     $('.offer_details').append(offer);
   }
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -843,7 +804,7 @@ function examDetails(noOfExams){
     let unique_id = Math.random().toString(16).slice(2);
     let offer = `<br>
       <fieldset class="border border-2 p-3 exam_detail" id="">
-        <legend class="float-none w-auto">Exam - `+ (i+1) +` Details</legend>
+        <legend class="float-none w-auto">Exam - ${i+1} Details</legend>
         <div class="form-group  align-center float-child">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Name</label>
           <input class="w-30 exam_name" type="text" name="exam_name" id="" required style = "height: 32px;
@@ -861,35 +822,36 @@ function examDetails(noOfExams){
         </div>
         <div class="form-group align-center float-child" id="">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Qualified?</label>
-          <select class="m-1 w-30 qualified" id=`+ unique_id +` onchange="examResultDeclared(this.id)">
+          <select class="m-1 w-30 qualified" id=${unique_id} onchange="examResultDeclared(this.id)">
             <option value="yes">Yes</option>
             <option value="no">No</option>
             <option value="not_declared" selected>Not Declared</option>
           </select>
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
           <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
           <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
+        <div class="form-group align-center float-child ${unique_id} d-none">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
           <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child `+ unique_id +` d-none">
-          <label class="w-25 required_asterisk" for="exampleFormControlFile1">Result Proof</label>
+        <div class="form-group align-center float-child ${unique_id} d-none">
+          <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Result Proof <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
           <input class="w-30 m-1 result_proof" type="file" name="result_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
         </div>
       </fieldset>
     `;
     $('.exam_details').append(offer);
   }
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -936,7 +898,7 @@ function showStatusForm(status){
         border-radius: 4px;">
       </div>
       <div class="form-group align-center float-child">
-        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card)</label>
+        <label class="w-25 required_asterisk d-grid" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card) <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
         <input class="w-30 m-1" type="file" name="job_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
       </div>
     `;
@@ -968,7 +930,7 @@ function showStatusForm(status){
         border-radius: 4px;">
       </div>
       <div class="form-group align-center float-child">
-        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)</label>
+        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card) <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
         <input class="w-30 m-1" type="file" name="college_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
       </div>
     `;
@@ -1017,6 +979,7 @@ function showStatusForm(status){
     `;
   }
   $('.status_details').html(status_details);
+  uploadPDF();
   $("select").each(function () {
     $(this).select2();
   });
@@ -1230,5 +1193,7 @@ function addCountryNames(country){
   $('.country').each(function(){
     $(this).html(countrySelectData);
   });
+  
+
 }
 // --------------------------Placement JS Code End------------------------------

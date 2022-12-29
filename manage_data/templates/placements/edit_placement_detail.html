@@ -69,7 +69,7 @@
                                         <a href="{% url 'placements/open_offer_proof/' offer.job_proof %}" class="btn btn-sm atten_file w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                                     </div>
                                     <div class="form-group align-center float-child">
-                                        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload New Proof: </label>
+                                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload New Proof: <sub ><strong>(Max Size 5mb)</strong></sub></label>
                                         <input class="w-30 m-1 upload_proof" type="file" name="upload_proof_{{forloop_counter}}" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
                                     </div>
                                     <div class="form-group align-center float-child" style="width: 100%;">
@@ -145,7 +145,7 @@
                                             <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                                         </div>
                                         <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
-                                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload New Result Proof</label>
+                                            <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload New Result Proof <sub ><strong>(Max Size 5mb)</strong></sub></label>
                                             <input class="w-30 m-1 result_proof" type="file" name="result_proof_{{exam.id}}" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
                                         </div>
                                     <div class="form-group align-center float-child " style="width: 100%;">
@@ -201,7 +201,7 @@
                             <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.joining_proof %}" class="btn btn-sm  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                           </div>
                           <div class="form-group align-center float-child">
-                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card)</label>
+                            <label class="w-25 required_asterisk d-grid" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card) <sub ><strong>(Max Size 5mb)</strong></sub></label>
                             <input class="w-30 m-1" type="file" name="job_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
                           </div>
                         {% elif studentDetail.current_status == "Higher Education" %}
@@ -230,7 +230,7 @@
                             <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.id_proof %}" class="btn btn-sm w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                           </div>
                           <div class="form-group align-center float-child">
-                            <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)</label>
+                            <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)<sub ><strong>(Max Size 5mb)</strong></sub></label>
                             <input class="w-30 m-1" type="file" name="college_joining_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
                           </div>
                         {% elif studentDetail.current_status == "Entreprenurship" %}
@@ -286,11 +286,8 @@
                 </div>
                 <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
                 <textarea name="passingColumns" class = "d-none" id="passingColumns" cols="30" rows="10">{{columns}}</textarea> 
-<<<<<<< HEAD
-                <textarea class = 'show_filter_data '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
 
-=======
->>>>>>> b72dfc27d1c3a30617acd01fb37a01f806d13142
             </form>
         </div>
     </div>     

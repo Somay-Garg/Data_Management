@@ -6,9 +6,79 @@
             <form enctype="multipart/form-data" method="post" action="{% url 'add_student' %}" style="padding: 18px;
              margin: 7px;">
                 {% csrf_token %}
+               <br>
+                <!-- <fieldset class="border border-2 p-3 d-none" id = 'member_details'>
+                    <legend  class="float-none w-auto">Student's Details</legend>  
+                    <div id = 'insert_member_details'>
+                    </div>                     
+                </fieldset> -->
 
+                <fieldset class="border border-2 p-3 member_detail">
+                    <legend  class="float-none w-auto">Student's Details</legend>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Student Name</label>
+                        <input required class="w-30 student_name " type="text" name="name" id=""  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Enrollment Number</label>
+                        <input required class="w-30 student_eroll_no" type="number" name="eroll_no" id=""  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Semester</label>
+                        <select required id=""  name="semester" class="m-1 w-30 semester" >
+                            <option value="-1">Select Values</option>
+                            <option value="1" >1</option>
+                            <option value="2" >2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group  align-center float-child" id = "departments-involved">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Departments Involved</label>
+                        <select required id="department" name="Departments" class="m-1 w-30 departments">
+                            <option value="-1">Select Values</option>
+                            <option value="CSE" >CSE</option>
+                            <option value="IT">IT</option>
+                            <option value="ECE">ECE</option>
+                            <option value="EEE">EEE</option>
+                            <option value="Applied Science">Applied Science</option>
+                        </select>
+                    </div>
+                                            
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Class/Section</label>
+                        <select required id="" name="Class" class="m-1 w-30 class_section">
+                            <option value="-1">Select Values</option>
+                            <option value="1" >I</option>
+                            <option value="2" >II</option>
+                            <option value="3">III</option>
+                            <option value="Evening">Evening</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Mobile Number</label>
+                        
+                        <input required type="tel"  placeholder="" pattern="[1-9]{1}[0-9]{9}" maxlength="10" class = "mobileNo" title="Ten digits code"  name="mobile_no" style = "height: 32px;border-radius: 4px;" />    
+                    </div>
+            
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Email Id</label>
+                        <input required class="w-30 emailID " type="email" name="mail_id" id=""  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                </fieldset> <br>
+                        
                 <fieldset class="border border-2 p-3">
-                    <legend  class="float-none w-auto">Event's Details</legend>
+                    <legend  class="float-none w-auto">Achievements Details</legend>
                     <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Event Name</label>
                         <input class="w-30 " type="text" name="event_name" required id="" style = "height: 32px;
@@ -74,7 +144,7 @@
                     </div>
 
                     <div class="form-group align-center  float-child">
-                        <label class="w-25 required_asterisk" for="exampleFormControlFile1">Upload Proof</label>
+                        <label class="w-25  d-grid required_asterisk" for="exampleFormControlFile1">Upload Proof<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
                         <input required class="w-30 m-1" type="file" name="upload_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
                         border-radius: 4px;">
                     </div>  
@@ -93,13 +163,6 @@
                         <input required class="w-30 " type="number" name="number_of_members" id=""  style = "height:32px;border-radius: 4px; " oninput="AddMemberDetails(this.value)" min = '1'>
                     </div>
                 </fieldset>
-                <br>
-                <fieldset class="border border-2 p-3 d-none" id = 'member_details'>
-                    <legend  class="float-none w-auto">Student's Details</legend>  
-                    <div id = 'insert_member_details'>
-                    </div>                     
-                </fieldset>
-                          
                 <br>
                 
                 <textarea name="columns_details" class="d-none" id="selected_columns" cols="30" rows="10"></textarea>
