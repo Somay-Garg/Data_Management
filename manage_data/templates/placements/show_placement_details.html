@@ -89,22 +89,22 @@
                                     border-radius: 4px;" value="{{ exam.qualified }}">
                                 </div>
                                 
-                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.score == '' or exam.score == None %}d-none{% endif %}">
                                         <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Score:</label>
                                         <input disabled class="w-65 text-start  border-0 bg-white  exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
                                         border-radius: 4px;" value="{{ exam.score }}">
                                     </div>
-                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.rank == '' or exam.rank == None %}d-none{% endif %}">
                                         <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Exam Rank:</label>
                                         <input disabled class="w-65 text-start  border-0 bg-white  exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
                                         border-radius: 4px;" value="{{ exam.rank }}">
                                     </div>
-                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.date_of_result == '' or exam.date_of_result == None %}d-none{% endif %}">
                                       <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Date of Result:</label>
                                       <input disabled class="w-65 text-start  border-0 bg-white  date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
                                       border-radius: 4px;" value="{{ exam.date_of_result }}">
                                   </div>
-                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}dont_show d-none{% endif %}">
+                                    <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}dont_show d-none{% endif %}">
                                         <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof: </label>
                                         <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
                                     </div>

@@ -125,26 +125,26 @@
                                         </select>
                                     </div>
                                     
-                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.score == '' or exam.score == None %}d-none{% endif %}">
                                             <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
                                             <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
                                             border-radius: 4px;" value="{{ exam.score }}">
                                         </div>
-                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.rank == '' or exam.rank == None %}d-none{% endif %}">
                                             <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
                                             <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
                                             border-radius: 4px;" value="{{ exam.rank }}">
                                         </div>
-                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.date_of_result == '' or exam.date_of_result == None %}d-none{% endif %}">
                                             <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
                                             <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
                                             border-radius: 4px;" value="{{ exam.date_of_result }}">
                                         </div>
-                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}dont_show d-none{% endif %} px-5">
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}dont_show d-none{% endif %} px-5">
                                             <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof: </label>
                                             <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                                         </div>
-                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.qualified == 'not_declared' %}d-none{% endif %}">
+                                        <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}d-none{% endif %}">
                                             <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload New Result Proof <sub ><strong>(Max Size 5mb)</strong></sub></label>
                                             <input class="w-30 m-1 result_proof" type="file" name="result_proof_{{exam.id}}" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
                                         </div>

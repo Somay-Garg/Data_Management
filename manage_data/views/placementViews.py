@@ -54,10 +54,10 @@ def display_placement_columns(request,msg=''):
     columns_str = 'id,enrollmentno,name,department,section,passout'
     
     if(request.method == "POST"):
-        if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
-            columns = request.POST['columns_details'].split(',')
+        # if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
+        #     columns = request.POST['columns_details'].split(',')
 
-        elif('passingColumns' in request.POST):
+        if('passingColumns' in request.POST):
             cols = request.POST['passingColumns']
             columns = json.loads(cols)
         
@@ -117,9 +117,9 @@ def display_placement_columns(request,msg=''):
     if request.POST['show_filters'] == 'true'  or request.POST['show_filters'] == 'True' :
         context['showFilters'] = True
 
-    if 'columns_details' in request.POST:
-        context['columns_str'] = request.POST['columns_details']
-    elif 'columns_details' not in request.POST:
+    # if 'columns_details' in request.POST:
+    #     context['columns_str'] = request.POST['columns_details']
+    if 'columns_details' not in request.POST:
         context['display'] = False
     if msg:
         context['msg'] = msg
@@ -127,12 +127,12 @@ def display_placement_columns(request,msg=''):
     return render(request,'placements/index.html',context)
 
 def filter_placement(request):
-    if(request.POST['filter'] == "reset"):
-        # return redirect('placements')
+    if "resetFilter" in request.POST:
         return display_placement_columns(request,'Filters Removed.')
 
-    if(request.POST['filter'] == "export"):
+    if "downloadExcel" in request.POST:
         return export_placment_data(request)
+    
     columns = ['id','enrollmentno','name','department','section','passout']
     # columns_str = 'id,enrollmentno,name,department,section,passout'
     if('columns_details' in request.POST and request.POST['columns_details'] != ''):
@@ -286,14 +286,20 @@ def add_student_placement_detail(request):
             current_exam.exam_roll_no = exam_detail[key]['exam_roll_no']
             current_exam.exam_date = exam_detail[key]['exam_date']
             current_exam.qualified = exam_detail[key]['qualified']
-            if exam_detail[key]['exam_score'] != 'Not Declared':
+            if exam_detail[key]['exam_score'] != '':
                 current_exam.score = exam_detail[key]['exam_score']
-            if exam_detail[key]['exam_rank'] != 'Not Declared':
+            else:
+                current_exam.score = None
+            if exam_detail[key]['exam_rank'] != '':
                 current_exam.rank = exam_detail[key]['exam_rank']
+            else:
+                current_exam.rank = None
             if exam_detail[key]['date_of_result'] != '':
                 current_exam.date_of_result = exam_detail[key]['date_of_result']
+            else:
+                current_exam.date_of_result = None
 
-            current_exam.result_proof = ''
+            current_exam.result_proof = None
             if 'result_proof_'+key in request.FILES:
                 result_proof = request.FILES['result_proof_'+key]
                 fs = FileSystemStorage(location='student_proofs/exam_proof/')
@@ -487,11 +493,11 @@ def save_student_placement_detail(request):
             stu.exam_roll_no = existing_exams[exam]['exam_roll_no']
             stu.exam_date = existing_exams[exam]['exam_date']
             stu.qualified = existing_exams[exam]['qualified']
-            if existing_exams[exam]['exam_score'] != 'Not Declared':
+            if existing_exams[exam]['exam_score'] != '':
                 stu.score = existing_exams[exam]['exam_score']
             else:
                 stu.score = None
-            if existing_exams[exam]['exam_rank'] != 'Not Declared':
+            if existing_exams[exam]['exam_rank'] != '':
                 stu.rank = existing_exams[exam]['exam_rank']
             else:
                 stu.rank = None
@@ -500,12 +506,12 @@ def save_student_placement_detail(request):
             else:
                 stu.date_of_result = None
 
-            if existing_exams[exam]['qualified'] == 'not_declared':
-                fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                path = str(stu.result_proof)
-                if path != "":
-                    fs.delete(path)
-                stu.result_proof = None
+            # if existing_exams[exam]['qualified'] == 'not_declared':
+            #     fs = FileSystemStorage(location='student_proofs/exam_proof/')
+            #     path = str(stu.result_proof)
+            #     if path != "":
+            #         fs.delete(path)
+            #     stu.result_proof = None
             if 'result_proof_'+exam in request.FILES:
                 # deleting existing file
                 fs = FileSystemStorage(location='student_proofs/exam_proof/')
@@ -545,14 +551,20 @@ def save_student_placement_detail(request):
                 current_exam.exam_roll_no = exam_detail[key]['exam_roll_no']
                 current_exam.exam_date = exam_detail[key]['exam_date']
                 current_exam.qualified = exam_detail[key]['qualified']
-                if exam_detail[key]['exam_score'] != 'Not Declared':
+                if exam_detail[key]['exam_score'] != '':
                     current_exam.score = exam_detail[key]['exam_score']
-                if exam_detail[key]['exam_rank'] != 'Not Declared':
+                else:
+                    current_exam.score = None
+                if exam_detail[key]['exam_rank'] != '':
                     current_exam.rank = exam_detail[key]['exam_rank']
+                else:
+                    current_exam.rank = None
                 if exam_detail[key]['date_of_result'] != '':
                     current_exam.date_of_result = exam_detail[key]['date_of_result']
+                else:
+                    current_exam.date_of_result = None
 
-                current_exam.result_proof = ''
+                current_exam.result_proof = None
                 if 'result_proof_'+key in request.FILES:
                     result_proof = request.FILES['result_proof_'+key]
                     fs = FileSystemStorage(location='student_proofs/exam_proof/')
