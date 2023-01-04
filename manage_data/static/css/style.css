@@ -22,7 +22,7 @@
 	float: left;
 	width: 100%;
 	background: #F5F5F5;
-	overflow-x: scroll;
+	overflow: auto;
 	margin-bottom: 2.5rem;
 }
 
