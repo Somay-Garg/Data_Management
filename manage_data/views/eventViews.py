@@ -84,10 +84,10 @@ def display_columns(request,msg=''):
     columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
     # print(' ---------  ',type(columns))
 
-    if(request.method == "POST"):
-        if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
-            # print('cols_dets' , type(request.POST['columns_details']))
-            columns = request.POST['columns_details'].split(',')        
+#     if(request.method == "POST"):
+#         if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
+#             # print('cols_dets' , type(request.POST['columns_details']))
+#             columns = request.POST['columns_details'].split(',')        
    
     filter_data = {
         'Event Name': set(),
@@ -201,9 +201,9 @@ def display_columns(request,msg=''):
     if request.POST['show_filters'] == 'true'  or request.POST['show_filters'] == 'True' :
         context['showFilters'] = True
 
-    if 'columns_details' in request.POST:
-        context['columns_str'] = request.POST['columns_details']
-    elif 'columns_details' not in request.POST:
+#     if 'columns_details' in request.POST:
+#         context['columns_str'] = request.POST['columns_details']
+    if 'columns_details' not in request.POST:
         context['display'] = False
 
     return render(request,'events/index.html',context)
@@ -268,10 +268,10 @@ def add_event(request):
 # filter event data
 def filter_event(request):
     if request.method == "POST":
-        if(request.POST['filter'] == "reset"):
+        if "resetFilter" in request.POST:
             return display_columns(request,'Filter removed')
 
-        if(request.POST['filter'] == "export"):
+        if "downloadExcel" in request.POST:
             return export_data(request)
         columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
         if('columns_details' in request.POST and request.POST['columns_details'] != ''):
