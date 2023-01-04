@@ -822,29 +822,28 @@ function examDetails(noOfExams){
         </div>
         <div class="form-group align-center float-child" id="">
           <label class="w-25 required_asterisk" for="exampleFormControlInput1">Qualified?</label>
-          <select class="m-1 w-30 qualified" id=${unique_id} onchange="examResultDeclared(this.id)">
+          <select class="m-1 w-30 qualified" onchange="examResultDeclared(this.id)">
             <option value="yes">Yes</option>
             <option value="no">No</option>
-            <option value="not_declared" selected>Not Declared</option>
           </select>
         </div>
-        <div class="form-group align-center float-child ${unique_id} d-none">
-          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Score</label>
+        <div class="form-group align-center float-child ">
+          <label class="w-25 " for="exampleFormControlInput1">Exam Score</label>
           <input class="w-30 exam_score" type="number" name="exam_score" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child ${unique_id} d-none">
-          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Exam Rank</label>
+        <div class="form-group align-center float-child ">
+          <label class="w-25 " for="exampleFormControlInput1">Exam Rank</label>
           <input class="w-30 exam_rank" type="number" name="exam_rank" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child ${unique_id} d-none">
-          <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of Result</label>
+        <div class="form-group align-center float-child ">
+          <label class="w-25 " for="exampleFormControlInput1">Date of Result</label>
           <input class="w-30 date_of_result" type="date" name="date_of_result" id="" required style = "height: 32px;
           border-radius: 4px;">
         </div>
-        <div class="form-group align-center float-child ${unique_id} d-none">
-          <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Result Proof <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+        <div class="form-group align-center float-child ">
+          <label class="w-25 d-grid " for="exampleFormControlFile1">Result Proof <sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
           <input class="w-30 m-1 result_proof" type="file" name="result_proof" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px;border-radius: 4px;">
         </div>
       </fieldset>
@@ -1030,23 +1029,23 @@ function submitPlacementData(){
           'exam_roll_no' : '',
           'exam_date' : '',
           'qualified' : '',
-          'exam_score' : 'Not Declared',
-          'exam_rank' : 'Not Declared',
+          'exam_score' : '',
+          'exam_rank' : '',
           'date_of_result' : '',
         }
         current_exam['exam_name'] = $(this).find('.exam_name').val();
         current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
         current_exam['exam_date'] = $(this).find('.exam_date').val();
         current_exam['qualified'] = $(this).find('.qualified').val();
-        if(current_exam['qualified'] != 'not_declared'){
+//         if(current_exam['qualified'] != 'not_declared'){
           current_exam['exam_score'] = $(this).find('.exam_score').val();
           current_exam['exam_rank'] = $(this).find('.exam_rank').val();
           current_exam['date_of_result'] = $(this).find('.date_of_result').val();
           exam_details[i] = current_exam;
           $(this).find('.result_proof').attr('name','result_proof_'+i);
-        }else{
-          exam_details[i] = current_exam;
-        }
+//         }else{
+//           exam_details[i] = current_exam;
+//         }
         i++;
       });
       $('#student_exam_data').val(JSON.stringify(exam_details));
@@ -1124,23 +1123,23 @@ function saveNewPlacementData(){
       'exam_roll_no' : '',
       'exam_date' : '',
       'qualified' : '',
-      'exam_score' : 'Not Declared',
-      'exam_rank' : 'Not Declared',
+      'exam_score' : '',
+      'exam_rank' : '',
       'date_of_result' : '',
     }
     exam['exam_name'] = $(this).find('.exam_name').val();
     exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
     exam['exam_date'] = $(this).find('.exam_date').val();
     exam['qualified'] = $(this).find('.qualified').val();
-    if(exam['qualified'] != 'not_declared'){
+//     if(exam['qualified'] != 'not_declared'){
       exam['exam_score'] = $(this).find('.exam_score').val();
       exam['exam_rank'] = $(this).find('.exam_rank').val();
       exam['date_of_result'] = $(this).find('.date_of_result').val();
       existing_exam[i] = exam;
       $(this).find('.result_proof').attr('name','result_proof_'+i);
-    }else{
-      existing_exam[i] = exam;
-    }
+//     }else{
+//       existing_exam[i] = exam;
+//     }
     i++;
   });
   $('#existing_exam_data').val(JSON.stringify(existing_exam));
@@ -1156,23 +1155,23 @@ function saveNewPlacementData(){
         'exam_roll_no' : '',
         'exam_date' : '',
         'qualified' : '',
-        'exam_score' : 'Not Declared',
-        'exam_rank' : 'Not Declared',
+        'exam_score' : '',
+        'exam_rank' : '',
         'date_of_result' : '',
       }
       current_exam['exam_name'] = $(this).find('.exam_name').val();
       current_exam['exam_roll_no'] = $(this).find('.exam_roll_no').val();
       current_exam['exam_date'] = $(this).find('.exam_date').val();
       current_exam['qualified'] = $(this).find('.qualified').val();
-      if(current_exam['qualified'] != 'not_declared'){
+//       if(current_exam['qualified'] != 'not_declared'){
         current_exam['exam_score'] = $(this).find('.exam_score').val();
         current_exam['exam_rank'] = $(this).find('.exam_rank').val();
         current_exam['date_of_result'] = $(this).find('.date_of_result').val();
         exam_details[i] = current_exam;
         $(this).find('.result_proof').attr('name','result_proof_'+i);
-      }else{
-        exam_details[i] = current_exam;
-      }
+//       }else{
+//         exam_details[i] = current_exam;
+//       }
       i++;
     });
     $('#student_exam_data').val(JSON.stringify(exam_details));
