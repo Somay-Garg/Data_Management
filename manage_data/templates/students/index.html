@@ -14,6 +14,7 @@
                     <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Add Filters</button>
                 </div>
             </div>
+
             <fieldset id = 'filterDataDiv'  class="border border-2 p-2 d-none">
                 <legend class="float-none w-auto p-2">Filter Data</legend>
                 <form id="filterForm" class="overflow-hidden" action="{% url 'filter_student' %}" method="POST">
@@ -107,6 +108,7 @@
                 </form>
                 <br>
             </fieldset>
+            <br>
                 
                 <div class="card table-scroll {% if not display %} d-none {% endif %}" id = "table-fields"  style="max-height: 75vh;">
                     <table id="students_table" cellpadding="10" class="table table-striped  table-bordered table-hover align-middle text-center" style="margin-bottom: 0%;">
