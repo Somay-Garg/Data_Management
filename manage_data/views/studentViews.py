@@ -77,8 +77,8 @@ def display_students_table(request,msg=''):
     columns = ['id','name','eroll_no','semester','Departments','Class','organized_by','mobile_no','mail_id','event_name','event_type','event_date','host_institute','team_size','level','date_of_award','upload_proof']
     columns_str = 'id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,position,team_size,level,date_of_award,upload_proof'
     if request.method == "POST":
-        if 'columns_details' in request.POST:
-            columns = request.POST['columns_details'].split(',')
+#         if 'columns_details' in request.POST:
+#             columns = request.POST['columns_details'].split(',')
 
     # students_data = Students.objects.values(*columns)
     students_data_all = Students.objects.all().values()
@@ -190,16 +190,16 @@ def display_students_table(request,msg=''):
     if request.POST['show_filters'] == 'true'  or request.POST['show_filters'] == 'True' :
         context['showFilters'] = True 
 
-    if 'columns_details' in request.POST and request.POST['columns_details'] != '':
-        context['columns_str'] = request.POST['columns_details']
+#     if 'columns_details' in request.POST and request.POST['columns_details'] != '':
+#         context['columns_str'] = request.POST['columns_details']
     
     return render(request,'students/index.html',context)
 
 def filter_student(request):    
     if request.method == 'POST':
-        if request.POST['filter'] == 'reset':
+        if "resetFilter" in request.POST:
             return display_students_table(request,'Filter removed')
-        if(request.POST['filter'] == "export"):
+        if "downloadExcel" in request.POST:
             return export_data(request)
 
         columns = ['id','name','eroll_no','semester','Departments','Class','organized_by','mobile_no','mail_id','event_name','event_type','event_date','host_institute','position','team_size','level','date_of_award','upload_proof']
