@@ -76,7 +76,7 @@ def display_students_table(request,msg=''):
     fields = Students._meta.fields
     columns = ['id','name','eroll_no','semester','Departments','Class','organized_by','mobile_no','mail_id','event_name','event_type','event_date','host_institute','team_size','level','date_of_award','upload_proof']
     columns_str = 'id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,position,team_size,level,date_of_award,upload_proof'
-    if request.method == "POST":
+#     if request.method == "POST":
 #         if 'columns_details' in request.POST:
 #             columns = request.POST['columns_details'].split(',')
 
