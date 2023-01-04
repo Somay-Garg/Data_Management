@@ -210,7 +210,7 @@
                                 {% elif col == 'upload_attendance' %}
                                     <td class="upload_attendance_col" ><a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                                 {% elif col == 'upload_report' %}
-                                    <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" target = "_blank" btn  btn-sm report_file" role="button" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" target = "_blank" class="btn btn-sm report_file" role="button" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                                 {% endif %}
                             {% endfor %}
                             <td>       
@@ -222,7 +222,6 @@
                                 <textarea name="columns_dets"  class = "d-none" id="columns_dets" cols="30" rows="10" >{{columns_str}}</textarea>   
                                 <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit"  onclick = "submitHiddenForm('{{event.id}}')" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
                                 
-                                <!-- <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span> -->
                                 <form action="{% url 'delete_event_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
 
                                     {% csrf_token %}
