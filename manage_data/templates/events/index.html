@@ -9,14 +9,18 @@
         <div id="wrapper">
             <div style="display: flex;justify-content: space-between;">
                 <h3>Currently viewing {{ header }}</h3>
-                <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Filter Data</button>
+                <div style="float: right;">
+                    <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; margin: 0.5rem;" name="downloadExcel" value="export" type="submit" form="filterForm">Download Excel</button>
+                    <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Add Filters</button>
+                </div>
             </div>
             
-            <fieldset id = 'filterDataDiv' class="border border-2 p-2 {% if not showFilters %} d-none {% endif %}" >
+            <br>
+            
+            <fieldset id = 'filterDataDiv' class="border border-2 p-2 d-none" >
                 <legend class="float-none w-auto p-2">Filter Data</legend>
-                <form class="overflow-hidden" action="{% url 'filter_event'%}" method="POST">
+                <form id="filterForm" class="overflow-hidden" action="{% url 'filter_event'%}" method="POST">
                     {% csrf_token %}
-                    <!-- <h1>Mansi ->{{showFilters}}</h1>/ -->
                     <div class = 'form-group row m-2 '>
                         <div class="form-group row ">
                             {% for key,filter in filter_data.items %}
@@ -71,7 +75,7 @@
                                 {% endif %}
                             {% endfor %}
     
-                            <!-- ### changes strt #### -->
+                            
                             <div class="form-group row m-2" >
                                 <div class="col-lg m-2" style="padding-left:0px;display: flex; align-items: center;width: 50%;">
                                     <label class="col-sm-2 col-form-label text-left" style="width: fit-content;
@@ -84,7 +88,7 @@
                                     <input  class="form-control" type="number" name="max_amount" id="max_amount" placeholder="Enter the Maximum Amount" style="border-color: rgb(167, 165, 165);height: 30px; width: 77%;" val="100000000">
                                 </div>
                             </div>        
-                            <!--###changes-end#### -->
+                            
                             <div class="form-group row m-2" >
                                 <div class="col-sm-4" style=" display: flex; align-items: center;  width: 49%;">
                                     <label class="col-sm-2 col-form-label text-left"> Start From: </label>
@@ -99,46 +103,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="m-2 float-right">
-                            <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues();showFilters();">Filter</button>
-                            <button class="btn btn-danger float-right" style ="background-color:red;"  name="filter" value="reset" type="submit" onclick = "showFilters()">Reset</button>
-                            <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; float: right;"  name="filter" value="export" type="submit">Download Excel</button>                               
-                        </div>
                     </div>
                     <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
                     <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
-                    <textarea class = "d-none" name="columns_details" id="columns_details" cols="30" rows="10">{{columns_str}}</textarea>
+                    <textarea class = "d-none" name="columns_details" id="fillColumns" cols="30" rows="10">{{columns_str}}</textarea>
                     <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
-                </form>
-                <br>
-            </fieldset>
-            <br>
-            <!-- changes start -->
-            <fieldset  class="border border-2 p-2">
-                <legend class="float-none w-auto p-2">Filter Columns</legend>
-                <form action="{% url 'display_columns' %}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="form-group row">
-                        <legend  class="float-none w-auto"></legend>
-                        <div class="form-group mb-2 align-center" >
-                            <label class="mx-4 required_asterisk" for="exampleFormControlInput1" id="no_of_columns">No of Columns</label>
-                            <input class="w-30 m-1" type="number" name="" id="no_of_cols" val="1" required oninput="addColumns(this.value)" min = "0" max = "14" />
-                            <div class="form-group mb-2 align-center" id = "inputColumns" style="margin-top: 20px;" ></div>
-                            <textarea id = "fillColumns" name = "columns_details" class="d-none"></textarea>
-                        </div>
+                
+                <hr>
+                
+                <div class="form-group row">
+                    <legend  class="float-none w-auto"></legend>
+                    <div class="form-group mb-2 align-center" >
+                        <label class="mx-4 required_asterisk" for="exampleFormControlInput1" id="no_of_columns">No of Columns</label>
+                        <input class="w-30 m-1" type="number" name="" id="no_of_cols" val="1" oninput="addColumns(this.value)" min = "0" max = "14" />
+                        <div class="form-group mb-2 align-center" id = "inputColumns" style="margin-top: 20px;" ></div>
                     </div>
-                    <div class="form-group w-100" style = "margin-top : 15px;">
-                        <button class="btn mx-2 px-4 text-white" type="submit" value="Add" onclick = "showTable()" style="background-color: #052e6a;">Apply</button>
-                        <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
-                        <textarea class="d-none" name="filter_data" >{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
-                    </div>
+                </div>
+                <div class="form-group w-100 text-center" style = "margin-top : 15px;">
+                    <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues();">Apply Filters</button>
+                    <button class="btn btn-danger float-right" style ="background-color:red;"  name="resetFilter" value="reset" type="submit">Reset Filters</button>
+                </div>
                 </form> 
             </fieldset>
-            <br>
-
-            <!-- changes end -->
-            <div class="card table-scroll {% if not display %} d-none {% endif %}" id = "table-fields"  >
-                <table id="employee_table" cellpadding="10" class="table table-striped  table-bordered table-hover align-middle text-center">
+            
+            
+            <div class="card table-scroll {% if not display %} d-none {% endif %}" id = "table-fields"  style="max-height: 75vh;">
+                <table id="employee_table" cellpadding="10" class="table table-striped  table-bordered table-hover align-middle text-center" style="margin-bottom: 0%;">
                     <tr class="table" style = "background-color: #052e6a;">
                         <th style="color: white;">S.no</th>
                         {% for col in columns %}
