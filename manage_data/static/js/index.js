@@ -636,7 +636,7 @@ function numberOfMembers(val){
 // }
 
 function showFilters(){
-  $("#filterDataDiv").removeClass('d-none');
+  $("#filterDataDiv").toggleClass('d-none');
   $(".show_filter_data").each(function(e){
     $(this).val('True');
   });
