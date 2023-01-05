@@ -3,7 +3,6 @@ from django.db import models
 class Students(models.Model):
     name = models.CharField(max_length=255,blank=False)
     eroll_no = models.IntegerField(blank=False)
-    semester = models.IntegerField(blank=False)
     departments = (
             ('CSE','CSE'),
             ('IT','IT'),
@@ -24,6 +23,8 @@ class Students(models.Model):
     )
     
     Class = models.CharField(max_length=255,choices=classOptions)
+    semester = models.IntegerField(blank=False)
+
     mobile_no = models.IntegerField(blank=False)
     mail_id = models.EmailField(blank=False)
     event_name = models.CharField(max_length=255,blank=False)

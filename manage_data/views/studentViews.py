@@ -121,11 +121,15 @@ def display_students_table(request,msg=''):
         filter_data['Enrollment No'].add(student['eroll_no'])
 
     students_data = ''
+    # json.loads('')
     if 'filter_data' in request.POST:
         filterData = request.POST['filter_data']
-        print(filterData)
+        # print(filterData)
         query = Q()
-        if filterData == "All":
+        if filterData == "All" :
+            query2 = Q()
+        elif 'resetFilter' in request.POST and request.POST['resetFilter'] == 'reset':
+            # print("hiii")
             query2 = Q()
         else:
             filterData = json.loads(filterData)

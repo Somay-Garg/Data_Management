@@ -18,8 +18,7 @@ urlpatterns = [
     path('filter_event',filter_event,name = 'filter_event'),
     path('delete_event_entry',delete_event_entry,name = 'delete_event_entry'),
     # Report URLs
-    path('display_report',display_report,name='display_report'),
-
+    path('display_report', display_report,name='display_report'),
     # Students url begin
     path('display_students',display_students,name = 'display_students'),
     path('display_students_table',display_students_table,name = 'display_students_table'),

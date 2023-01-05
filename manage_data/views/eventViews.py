@@ -139,6 +139,8 @@ def display_columns(request,msg=''):
         query = Q()
         if filterData == "All":
             query2 = Q()
+        elif 'resetFilter' in request.POST and request.POST['resetFilter'] == 'reset':
+            query2 = Q()
         else:
             filterData = json.loads(filterData)
             

@@ -83,7 +83,7 @@ def display_placement_columns(request,msg=''):
         filterData = request.POST['filter_data']
         query = Q()
        
-        if filterData != "All":
+        if filterData != "All" and 'resetFilter' not in request.POST:
             filterData = json.loads(filterData)
             department = filterData['Department']
             passout = filterData['Passout Year']

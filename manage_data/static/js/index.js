@@ -208,20 +208,19 @@ $(document).ready(function () {
 
   //disabled future dates
   $(function () {
-    if(document.getElementsByClassName('event').length > 0){
-      var dtToday = new Date();
-
+    var dtToday = new Date();
       var month = dtToday.getMonth() + 1;
       var day = dtToday.getDate();
       var year = dtToday.getFullYear();
-
       if (month < 10) month = "0" + month.toString();
       if (day < 10) day = "0" + day.toString();
-
       var maxDate = year + "-" + month + "-" + day;
-      $(".datesettup").attr("max", maxDate);
-    }
+      $(".datesettup").each(function(){
+        // console.log("mansiiii");
+        $(this).attr("max", maxDate);
+      });
   });
+
   // end date set
   $(function () {
     if(document.getElementsByClassName('event').length > 0){
@@ -302,17 +301,14 @@ $(document).ready(function () {
         .querySelector("#all_department")
         .value.split(",");
       let options = document.querySelectorAll("#department > *");
-      // console.log(options)
+     
 
       for (let i = 0; i < options.length; i++) {
         let optionvalue = options[i].value;
-        // console.log(optionvalue)
         for (let j = 0; j < selectedValues.length; j++) {
           let selectedValue = selectedValues[j];
-          // console.log("selected value ====         "+selectedValue)
           if (selectedValue == optionvalue) {
-            // console.log("matched")
-            // console.log(options[i])
+           
             options[i].setAttribute("selected", "true");
             options[i].click();
           }
@@ -325,16 +321,15 @@ $(document).ready(function () {
   $(function () {
     if(document.getElementsByClassName('event').length > 0){
       let spondataJSON = document.querySelector("#sponDets").value;
-      // console.log(spondataJSON);
       let parentDiv = document.querySelector("#insertSponsDets");
       let sponData = JSON.parse(spondataJSON);
       console.log(sponData);
       let arr = Object.entries(sponData);
-      console.log(arr);
-      for (let i = 0; i < arr.length; i++) {
+      // console.log(arr);
+      for (let i = 0; i < arr.length; i++){
         let sponName = arr[i][0];
         let sponAmt = arr[i][1];
-        let template = ` <div class="sponsors" >
+        let template = `<div class="sponsors" >
           <div class="form-group  align-center float-child">
           <label class=" w-25 required_asterisk" style="width:153px;" for="exampleFormControlInput1">Sponsor Name</label>
           <input type="text" name="sponsored_by" style="height:32px; border-radius: 4px;" class = "w-30 m-1 sponsored_by_name" oninput = "findTotal();displaySponsors()" value = ${sponName} >
@@ -347,8 +342,8 @@ $(document).ready(function () {
         let child = document.createElement("div");
         child.innerHTML = template;
         parentDiv.appendChild(child);
-
       } 
+
       uploadPDF();
     }
   });
@@ -365,7 +360,6 @@ function loadFileIcon() {
     let ext = href1.split(".")[1];
     let ext2 = href2.split(".")[1];
     console.log(ext);
-    // let icon = document.createElement("i")
     if (ext == "pdf") {
       let icontemplate = `<i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i>`;
       attendanceLinks[i].appendChild(icontemplate);
@@ -383,6 +377,7 @@ function loadFileIcon() {
     }
   }
 }
+
 function getSocieties() {
   $("#all_society").val($("#society").val().toString());
   console.log($("#all_society").val());
@@ -467,8 +462,7 @@ function showTable(){
 
 function submitHiddenForm(id){  
   let columns = document.querySelector("#columns_dets").value;
-  // console.log(id);
-  // console.log(columns);
+  
   let template = `<input name = "id_details" class = "d-none" value = "${id}"/> <textarea name="passingColumns" class="d-none" id = 'passingColumns'>`+ columns +
     `</textarea>`;
   console.log(template);
@@ -476,7 +470,6 @@ function submitHiddenForm(id){
   child.innerHTML = template;
   document.querySelector("#insertForm").appendChild(child)
   $("#columnsDataform").submit();
-  // document.querySelector("#columnsDataform").submit()
 }
 
 function fillDefaultValues(){
@@ -489,7 +482,6 @@ function fillDefaultValues(){
         $("#max_amount").val('1000000000');
         console.log($("#max_amount").val('1000000000'));
     } 
-
 }
 
 

@@ -27,7 +27,7 @@
                             <input type="tel"  placeholder=""  maxlength="10"  title="Ten digits code" required name="mobile_no" style = "height: 32px;border-radius: 4px;" value = {{field.value}} />    
                         </div>
                         {% elif field.name == 'name' or field.name == 'eroll_no' or field.name == 'Departments' or field.name == 'mail_id' %}
-                            <div class="form-group mb-2 align-center float-child">
+                            <div class="form-group align-center float-child">
                             <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
                             {{field}}
                             </div>
