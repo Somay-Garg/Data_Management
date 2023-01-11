@@ -427,6 +427,10 @@ def export_data(request):
         req_col = request.POST['columns_details'].split(',')
         print('required cols',req_col)
         req_col.remove('id')
+        if 'upload_attendance' in req_col:
+            req_col.remove('upload_attendance')
+        if 'upload_report' in req_col:
+            req_col.remove('upload_report')
     query = Q()
     # print(filter_data)
     if filter_data == "All":

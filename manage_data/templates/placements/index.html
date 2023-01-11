@@ -91,6 +91,8 @@
                                 <th style="color: white;" id="{{field.name}}_col_head">Section</th>
                             {% elif col == "passout"%}
                                 <th style="color: white;" id="{{field.name}}_col_head">Passout Year</th>
+                            {% elif col == "current_status"%}
+                                <th style="color: white;" id="{{field.name}}_col_head">Current Status</th>
                             {% endif %}
                         {% endfor %}
                         <th style="color: white;">Action</th>
@@ -110,6 +112,8 @@
                                     <td class="section_col">{{ placement.section }}</td>
                                 {% elif col == 'passout' %}
                                     <td class="passout_col">{{ placement.passout }}</td>
+                                {% elif col == 'current_status' %}
+                                    <td class="passout_col">{{ placement.current_status }}</td>
                                 {% endif %}
                             {% endfor %}
                             <td>       

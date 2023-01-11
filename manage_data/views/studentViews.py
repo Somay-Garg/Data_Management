@@ -477,6 +477,8 @@ def export_data(request):
         req_col = request.POST['columns_details'].split(',')
         print('required cols',type(req_col))
         req_col.remove('id')
+        if 'upload_proof' in req_col:
+            req_col.remove('upload_proof')
 
     query = Q()
     if filter_data == "All":
