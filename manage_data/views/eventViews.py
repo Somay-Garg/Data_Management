@@ -16,7 +16,8 @@ def index(request):
 
 def display_events(request,msg=''):
     fields = Events._meta.fields
-    event_data = Events.objects.all().values()
+    # event_data = Events.objects.all().values()
+    event_data = Events.objects.all()
     columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
     columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
     filter_data = {
@@ -37,27 +38,36 @@ def display_events(request,msg=''):
 
     sponsor = ''
     for event in event_data:
-        filter_data['Event Name'].add(event['event_name'])
-        filter_data['Event Type'].add(event['type_of_event'])
-        filter_data['Audience'].add(event['Audience'])
+        filter_data['Event Name'].add(event.event_name)
+        filter_data['Event Type'].add(event.type_of_event)
+        filter_data['Audience'].add(event.Audience)
 
-        socities = event['Societies'].split(',')
+        socities = event.Societies.split(',')
         for society in socities:
             filter_data['Society'].add(society)
         
-        departments = event['Departments'].split(',')
+        departments = event.Departments.split(',')
         for department in departments:
             filter_data['Department'].add(department)
 
-        filter_data['Organized By'].add(event['Organized_by'])
-        filter_data['Conducted By'].add(event['Conducted_by'])
+        filter_data['Organized By'].add(event.Organized_by)
+        filter_data['Conducted By'].add(event.Conducted_by)
 
-        sponsor = json.loads(event['sponsors_details'])
+        sponsor = json.loads(event.sponsors_details)
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
 
+    # event_obj = Events.objects.all()
+
     for event in event_data:
-        event['sponsors_details'] = json.loads(event['sponsors_details'])
+        event.sponsors_details = json.loads(event.sponsors_details)
+
+    # for test in event_obj:
+    #     event['upload_attendance'] = test.upload_attendance.url
+
+    # event_test = Events.objects.all()
+    # for test in event_test:
+    #     print(test.upload_attendance.url)
 
     context = {
         'fields' : fields,
@@ -128,6 +138,7 @@ def display_columns(request,msg=''):
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
+        print(event['upload_attendance'])
 
     for event in event_data_all:
         event['sponsors_details'] = json.loads(event['sponsors_details'])
@@ -232,11 +243,12 @@ def add_event(request):
         now = datetime.now()
 
         if request.method == 'POST' and request.FILES['upload_atten']:
+            # upload_attendance = request.FILES['upload_atten']
+            # fs = FileSystemStorage(location='attendance/event_attendances/')
+            # filename = fs.save(now.strftime("%H%M%S")+"_"+upload_attendance.name, upload_attendance)
+            # uploaded_file_url = fs.url(filename)
+            # upload_attendance = uploaded_file_url.split('/')[-1]
             upload_attendance = request.FILES['upload_atten']
-            fs = FileSystemStorage(location='attendance/event_attendances/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_attendance.name, upload_attendance)
-            uploaded_file_url = fs.url(filename)
-            upload_attendance = uploaded_file_url.split('/')[-1]
         
         if request.method == 'POST' and request.FILES['upload_report']:
             upload_report = request.FILES['upload_report']

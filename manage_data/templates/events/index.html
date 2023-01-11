@@ -208,7 +208,7 @@
                                 {% elif col == 'no_of_participants' %}
                                     <td class="no_of_participants_col" >{{ event.no_of_participants }}</td>
                                 {% elif col == 'upload_attendance' %}
-                                    <td class="upload_attendance_col" ><a href="{% url 'open_file_atten' event.upload_attendance %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    <td class="upload_attendance_col" ><a href="{{event.upload_attendance.url}}" class="btn btn-sm atten_file" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                                 {% elif col == 'upload_report' %}
                                     <td class="upload_report_col" ><a href="{% url 'open_file_report' event.upload_report %}" target = "_blank" class="btn btn-sm report_file" role="button" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                                 {% endif %}
