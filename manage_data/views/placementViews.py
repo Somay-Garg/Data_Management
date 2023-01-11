@@ -64,7 +64,7 @@ def display_placement_columns(request,msg=''):
         #     cols = request.POST['passingColumns']
         #     columns = json.loads(cols)
         
-    placement_data = StudentPlacement.objects.values(*columns)
+    placement_data = StudentPlacement.objects.order_by('enrollmentno').values(*columns)
    
     filter_data = {
         'Department': set(),
@@ -75,7 +75,7 @@ def display_placement_columns(request,msg=''):
         'break2' : 1,
     }
     
-    placement_data_all = StudentPlacement.objects.values()
+    placement_data_all = StudentPlacement.objects.order_by('enrollmentno').values()
 
     for student in placement_data_all:
         filter_data['Department'].add(student['department'])
@@ -107,7 +107,7 @@ def display_placement_columns(request,msg=''):
             if current_status != "-1":
                 query = query & Q(current_status = current_status)
             
-        placement_data = StudentPlacement.objects.filter(query).values(*columns)
+        placement_data = StudentPlacement.objects.filter(query).order_by('enrollmentno').values(*columns)
     else:
         placement_data = placement_data_all
         
@@ -175,7 +175,7 @@ def filter_placement(request):
         sel_fil_val['Current Status'] = current_status
 
     fields = StudentPlacement._meta.fields
-    placement_data = StudentPlacement.objects.filter(query).values()
+    placement_data = StudentPlacement.objects.filter(query).order_by('enrollmentno').values()
     all_data = StudentPlacement.objects.all().order_by('enrollmentno').values()
     
     filter_data = {
