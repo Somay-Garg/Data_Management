@@ -205,7 +205,7 @@ $(document).ready(function () {
   });
 
   // ---------------Placement code end----------
-
+ 
   //disabled future dates
   $(function () {
     var dtToday = new Date();
