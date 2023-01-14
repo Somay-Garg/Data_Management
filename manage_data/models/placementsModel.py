@@ -112,7 +112,7 @@ class StudentPlacement(models.Model):
     passout = models.DateField(blank=False)
     is_placed = models.BooleanField(blank=False,default=False)
     appeared_for_exams = models.BooleanField(blank=False,default=False)
-    current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default=None)
+    current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default='Others')
     
     def _str_(self):
         return self.name

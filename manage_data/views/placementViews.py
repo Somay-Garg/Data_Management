@@ -14,15 +14,17 @@ def generate_unique_id():
 
 def placements(request,msg=''):
     fields = StudentPlacement._meta.fields
-    placement_data = StudentPlacement.objects.all().values()
-    columns = ['id','enrollmentno','name','department','section','passout']
-    columns_str = 'id,enrollmentno,name,department,section,passout'
+    placement_data = StudentPlacement.objects.all().order_by('enrollmentno').values()
+    columns = ['id','enrollmentno','name','department','section','passout','current_status']
+    columns_str = 'id,enrollmentno,name,department,section,passout,current_status'
     
     filter_data = {
         'Department': set(),
         'Passout Year': set(),
         'break1' : 1,
         'Section': set(),
+        'Current Status' : set(),
+        'break2' : 1,
     }
 
     for student in placement_data:
@@ -30,6 +32,7 @@ def placements(request,msg=''):
         filter_data['Passout Year'].add(str(student['passout']).split('-')[0].split(' ')[-1])
         student['passout'] = str(student['passout']).split('-')[0].split(' ')[-1]
         filter_data['Section'].add(student['section'])
+        filter_data['Current Status'].add(student['current_status'])
 
     context = {
         'fields' : fields,
@@ -50,33 +53,36 @@ def placements(request,msg=''):
 
 def display_placement_columns(request,msg=''):
     fields = StudentPlacement._meta.fields
-    columns = ['id','enrollmentno','name','department','section','passout']
-    columns_str = 'id,enrollmentno,name,department,section,passout'
+    columns = ['id','enrollmentno','name','department','section','passout','current_status']
+    columns_str = 'id,enrollmentno,name,department,section,passout,current_status'
     
-    if(request.method == "POST"):
+    # if(request.method == "POST"):
 #         if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
 #             columns = request.POST['columns_details'].split(',')
 
-        if('passingColumns' in request.POST):
-            cols = request.POST['passingColumns']
-            columns = json.loads(cols)
+        # if('passingColumns' in request.POST):
+        #     cols = request.POST['passingColumns']
+        #     columns = json.loads(cols)
         
-    placement_data = StudentPlacement.objects.values(*columns)
+    placement_data = StudentPlacement.objects.order_by('enrollmentno').values(*columns)
    
     filter_data = {
         'Department': set(),
         'Passout Year': set(),
         'break1' : 1,
         'Section': set(),
+        'Current Status' : set(),
+        'break2' : 1,
     }
     
-    placement_data_all = StudentPlacement.objects.values()
+    placement_data_all = StudentPlacement.objects.order_by('enrollmentno').values()
 
     for student in placement_data_all:
         filter_data['Department'].add(student['department'])
         filter_data['Passout Year'].add(str(student['passout']).split('-')[0].split(' ')[-1])
         student['passout'] = str(student['passout']).split('-')[0].split(' ')[-1]
         filter_data['Section'].add(student['section'])
+        filter_data['Current Status'].add(student['current_status'])
     
     placement_data = ''
     if 'filter_data' in request.POST:
@@ -87,18 +93,21 @@ def display_placement_columns(request,msg=''):
             filterData = json.loads(filterData)
             department = filterData['Department']
             passout = filterData['Passout Year']
-            section = filterData['Section']       
+            section = filterData['Section']
+            current_status = filterData['Current Status']       
 
             if department != "-1":
-                print('in dept')
+                # print('in dept')
                 query = query & Q(department = department)
             if passout != "-1":
                 query = query & Q(passout = passout +'-01-01')
             if section != "-1":
-                print("in sec ")
+                # print("in sec ")
                 query = query & Q(section = section)
+            if current_status != "-1":
+                query = query & Q(current_status = current_status)
             
-        placement_data = StudentPlacement.objects.filter(query).values(*columns)
+        placement_data = StudentPlacement.objects.filter(query).order_by('enrollmentno').values(*columns)
     else:
         placement_data = placement_data_all
         
@@ -133,7 +142,7 @@ def filter_placement(request):
     if "downloadExcel" in request.POST:
         return export_placment_data(request)
     
-    columns = ['id','enrollmentno','name','department','section','passout']
+    columns = ['id','enrollmentno','name','department','section','passout','current_status']
     # columns_str = 'id,enrollmentno,name,department,section,passout'
     if('columns_details' in request.POST and request.POST['columns_details'] != ''):
         columns = request.POST['columns_details'].split(",")
@@ -141,6 +150,7 @@ def filter_placement(request):
     department = request.POST['Department']
     passout = request.POST['Passout Year']
     section = request.POST['Section']
+    current_status = request.POST['Current Status']
 
     query = Q()
     
@@ -148,6 +158,7 @@ def filter_placement(request):
         'Department': '-1',
         'Passout Year': '-1',
         'Section': '-1',
+        'Current Status' : '-1',
     }
 
     if department != "-1":
@@ -159,22 +170,28 @@ def filter_placement(request):
     if section != "-1":
         query = query & Q(section = section)
         sel_fil_val['Section'] = section
+    if current_status != "-1":
+        query = query & Q(current_status = current_status)
+        sel_fil_val['Current Status'] = current_status
 
     fields = StudentPlacement._meta.fields
-    placement_data = StudentPlacement.objects.filter(query).values()
-    all_data = StudentPlacement.objects.all().values()
+    placement_data = StudentPlacement.objects.filter(query).order_by('enrollmentno').values()
+    all_data = StudentPlacement.objects.all().order_by('enrollmentno').values()
     
     filter_data = {
         'Department': set(),
         'Passout Year': set(),
         'break1' : 1,
         'Section': set(),
+        'Current Status' : set(),
+        'break2' : 1,
     }
 
     for student in all_data:
         filter_data['Department'].add(student['department'])
         filter_data['Passout Year'].add(str(student['passout']).split('-')[0].split(' ')[-1])
         filter_data['Section'].add(student['section'])
+        filter_data['Current Status'].add(student['current_status'])
     
     for student in placement_data:
         student['passout'] = str(student['passout']).split('-')[0].split(' ')[-1]
@@ -212,6 +229,7 @@ def export_placment_data(request):
         department = filter_data['Department']
         passout = filter_data['Passout Year']
         section = filter_data['Section']
+        current_status = filter_data['Current Status']
 
         if department != "-1":
             query = query & Q(department = department)
@@ -219,8 +237,10 @@ def export_placment_data(request):
             query = query & Q(passout = passout+'-01-01')
         if section != "-1":
             query = query & Q(section = section)
+        if current_status != "-1":
+            query = query & Q(current_status = current_status)
         
-    placement_data = StudentPlacement.objects.filter(query).values(*req_col)
+    placement_data = StudentPlacement.objects.filter(query).order_by('enrollmentno').values(*req_col)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=placements.csv'
     writer = csv.writer(response)
@@ -308,7 +328,7 @@ def add_student_placement_detail(request):
                 current_exam.result_proof = uploaded_file_url.split('/')[-1]
             current_exam.save()
 
-    current_status = ''
+    current_status = 'Others'
     if 'currentstatus' in request.POST:
         current_status = request.POST['currentstatus']
         if current_status == 'Job':
@@ -576,7 +596,7 @@ def save_student_placement_detail(request):
     student = StudentPlacement.objects.get(id=request.POST['student_id'])
 
     # if any changes in status
-    current_status = ''
+    current_status = 'Others'
     if 'currentstatus' in request.POST:
         current_status = request.POST['currentstatus']
         status_changed = False
@@ -631,7 +651,7 @@ def save_student_placement_detail(request):
             stu.website = request.POST['website_link']
             stu.save()
 
-        elif (student.current_status == 'entrance_exam' or student.current_status == 'jobs') and request.POST['currentstatus'] == 'Other':
+        elif (student.current_status == 'Entrance Exam' or student.current_status == 'Family Business' or student.current_status == 'Others') and request.POST['currentstatus'] == 'Other':
             status_changed = True
             current_status = request.POST['other']
 
@@ -778,7 +798,7 @@ def delete_placement_entry(request):
 
 def show_placement_detail(request,pk,showFilters):
     id = pk
-    print("mansi--->",showFilters)
+    # print("mansi--->",showFilters)
     studentDetail = StudentPlacement.objects.get(pk = id)
     studentDetail.passout = str(studentDetail.passout).split('-')[0]
     studentOfferDetail = ''

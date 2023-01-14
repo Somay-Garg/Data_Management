@@ -178,7 +178,7 @@
                             <option value="Job" {% if studentDetail.current_status == "Job" %}selected{% endif %} >Job</option>
                             <option value="Higher Education" {% if studentDetail.current_status == "Higher Education" %}selected{% endif %}>Higher Education</option>
                             <option value="Entreprenurship" {% if studentDetail.current_status == "Entreprenurship" %}selected{% endif %}>Entreprenurship</option>
-                            <option value="Others" {% if studentDetail.current_status == "entrance_exam" or studentDetail.current_status == "jobs" %}selected{% endif %}>Others</option>
+                            <option value="Others" {% if studentDetail.current_status == "Entrance Exam" or studentDetail.current_status == "Family Business" or studentDetail.current_status == "Others" %}selected{% endif %}>Others</option>
                         </select>
                         <br>
                     </div>
@@ -266,8 +266,9 @@
                           <div class="form-group align-center float-child" id="">
                             <label class="w-25 required_asterisk" for="exampleFormControlInput1">Others</label>
                             <select class="m-1 w-30" name="other">
-                              <option value="entrance_exam" {% if studentDetail.current_status == "entrance_exam" %}selected{% endif %} >Preparing for Entrance Exam</option>
-                              <option value="jobs" {% if studentDetail.current_status == "jobs" %}selected{% endif %} >Jobs</option>
+                              <option value="Entrance Exam" {% if studentDetail.current_status == "Entrance Exam" %}selected{% endif %} >Preparing for Entrance Exam</option>
+                              <option value="Family Business" {% if studentDetail.current_status == "Family Business" %}selected{% endif %} >Family Business</option>
+                              <option value="Others" {% if studentDetail.current_status == "Others" %}selected{% endif %} >Others</option>
                             </select>
                           </div>
                         {% endif %}

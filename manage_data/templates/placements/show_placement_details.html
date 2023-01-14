@@ -120,7 +120,7 @@
                     <legend  class="float-none w-auto">Current Status</legend>
                     <div class="form-group align-center float-child w-100 " id="currentStatusBox">
                         <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Current Status:</label>
-                        <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'entrance_exam' or studentDetail.current_status == 'entrance_exam' %}Other{% else %}{{studentDetail.current_status}}{% endif %}" disabled>
+                        <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'Entrance Exam' or studentDetail.current_status == 'Family Business' or studentDetail.current_status == 'Others' %}Other{% else %}{{studentDetail.current_status}}{% endif %}" disabled>
                         <br>
                     </div>
                     <div class="status_details">
@@ -188,7 +188,7 @@
                         {% else %}
                           <div class="form-group align-center float-child w-100 " id="">
                             <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Others:</label>
-                            <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'entrance_exam' %}Preparing for Entrance Exam{%elif studentDetail.current_status == 'jobs' %}Jobs{% endif %}" disabled>
+                            <input disabled style="border:none;background-color:white" class="w-65 text-start " type="text" name="" id="" value="{% if studentDetail.current_status == 'Entrance Exam' %}Preparing for Entrance Exam{%elif studentDetail.current_status == 'Family Business' %}Family Business{%elif studentDetail.current_status == 'Others' %}{% endif %}" disabled>
                           </div>
                         {% endif %}
                     </div>

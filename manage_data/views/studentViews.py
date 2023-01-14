@@ -13,7 +13,7 @@ import csv
 # display all the details nd columns
 def display_students(request,msg=''):
     fields = Students._meta.fields
-    students_data = Students.objects.all().values()
+    students_data = Students.objects.all().order_by('enroll_no').values()
     columns = ['id','name','eroll_no','semester','Departments','Class','organized_by','mobile_no','mail_id','event_name','event_type','event_date','host_institute','position','team_size','level','date_of_award','upload_proof']
     columns_str = 'id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,position,team_size,level,date_of_award,upload_proof'
     
@@ -81,7 +81,7 @@ def display_students_table(request,msg=''):
 #             columns = request.POST['columns_details'].split(',')
 
     # students_data = Students.objects.values(*columns)
-    students_data_all = Students.objects.all().values()
+    students_data_all = Students.objects.all().order_by('enroll_no').values()
 
     filter_data = {
         'Event Name':set(),
@@ -175,7 +175,7 @@ def display_students_table(request,msg=''):
             if( date_of_award != '-1' and date_of_award != ''):
                 query = query & Q(date_of_award = date_of_award)
             
-        students_data = Students.objects.filter(query).values(*columns)
+        students_data = Students.objects.filter(query).order_by('enroll_no').values(*columns)
     else:
         students_data = students_data_all
 
@@ -225,7 +225,7 @@ def filter_student(request):
         date_of_award = request.POST['Award Date']
         event_date = request.POST['Event Date']
         
-        students_data_all = Students.objects.all().values()
+        students_data_all = Students.objects.all().order_by('enroll_no').values()
 
         filter_data = {
             'Event Name':set(),
@@ -324,7 +324,7 @@ def filter_student(request):
             query = query & Q(date_of_award = date_of_award)
             sel_fil_val['Award Date'] = date_of_award
         
-        students_data = Students.objects.filter(query).values()
+        students_data = Students.objects.filter(query).order_by('enroll_no').values()
         # print("hello",query)
 
         fields = Students._meta.fields
@@ -477,6 +477,8 @@ def export_data(request):
         req_col = request.POST['columns_details'].split(',')
         print('required cols',type(req_col))
         req_col.remove('id')
+        if 'upload_proof' in req_col:
+            req_col.remove('upload_proof')
 
     query = Q()
     if filter_data == "All":
@@ -525,7 +527,7 @@ def export_data(request):
             query = query & Q(date_of_award = date_of_award)
         
         query2 = Q()
-    students_data = Students.objects.filter(query & query2).values(*req_col)
+    students_data = Students.objects.filter(query & query2).order_by('enroll_no').values(*req_col)
     print(students_data)
     response = HttpResponse(content_type = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename=students.csv'

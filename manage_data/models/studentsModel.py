@@ -19,7 +19,7 @@ class Students(models.Model):
         ('I','I'),
         ('II','II'),
         ('III','III'),
-        ('Evening','Evening'),
+        ('IV','IV'),
     )
     
     Class = models.CharField(max_length=255,choices=classOptions)

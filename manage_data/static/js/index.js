@@ -685,6 +685,7 @@ function addPlacementColumns(cols){
           <option value="department">Department Name</option>
           <option value="section">Section</option>
           <option value="passout">Passout Year</option>
+          <option value="current_status">Current Status</option>
       </select>
     </div>    
   `;
@@ -963,8 +964,9 @@ function showStatusForm(status){
       <div class="form-group align-center float-child" id="">
         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Others</label>
         <select class="m-1 w-30" name="other">
-          <option value="entrance_exam">Preparing for Entrance Exam</option>
-          <option value="jobs">Jobs</option>
+          <option value="Entrance Exam">Preparing for Entrance Exam</option>
+          <option value="Family Business">Family Business</option>
+          <option value="Others">Others</option>
         </select>
       </div>
     `;
