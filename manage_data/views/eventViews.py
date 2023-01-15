@@ -50,8 +50,12 @@ def display_events(request,msg=''):
             filter_data['Department'].add(department)
 
         filter_data['Organized By'].add(event['Organized_by'])
-        filter_data['Conducted By'].add(event['Conducted_by'])
 
+        # filter_data['Conducted By'].add(event['Conducted_by'])
+        if event['Conducted_by'] != 'MSIT':
+            filter_data['Conducted By'].add('Others')
+        else:
+            filter_data['Conducted By'].add(event['Conducted_by'])
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
@@ -82,12 +86,7 @@ def display_columns(request,msg=''):
     fields = Events._meta.fields
     columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
     columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
-    # print(' ---------  ',type(columns))
-
-#     if(request.method == "POST"):
-#         if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
-#             # print('cols_dets' , type(request.POST['columns_details']))
-#             columns = request.POST['columns_details'].split(',')        
+           
    
     filter_data = {
         'Event Name': set(),
@@ -122,8 +121,11 @@ def display_columns(request,msg=''):
             filter_data['Department'].add(department)
 
         filter_data['Organized By'].add(event['Organized_by'])
-        filter_data['Conducted By'].add(event['Conducted_by'])
-        # changes
+        if event['Conducted_by'] != 'MSIT':
+            filter_data['Conducted By'].add('Others')
+        else:
+            filter_data['Conducted By'].add(event['Conducted_by'])
+    
         filter_data['Total Sponsored Amount'].add(event['total_sponsored_amt'])
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
@@ -135,7 +137,6 @@ def display_columns(request,msg=''):
     event_data = ''
     if 'filter_data' in request.POST:
         filterData = request.POST['filter_data']
-        # print("filterData > ",filterData)
         query = Q()
         if filterData == "All":
             query2 = Q()
@@ -173,7 +174,10 @@ def display_columns(request,msg=''):
             if(Organized_by != "-1"):
                 query = query & Q(Organized_by = Organized_by)
             if(Conducted_by != "-1"):
-                query = query & Q(Conducted_by = Conducted_by)
+                if Conducted_by == 'MSIT':
+                    query = query & Q(Conducted_by = Conducted_by)
+                else:
+                    query = query & ~Q(Conducted_by = 'MSIT')
             if(sponsored_by != "-1"):
                 query = query & Q(sponsors_details__contains = sponsored_by)
             
@@ -181,11 +185,9 @@ def display_columns(request,msg=''):
     
         event_data = Events.objects.filter(query & query2).values(*columns)
 
-        # print("hii",event_data)
     else:
         event_data = event_data_all
 
-    # print("event_data  -> ",event_data)
 
     context = {
         'fields' : fields,
@@ -293,59 +295,7 @@ def filter_event(request):
         min_amount = request.POST['min_amount']
         max_amount = request.POST['max_amount']
         
-        query = Q()
         
-        sel_fil_val = {
-            'Event Name': '-1',
-            'Event Type': '-1',
-            'Audience': '-1',
-            'Society' : '-1',
-            'Department' : '-1',
-            'Organized By': '-1',
-            'Conducted By': '-1',
-            'Sponsors' : '-1',
-            'Total Sponsored Amount' : '-1',
-            
-        }
-
-        if(event_name != "-1"):
-            query = query & Q(event_name = event_name)
-            sel_fil_val['Event Name'] = event_name
-        if(type_of_event != "-1"):
-            query = query & Q(type_of_event = type_of_event)
-            sel_fil_val['Event Type'] = type_of_event
-        if(Audience != "-1"):
-            query = query & Q(Audience__in = ["both",Audience])
-            sel_fil_val['Audience'] = Audience
-        if(Society != "-1"):
-            query = query & Q(Societies__contains = Society)
-            sel_fil_val['Society'] = Society
-        if(Department != "-1"):
-            query = query & (Q(Departments__contains = "All") | Q(Departments__contains = Department))
-            sel_fil_val['Department'] = Department
-        if(Organized_by != "-1"):
-            query = query & Q(Organized_by = Organized_by)
-            sel_fil_val['Organized By'] = Organized_by
-        if(Conducted_by != "-1"):
-            query = query & Q(Conducted_by = Conducted_by)
-            sel_fil_val['Conducted By'] = Conducted_by
-        if(sponsored_by != "-1"):
-            query = query & Q(sponsors_details__contains = sponsored_by)
-            sel_fil_val['Sponsors'] = sponsored_by
-
-        if(after == ''):
-            after = '1900-01-01'
-        else:
-            sel_fil_val['start_date'] = after
-
-        if(upto == ''):
-            upto = '2100-01-01'
-        else:
-            sel_fil_val['end_date'] = upto
-        query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
-        
-        query3 = Q(total_sponsored_amt__range = [min_amount,max_amount])
-    
         fields = Events._meta.fields
         all_data = Events.objects.all().values()
         filter_data = {
@@ -379,18 +329,78 @@ def filter_event(request):
                 filter_data['Department'].add(department)
 
             filter_data['Organized By'].add(event['Organized_by'])
-            filter_data['Conducted By'].add(event['Conducted_by'])
-            # change
+
+            if event['Conducted_by'] != 'MSIT':
+                filter_data['Conducted By'].add('Others')
+            else:
+                filter_data['Conducted By'].add(event['Conducted_by'])
+
             filter_data['Total Sponsored Amount'].add(event['total_sponsored_amt'])
 
             sponsor = json.loads(event['sponsors_details'])
             for spon in sponsor:
-                filter_data['Sponsors'].add(spon)
+                filter_data['Sponsors'].add(spon) 
         
+        
+        query = Q()
+        sel_fil_val = {
+            'Event Name': '-1',
+            'Event Type': '-1',
+            'Audience': '-1',
+            'Society' : '-1',
+            'Department' : '-1',
+            'Organized By': '-1',
+            'Conducted By': '-1',
+            'Sponsors' : '-1',
+            'Total Sponsored Amount' : '-1',
+        }
+
+        if(event_name != "-1"):
+            query = query & Q(event_name = event_name)
+            sel_fil_val['Event Name'] = event_name
+        if(type_of_event != "-1"):
+            query = query & Q(type_of_event = type_of_event)
+            sel_fil_val['Event Type'] = type_of_event
+        if(Audience != "-1"):
+            query = query & Q(Audience__in = ["both",Audience])
+            sel_fil_val['Audience'] = Audience
+        if(Society != "-1"):
+            query = query & Q(Societies__contains = Society)
+            sel_fil_val['Society'] = Society
+        if(Department != "-1"):
+            query = query & (Q(Departments__contains = "All") | Q(Departments__contains = Department))
+            sel_fil_val['Department'] = Department
+        if(Organized_by != "-1"):
+            query = query & Q(Organized_by = Organized_by)
+            sel_fil_val['Organized By'] = Organized_by
+        if(Conducted_by != "-1"):
+            if Conducted_by == 'MSIT':
+                query = query & Q(Conducted_by = Conducted_by)
+            else:
+                query = query & ~Q(Conducted_by = 'MSIT')
+            sel_fil_val['Conducted By'] = Conducted_by
+        if(sponsored_by != "-1"):
+            query = query & Q(sponsors_details__contains = sponsored_by)
+            sel_fil_val['Sponsors'] = sponsored_by
+
+        if(after == ''):
+            after = '1900-01-01'
+        else:
+            sel_fil_val['start_date'] = after
+
+        if(upto == ''):
+            upto = '2100-01-01'
+        else:
+            sel_fil_val['end_date'] = upto
+        query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
+        
+        query3 = Q(total_sponsored_amt__range = [min_amount,max_amount])
+    
         event_data = Events.objects.filter(query & query2 & query3).values()
+            
         for event in event_data:
             event['sponsors_details'] = json.loads(event['sponsors_details'])
-        
+
         context = {
             'fields' : fields,
             'event_data' : event_data,
@@ -425,14 +435,14 @@ def export_data(request):
 
     if 'columns_details' in request.POST:
         req_col = request.POST['columns_details'].split(',')
-        print('required cols',req_col)
+        
         req_col.remove('id')
         if 'upload_attendance' in req_col:
             req_col.remove('upload_attendance')
         if 'upload_report' in req_col:
             req_col.remove('upload_report')
     query = Q()
-    # print(filter_data)
+    
     if filter_data == "All":
         query2 = Q()
     else:
@@ -484,7 +494,6 @@ def export_data(request):
         event_row = [i]
         for value in event:
             event_row.append(event[value])
-            print(event[value])
         writer.writerow(event_row)
         i+=1
 
@@ -524,7 +533,6 @@ def save_event(request,pk):
             uploaded_file_url = fs.url(filename)
             fs.delete(item.upload_report)
             item.upload_report = uploaded_file_url.split('/')[-1] 
-        print("item saved")
         item.save()
         return display_columns(request,"Details Edited")
     else:
@@ -535,7 +543,6 @@ def edit_event(request):
     id = request.POST['id_details']
     columns = request.POST['passingColumns']
     showFilters = request.POST['show_filters']
-    print(showFilters)
     item = Events.objects.get(pk = id)
     form = EventForm(instance=item)
     context = {
@@ -558,9 +565,7 @@ def delete_event_entry(request):
         fs_report = FileSystemStorage(location='report/event_reports/')
         path_report = str(item.upload_report)
         fs_report.delete(path_report)
-        # print("helo",path_)
         show_filters = request.POST['show_filters']
-        # print('hiii',show_filters)
         Events.objects.filter(id=id).delete()
         return display_columns(request,'Details Deleted')
     else:

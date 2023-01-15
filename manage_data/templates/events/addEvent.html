@@ -82,11 +82,24 @@
                         <input class="w-30 m-1" type="text" name="no_of_parti" id="" required  style = "height: 32px;
                         border-radius: 4px;">
                     </div>
+                    <!-- <div class="form-group  align-center float-child"> -->
+                        <!-- <label class="w-25 required_asterisk" for="exampleFormControlInput1">Conducted By</label>
+                        <input class="w-30" type="text" name="conducted_by" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                        <select name="conducted_by" id=""></select>
+                    </div>  -->
                     <div class="form-group  align-center float-child">
                         <label class="w-25 required_asterisk" for="exampleFormControlInput1">Conducted By</label>
-                        <input class="w-30" type="text" name="cond_by" id="" required style = "height: 32px;
-                        border-radius: 4px;">
-                    </div>                                       
+                        <select required class="w-30 m-1" name="team_size" class="form-control" oninput="AddInstituteName(this.value)">
+                            <option value="-1" selected disabled>Select Values</option>
+                            <option value="MSIT" >MSIT</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>          
+                    <div class="form-group align-center float-child d-none" id = 'conductedBlock' >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Institute Name</label>
+                        <input required class="w-30 " type="text" name="cond_by" id="conducted_by"  style = "height:32px;border-radius: 4px;">
+                    </div>                            
                 </fieldset>               
                 <br>
                 <fieldset class="border border-2 p-2 ">

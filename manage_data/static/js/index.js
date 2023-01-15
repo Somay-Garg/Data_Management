@@ -607,25 +607,19 @@ function numberOfMembers(val){
     $("#no_of_members").removeClass("d-none");
   }else{
     $("#no_of_members").addClass("d-none");
-    // AddMemberDetails(1)
+    $('#noofmembers').val("1");
   }
 }
 
-// function AddMemberDetails(size){
-//     size = parseInt(size)
-//     if(size <= 0 || isNaN(size)){
-//         size = 1;
-//     }
+function AddInstituteName(val){
+  if(val == 'MSIT'){
+    $("#conducted_by").val("MSIT");
+    $("#conductedBlock").addClass("d-none");
+  }else{
+    $("#conductedBlock").removeClass("d-none"); 
+  }
+}
 
-//     $("#member_details").removeClass("d-none");
-
-//     $("#insert_member_details").html('');
-//     for(let i=0;i<size;i++){
-//         let tmp = `   
-//     `
-//         $("#insert_member_details").append(tmp);
-//     }
-// }
 
 function showFilters(){
   $("#filterDataDiv").toggleClass('d-none');
@@ -634,36 +628,7 @@ function showFilters(){
   });
 }
 
-// function submit_member_data(){
-//     let members_data = {};
-//     let i=1;
-//     $('.member_detail').each(function(){
-//         let member = {
-//             'student_name':'',
-//             'eroll_no':'',
-//             'semester':'',
-//             'class':'',
-//             'department':'',
-//             'mobile_no':'',
-//             'email_id':'',
-//         }
 
-//         member['student_name'] = $(this).find(".student_name").val();
-//         member['eroll_no'] = $(this).find(".student_eroll_no").val();
-//         member['semester'] = $(this).find(".semester").val();
-//         member['class'] = $(this).find(".class_section").val();
-//         member['department'] = $(this).find(".departments").val();
-//         member['mobile_no'] = $(this).find(".mobileNo").val();
-//         member['email_id'] = $(this).find(".emailID").val();
-        
-//         members_data[i] = member;
-//         i++;
-//     })
-    
-//     $("#member_details_data").val(JSON.stringify(members_data));
-//     console.log(JSON.stringify(members_data));
-
-// }
 
 // --------------------------students js code ends------------------------------
 
@@ -966,7 +931,7 @@ function showStatusForm(status){
         <select class="m-1 w-30" name="other">
           <option value="Entrance Exam">Preparing for Entrance Exam</option>
           <option value="Family Business">Family Business</option>
-          <option value="Others">Others</option>
+          <option value="Others">Unknown</option>
         </select>
       </div>
     `;
