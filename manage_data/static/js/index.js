@@ -931,7 +931,7 @@ function showStatusForm(status){
         <select class="m-1 w-30" name="other">
           <option value="Entrance Exam">Preparing for Entrance Exam</option>
           <option value="Family Business">Family Business</option>
-          <option value="Others">Unknown</option>
+          <option value="Unknown">Unknown</option>
         </select>
       </div>
     `;

@@ -56,7 +56,7 @@ streamchoices = (
     ('eee','EEE'),
 )
 
-class Student(models.Model):
+class DefaultStudent(models.Model):
     type = models.CharField(max_length=10, choices= typechoices ,default='Regular')
     enrollmentno = models.IntegerField(null = True, default=None , blank=True)
     name = models.CharField(max_length=100, blank=False)
@@ -101,7 +101,7 @@ statusChoices = (
     ('Job','Job'),
     ('Higher Education','Higher Education'),
     ('Entreprenurship','Entreprenurship'),
-    ('Others','Others'),
+    ('Unknown','Unknown'),
 )
 
 class StudentPlacement(models.Model):
@@ -112,7 +112,7 @@ class StudentPlacement(models.Model):
     passout = models.DateField(blank=False)
     is_placed = models.BooleanField(blank=False,default=False)
     appeared_for_exams = models.BooleanField(blank=False,default=False)
-    current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default='Others')
+    current_status = models.CharField(max_length=50,blank=False,choices=statusChoices,default='Unknown')
     
     def _str_(self):
         return self.name

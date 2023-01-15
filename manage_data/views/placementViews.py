@@ -328,7 +328,7 @@ def add_student_placement_detail(request):
                 current_exam.result_proof = uploaded_file_url.split('/')[-1]
             current_exam.save()
 
-    current_status = 'Others'
+    current_status = 'Unknown'
     if 'currentstatus' in request.POST:
         current_status = request.POST['currentstatus']
         if current_status == 'Job':
@@ -596,7 +596,7 @@ def save_student_placement_detail(request):
     student = StudentPlacement.objects.get(id=request.POST['student_id'])
 
     # if any changes in status
-    current_status = 'Others'
+    current_status = 'Unknown'
     if 'currentstatus' in request.POST:
         current_status = request.POST['currentstatus']
         status_changed = False
@@ -651,7 +651,7 @@ def save_student_placement_detail(request):
             stu.website = request.POST['website_link']
             stu.save()
 
-        elif (student.current_status == 'Entrance Exam' or student.current_status == 'Family Business' or student.current_status == 'Others') and request.POST['currentstatus'] == 'Other':
+        elif (student.current_status == 'Entrance Exam' or student.current_status == 'Family Business' or student.current_status == 'Unknown') and request.POST['currentstatus'] == 'Other':
             status_changed = True
             current_status = request.POST['other']
 
