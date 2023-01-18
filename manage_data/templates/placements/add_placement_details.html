@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block body%}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="placement">Student Placement Detail Entry</h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" id="placement_detail_form" method="post" action="{% url 'placements/add_student_placement_detail/' %}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+
+                <fieldset class="border border-2 p-3" id="if_placed">
+                    <legend  class="float-none w-auto">Student Details</legend>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Student Name</label>
+                        <input class="w-30 " type="text" name="student_name" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Enrollment Number</label>
+                        <input class="w-30 " type="number" name="enrollment_no" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Department Name</label>
+                        <input class="w-30 " type="text" name="department_name" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Section</label>
+                        <select class="m-1 w-30" name="section">
+                            <option value="I">I</option>
+                            <option value="II">II</option>
+                            <option value="III">III</option>
+                            <option value="IV">IV</option>
+                        </select>
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Passout</label>
+                        <input type="hidden" name="" id="hidden_passout" value="none">
+                        <select class="m-1 w-30" id="select_year" name="passout_year">
+                        </select>
+                    </div>
+                </fieldset>               
+                <br><br>
+
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">If Placed</legend>
+                    <div class="form-group align-center float-child" id="placedBox">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Are You Placed?</label>
+                        <select id="is_placed"  name="placed" class="m-1 w-30" onchange="showPlacedForm(this.value)">
+                            <option value="yes">Yes</option>
+                            <option value="no" selected>No</option>
+                        </select>
+                    </div>
+                    <div class="placed_form">
+                        <div class="offer_details">
+
+                        </div>
+                    </div>
+                </fieldset>               
+                <br><br>
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Appeared For Any Exam</legend>
+                    <div class="form-group align-center float-child" id="examBox">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Appeared in any Exam?</label>
+                        <select id="has_appeared"  name="placed" class="m-1 w-30" onchange="showExamForm(this.value)">
+                            <option value="yes">Yes</option>
+                            <option value="no" selected>No</option>
+                        </select>
+                    </div>
+                    <div class="exam_form">
+                        <div class="exam_details">
+
+                        </div>
+                    </div>
+                </fieldset>
+                <br><br>
+
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Current Status</legend>
+                    <div class="form-group align-center float-child" id="currentStatusBox">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Current Status</label>
+                        <select id=""  name="currentstatus" class="m-1 w-30" onchange="showStatusForm(this.value)">
+                            <option value="-1" disabled selected>Select Status</option>
+                            <option value="Job">Job</option>
+                            <option value="Higher Education">Higher Education</option>
+                            <option value="Entreprenurship">Entreprenurship</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <br>
+                    </div>
+                    <div class="status_details">
+                    </div>
+                </fieldset>
+                <br><br>
+                <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+                <textarea class="d-none" name="offer_details" id="student_offer_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="exam_details" id="student_exam_data" cols="30" rows="10"></textarea>
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" type="button" value="Add" style="background-color: #080885;color: white; width: 10rem; " onclick="submitPlacementData()" />
+                </div>
+            </form>
+        </div>
+    </div> 
+{% endblock %}

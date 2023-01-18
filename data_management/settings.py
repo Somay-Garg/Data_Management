@@ -29,6 +29,7 @@ ALLOWED_HOSTS = [
     'https://sdc-app1.herokuapp.com',
     'sdc-app1.herokuapp.com',
     '127.0.0.1',
+    'minorproject.pythonanywhere.com',
 ]
 
 # Application definition

@@ -17,7 +17,6 @@
                         {% elif field.label == "Societies" %}
                             <div class="form-group mb-2 align-center float-child" id = "society-involved">
                                 <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{ field.label }} </label>
-                                <!-- {{field.name}} -->
                                 <textarea class="d-none" name ="Societies" id="all_society" cols="30" rows="10">{{field.value}}</textarea>
                                 <select id="society" multiple = "multiple" class="w-30 m-1" oninput="getSocieties()">
                                         <option value="Prakriti" >Prakriti</option>
@@ -57,7 +56,6 @@
                 <fieldset class="border border-2 p-2">
                     <legend  class="float-none w-auto">Event's Sponsors Details</legend>
                     {% for field in form %}
-                    <!-- {{field.label}} -->
                         {% if field.label == "Sponsors details"   %}
                             <div class="form-group mb-2 align-center " id = "inputSponsors" >
                                 <textarea name="{{field.name}}"  id = "sponDets" class="d-none spons_text" >{{field.value}}</textarea>        
@@ -68,9 +66,7 @@
                                 <input class="w-30" type="number" name="no_of_sponsors" id="sponsors" oninput="addSponsors(this.value)" value = "{{field.value}}" required style = "height: 32px;border-radius: 4px;margin-left: 3.76rem;" />
                             </div>
                             <div id="insertSponsDets"></div>
-                            <!-- <div class="actual_sponsors" style = "display :none;">
-                                <textarea name="sponsors_details" id="" cols="30" rows="10" class = "" ></textarea>
-                            </div>  -->
+                            
                         {% elif field.label == "Total sponsored amt" %}
                             <div class="form-group mb-2 align-center float-child">
                                 <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total Amount of Sponsorship</label>
@@ -84,40 +80,28 @@
                     <legend  class="float-none w-auto">Event Dates</legend>
                     {% for field in form %}
                         {% if field.label == "Start date" %}
-                        <div class="form-group mb-2 align-center float-child">
-                        <!-- <label for="id_{{ field.name }}" class="col-2 col-form-label required_asterisk" > {{ field.label }} </label> -->
+                        <div class="form-group mb-2 align-center float-child" style="justify-content: space-evenly;">
                         <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
                         <input class="w-30 m-1 datesettup" type="date" name="start_date" id="start_date" min ="1600-01-01" max = "3020-12-31" required >
                         <label id = "start-date-setter" class ="d-none">{{field.value}}</label>
-                        </div>
-
-                        <!-- <div class="form-group mb-2 align-center">
-                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Start Date</label>
-                            <input class="w-30 m-1" type="date" name="start_date" id="" required>
-                        </div> -->
-                        
+                        </div>                      
                         {% elif field.label == "End date"%}
-                        <div class="form-group mb-2 align-center float-child">
+                        <div class="form-group mb-2 align-center float-child" style="justify-content: space-evenly;">
                             <label class="col-2 col-form-label required_asterisk" for="exampleFormControlInput1">End Date</label>
                             <input class="w-30 m-1 datesettup" type="date" name="end_date" id="end_date"  min ="1600-01-01" max = "3020-12-31" required>
                             <label id = "end-date-setter" class="d-none">{{field.value}}</label>
                         </div>
-                        <!-- <div class="form-group mb-2 align-center">
-                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">End Date</label>
-                            <input class="w-30 m-1" type="date" name="end_date" id="" required>
-                        </div> -->
                         {% endif %}
                     {% endfor %}
                  </fieldset>
-
                  <br>
                  <fieldset class="border border-2 p-2">
                     <legend  class="float-none w-auto">Upload Attendance</legend>
                     {% for field in form %}
-                        <div class="form-group align-center">
+                        
                         {% if field.label == "Upload attendance"  %}
-                        <div class="form-group align-center " style="display: flex;">
-                            <label for="id_{{ field.name }}" class="col-2 col-form-label  " > {{ field.label }} </label>
+                        <div class="form-group align-center " style="display: flex;margin-left: 4rem;">
+                            <label for="id_{{ field.name }}" class="col-2 col-form-label d-grid  " > {{ field.label }} <sub ><strong>(Max Size 5mb)</strong></sub></label>
                             <!-- {{field.name}} -->
                             <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
                                 <label for="">Previously Uploaded :</label>
@@ -129,7 +113,6 @@
                             </div>
                         </div>
                         {% endif %}
-                        </div>
                     {% endfor %}
                  </fieldset>
                  <br>
@@ -137,15 +120,14 @@
                     <legend  class="float-none w-auto ">Upload Report</legend>
                     {% for field in form %}
                         {% if field.label == "Upload report"  %}
-                            <div class="form-group  align-center" style="display: flex;">
-                                <label for="id_{{ field.name }}" class="col-2 col-form-label" > {{ field.label }} </label>
+                            <div class="form-group  align-center" style="display: flex;margin-left: 4rem;">
+                                <label for="id_{{ field.name }}" class="col-2 d-grid col-form-label" > {{ field.label }}  <sub ><strong>(Max Size 5mb)</strong></sub></label>
                                 <div id = "attendance_div" onchange = "updateAttendanceFileValue()">
                                     <label for="">Previously Uploaded :</label>
                                     <label for="">{{field.value}}</label>
                                     <div>
                                         <label for="">Change File :</label>
                                         <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
-                                        <!-- <input type="text" name = "upload_atten"> -->
                                     </div>
                                 </div>
                             </div>
@@ -155,9 +137,11 @@
                  <textarea name="passingColumns" class = "d-none" id="passingColumns" cols="30" rows="10">{{columns}}</textarea> 
                  <input type="text" class="d-none" name = "id_details" id = "id_details" value = "{{id}}">          
                 <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
-                    <input class="btn  btn-sm" type="submit" value="Edit" style="background-color: #080885;color: white;"/>
+                    <input class="btn  btn-sm" type="submit" value="Save" style="background-color: #080885;color: white;"/>
                 </div>
                 <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
+                <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+
             </form>
         </div>
     </div>     
