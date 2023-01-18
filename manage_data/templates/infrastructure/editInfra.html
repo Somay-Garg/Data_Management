@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; " class="infra">Infrastructure Entry </h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" method="post" action="{% url 'save_infra_entry' id%}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">For Year</legend>
+                    {% for field in form %}  
+                        {% if field.name == 'for_year_infra_entry' %}
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Select Academic Year</label>
+                        <input type="hidden" name="" id="hidden_for_yr" value="{{field.value}}">
+                                <select class="m-1 w-30 backYears" id="select_for_year" name="for_year_infra_entry">
+                                </select>
+                    </div>
+                    {% endif %}
+                   {% endfor %} 
+                </fieldset>
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Institute Details</legend>
+                    <input type="hidden" name="infra_id" value="{{item.id}}">
+                    {% for field in form %}  
+                        {% if field.name == 'institute_type' %}
+                            <div class="form-group  align-center float-child" >
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Institute Type</label>
+                            <select id="" name="institute_type" value="{{field.value}}" class="m-1 w-30" >
+                            <option value="Aided" >Private Aided</option>
+                            <option value="Unaided" >Private Unaided</option>
+                            </select>
+                            </div>
+                        {% elif field.name == 'year_of_establishment' %}
+                            <div class="form-group mb-2 align-center float-child">
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Year of establishment</label>
+                                <input type="hidden" name="" id="hidden_estb_yr" value="{{field.value}}">
+                                <select class="m-1 w-30 backYears" id="select_estb_year" name="yr_of_establishment">
+                                </select>
+                            </div>    
+                        {% elif field.name == 'year_of_1st_passout_batch' %}
+                            <div class="form-group mb-2 align-center float-child">
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">Year of 1st passout batch</label>
+                                <input type="hidden" name="" id="hidden_passout_yr" value="{{field.value}}">
+                                <select class="m-1 w-30 backYears" id="select_passout_year" name="yr_of_1st_passout_batch">
+                                </select>
+                            </div>    
+                        {% elif field.name == 'name_of_the_institute' or field.name == 'institute_category' or field.name == 'name_of_affiliating_university'  or field.name == 'institution_status' or field.name == 'address' or field.name == 'city' or field.name == 'state' or field.name == 'pincode' or field.name == 'campus_area' or field.name == 'total_built_up_area_in_sqmtr' or field.name == 'total_built_up_area_in_sqft' or field.name == 'total_playground_area' or field.name == 'phone' or field.name == 'website' or field.name == 'email' or field.name == 'head_of_the_institute' or field.name == 'name_of_the_head_of_institution' or field.name == 'available_courses' or field.name == 'no_of_voluntary_programs_supported' %}
+                            <div class="form-group mb-2 align-center float-child">
+                            <label for="id_{{ field.name }}" class="w-25 required_asterisk" > {{field.label}} </label>
+                            {{field}}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+                    <br>
+                    <fieldset class="border border-2 p-2">
+                        <legend  class="float-none w-auto">Amenities Details</legend>
+                        {% for field in form %}  
+                            {% if field.name == 'canteen' or field.name == 'cricket_ground' or field.name == 'basketball_court' or field.name == 'football_ground' or field.name == 'swimming_pool' or field.name == 'lawn_tennis_court' or field.name == 'bank_branch' or field.name == 'badminton_court' or field.name == 'wifi_facilities' or field.name == 'table_tennis_boards' or field.name == 'gymnasium' or field.name == 'bank_ATM' %}
+                            <div class="form-group align-center float-child" >
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                                <select class="w-30 m-1" value="{{field.value}}" name="{{field.name}}" class="form-control">
+                                    <option value="Yes"  >Yes</option>
+                                    <option value="No" >No</option>
+                                </select>
+                            </div>                         
+                            {% endif %}
+                        {% endfor %}
+                    </fieldset>                
+                 <br>
+                    <fieldset class="border border-2 p-2">
+                        <legend  class="float-none w-auto">Availability of Cells</legend>
+                        {% for field in form %}
+                            {% if field.name == 'no_of_alumini' or field.name == 'no_of_companies_setup_in_last_5_years_by_incubation_centre' %}
+                            <div class="form-group  align-center float-child">
+                                <label for="id_{{field.name}}" class="w-25 required_asterisk" > {{field.label}} </label>
+                                {{field}}
+                            </div>
+                            {% elif field.name == 'availability_of_water_recyling_unit' or field.name == 'availability_of_anti_ragging_cell' or field.name == 'availability_of_grievance_redressal_mechanism' or field.name == 'availability_of_internal_complaints_commitee' or field.name == 'availability_of_NSS_cell' or field.name == 'availability_of_IQAC' or field.name == 'availability_of_faculty_feedback_mechanism' or field.name == 'availability_of_alumini_association' or field.name == 'availability_of_incubation_centre' %}
+                            <div class="form-group  align-center float-child" >
+                                <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                                <select id="" name="{{field.name}}" class="m-1 w-30" value ="{{field.value}}"  >
+                                <option value="Yes" >Yes</option>
+                                <option value="No" >No</option>
+                                </select>
+                            </div>
+                            {% endif %}
+                        {% endfor %}    
+                    </fieldset>
+                 <br>
+                 <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Number of Resources</legend>
+                    {% for field in form %}
+                        
+                        {% if  field.name == 'number_of_classrooms' or field.name == 'no_of_seminar_halls' or field.name == 'no_of_classrooms_with_audio_visual_facility' or field.name == 'no_of_labs' or field.name == 'no_of_computer_labs' or field.name == 'no_of_auditoriums' or field.name == 'total_sitting_capacity_in_main_auditorium' or field.name == 'no_of_conference_rooms' or field.name == 'no_of_recreation_rooms' or field.name == 'no_of_faculty_cabins' or field.name == 'no_of_latest_instruments_in_labs' %}   
+                        <div class="form-group align-center  float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                            {{field}}
+                        </div> 
+                        {% elif field.name == 'no_of_PCs_provided_to_student' or field.name == 'no_of_PCs_provided_to_faculty' or field.name == 'no_of_PCs_provided_to_other_than_faculty' %}
+                        <div class="form-group align-center  float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                            <input class="w-30 m-1 countPC" type="number"  value="{{field.value}}" name="{{field.name}}" oninput="findTotalPCs()" style = "height: 32px; border-radius: 4px;" required>
+                        </div> 
+                        {% elif field.name == 'total_PCs_in_campus' %} 
+                        <div class="form-group align-center  float-child">
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no of PCs in campus</label>
+                            <input class="w-30 m-1 " type="number" value="{{field.value}}" id="totalPC"  name="total_PCs_in_campus" style = "height: 32px; border-radius: 4px;"  required>
+                        </div>
+                        {% endif %}
+                    {% endfor %}               
+                 </fieldset>
+                 <br>
+                 <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Hostel Details</legend>
+                    {% for field in form %}
+                     {% if field.name == 'hostel_facilities_for_boys' or field.name ==  'hostel_facilities_for_girls' or field.name == 'residence_facility_for_faculty' %}
+                     <div class="form-group  align-center float-child" >
+                       <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                       <select id="" name="{{field.name}}" class="m-1 w-30" value ="{{field.value}}"  >
+                        <option value="Yes" >Yes</option>
+                        <option value="No"  >No</option>
+                       </select>
+                     </div>
+                     {% elif field.name == 'area_of_boys_hostel' or field.name ==  'capacity_of_boys_hostel' or field.name == 'no_of_boys_in_hostel' or field.name == 'area_of_girls_hostel' or field.name == 'capacity_of_girls_hostel' or field.name == 'no_of_girls_in_hostel' or field.name == 'no_of_students_availing_hostel_facilities' or field.name == 'total_staff_quarters' or field.name == 'how_many_faculties_residing_in_college_campus' %}
+                     <div class="form-group align-center  float-child">
+                       <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                       {{field}}
+                     </div> 
+                     {% endif %}
+                    {% endfor %} 
+                 </fieldset>
+                 <br>
+                 <fieldset class="border border-2 p-2 ">
+                    <legend  class="float-none w-auto">Tie-Up and Foreign Visits</legend>
+                    {% for field in form %}
+                     {% if field.name == 'no_of_faculties_visited_any_foreign_university_in_previous_AY' %} 
+                     <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of faculties visited foreign uni. in previous AY</label>
+                        {{field}}
+                     </div>
+                     {% elif field.name == 'institute_tieup_with_foreign_university'%}
+                     <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk"  for="exampleFormControlInput1">{{field.label}}</label>
+                        <select class="w-30 m-1" name="{{field.name}}" id="foreign_tieup" value="{{field.value}}" class="form-control" oninput="yesnoCheck()" >
+                            <option id="yesCheck" value="Yes">Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                     </div>
+                     {% elif field.name == 'no_of_tie_up' %}
+                     <div id="ifYes" class="form-group align-center pt-3"  style="display:none;">
+                        <label class="required_asterisk" style = "margin-left: 4.5rem;width: 5rem" for="exampleFormControlInput1">Total no. of tie-up</label>
+                        <input class="w-30 " type="number"  name="no_of_tie_up" id="etieups" oninput="addTieups(this.value)"  value="{{field.value}}" required style = "height: 32px;border-radius: 4px; margin-left: 3.76rem;"/>
+                        <div id = 'InsertTieupDets'></div>
+                     </div>
+                    {% elif field.name == 'tieup_university_details' %}
+                     <div class="form-group mb-2 align-center " id = "inputTieups" >
+                        <textarea name="{{field.name}}" id="Tieup_Data" cols="30" rows="10" class = "d-none tieup_text" >{{field.value}}</textarea>
+                     </div>
+                    {% endif %}
+                   {% endfor %} 
+                 </fieldset>
+                 <br> 
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Publication Details</legend>
+                    {% for field in form %}
+                     {% if field.name == 'no_of_publications_by_college' %}
+                     <div class="form-group align-center pt-3" >
+                        <label class="required_asterisk" for="exampleFormControlInput1" style = "margin-left: 4.5rem;width: 5rem" id=" no_of_publishers" >Number of publications by college </label>
+                        <input class="w-30 " type="number"  name="no_of_publications_by_college" id="epublishers" oninput="addPublishers(this.value)" val="1" value="{{field.value}}" required style = "height: 32px;border-radius: 4px;margin-left: 3.76rem;"/>
+                        <div id = 'InsertPublishDets'></div>
+                     </div>
+                     {% elif field.name == 'publication_details' %}
+                     <div class="form-group mb-2 align-center " id = "inputPublishers" >
+                        <textarea name="{{field.name}}" id="Publication_Data" cols="30" rows="10" class = "d-none publish_text" >{{field.value}}</textarea>
+                     </div>
+                     {% endif %}
+                    {% endfor %} 
+                </fieldset>
+                <br>
+                <fieldset class="border border-2 p-2 ">
+                 <legend  class="float-none w-auto">Affiliations and Committees</legend>
+                 {% for field in form %}
+                  {% if field.name == 'AICTE_approved' or field.name == 'NAAC_accredited' or field.name == 'ABET_accredited' or field.name == 'NBA_accredited_courses' %}
+                  <div class="form-group  align-center float-child" >
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                    <select id="" name="{{field.name}}" class="m-1 w-30" value ="{{field.value}}"  >
+                    <option value="Yes">Yes</option>
+                    <option value="No" >No</option>
+                    </select>
+                  </div>
+                  {% elif field.name == 'date_of_first_AICTE_accreditation' %}
+                  <div class="form-group align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of 1st AICTE Accreditation</label>
+                    <input class="w-30 " type="date" value="{{field.value}}" name="date_of_first_AICTE_accreditation" id=""  required style = "height: 32px; border-radius: 4px;">
+                  </div>
+                  {% elif field.name == 'AICTE_valid_upto' %}
+                  <div class="form-group align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">AICTE valid upto</label>
+                    <input type="hidden" name="" id="hidden_AICTE_valid_yr" value="{{field.value}}">
+                    <select class="m-1 w-30 futureYears" id="select_AICTE_valid_year" name="AICTE_valid_upto_yr">
+                    </select>
+                  </div>
+                  {% elif field.name == 'year_of_first_NAAC_accreditation' %}
+                  <div class="form-group  align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Year of 1st NAAC Accreditation</label>
+                    <input type="hidden" name="" id="hidden_NAAC_accr_yr" value="{{field.value}}">
+                    <select class="m-1 w-30 backYears" id="select_NAAC_accr_year" name="yr_of_first_NAAC_accreditation">
+                    </select>
+                  </div>
+                  {% elif field.name == 'NAAC_accreditation_valid_upto' %}
+                  <div class="form-group  align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">NAAC valid upto</label>
+                    <input type="hidden" name="" value="{{field.value}}" id="hidden_NAAC_valid_yr" >
+                    <select class="m-1 w-30  futureYears" id="select_NAAC_valid_year" name="NAAC_accreditation_valid_upto_yr">
+                    </select>
+                  </div>
+                  {% elif field.name == 'date_of_last_submitted_AQAR_report' %}
+                  <div class="form-group  align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of last submitted AQAR report</label>
+                    <input class="w-30 " type="date" value="{{field.value}}" name="date_of_last_submitted_AQAR_report" id=""  required style = "height: 32px; border-radius: 4px;">
+                  </div>
+                  {% elif field.name == 'NBA_accreditation_valid_upto' %}
+                  <div class="form-group  align-center float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">NBA valid upto</label>
+                    <input type="hidden" name="" id="hidden_NBA_valid_yr" value="{{field.value}}">
+                    <select class="m-1 w-30 futureYears" id="select_NBA_valid_year" name="NBA_accreditation_valid_upto_yr">
+                    </select>
+                  </div>
+                  {% elif field.name == 'latest_NAAC_grade' or field.name == 'latest_NAAC_score' %}
+                  <div class="form-group align-center  float-child">
+                    <label class="w-25 required_asterisk" for="exampleFormControlInput1">{{field.label}}</label>
+                    {{field}}
+                  </div>
+                  {% elif field.name == 'proof_UGC_recognition' or field.name == 'proof_yr_of_estb_of_college' or field.name == 'latest_AICTE_renewed_approval_certificate' or field.name == 'NBA_accreditation_certificate' or field.name == 'NAAC_accreditation_certificate' or field.name == 'latest_AQAR_submitted_to_NAAC' or field.name == 'list_of_governing_body_members' or field.name == 'list_of_academic_advisory_body' or field.name == 'list_of_members_in_anti_ragging_committee' or field.name == 'list_of_members_in_internal_complaint_committee' or field.name == 'list_of_members_in_grievance_redressal_committee' or field.name == 'list_of_members_in_disciplane_committee' or field.name == 'list_of_members_in_ST_SC_cell' or field.name == 'list_of_members_in_disaster_management_cell' or field.name == 'list_of_members_in_NSS' %}
+                  <div class="form-group align-center float-child" style="height: 8rem;" >
+                    <label for="id_{{ field.name }}" class="d-grid w-25 required_asterisk " style="margin-left: 3.5rem;"> {{ field.label }} <sub  style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                    <div id = "attendance_div" style="margin-left:5rem">
+                        <div style="display: flex;align-items: center;justify-content:space-around;">
+                            <label for="">Previously Uploaded :</label>
+                            <label for="">{{field.value}}</label>
+                        </div>
+                        <div style="display: flex;align-items: center;justify-content: center;"> 
+                            <label for="">Change File</label>
+                            <input class="w-30 m-1" type="file" name= "{{field.name}}" class="form-control-file" id="exampleFormControlFile1">
+                        </div>                                    
+                    </div>
+                </div>
+                  {% endif %}
+                {% endfor %} 
+                </fieldset>
+                <br> 
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Societies Details</legend>
+                    {% for field in form %}
+                     {% if field.name == 'no_of_clubs_in_college' %}
+                     <div class="form-group align-center pt-3" id = "inputSocieties" >
+                        <label class="required_asterisk" for="exampleFormControlInput1" style = "margin-left: 4.8rem;width: 5rem; " id=" no_of_clubs_in_college" >Number of societies/clubs in college </label>
+                        <input class="w-30 " type="number"  name="no_of_clubs_in_college" id="clubs" oninput="addSocieties(this.value)" value="{{field.value}}" required style = "height: 32px;border-radius: 4px; margin-left: 3.6rem;"/>
+                        <div id = 'InsertClubsDets'></div>
+                     </div>
+                    
+                     {% elif field.name == 'club_details' %}
+                     <div class="form-group mb-2 align-center " id = "inputSocieties" >
+                        <textarea name="{{field.name}}"  id = "clubDets" class="d-none clubs_text" >{{field.value}}</textarea>        
+                     </div>
+                     {% endif %}
+                    {% endfor %}  
+                </fieldset>
+                <br>
+                 <input type="text" class="d-none" name = "id_details" id = "id_details" value = "{{id}}"> 
+                       
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" id="edit_form" type="submit" onclick="submitUpdatedPublishData(); submitUpdatedTieupData();" value="Save" style="background-color: #080885;color: white; width: 10rem;"/>
+                </div>
+                <textarea name="columns_details" id="passingColumns" class = 'd-none' cols="30" rows="10">{{columns}}</textarea>
+                <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+            </form>
+        </div>
+    </div>     
+{% endblock %}
