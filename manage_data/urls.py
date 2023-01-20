@@ -3,6 +3,7 @@ from .views.eventViews import *
 from .views.commonViews import *
 from .views.studentViews import *
 from .views.placementViews import *
+from .views.infraViews import *
 
 urlpatterns = [
     # Event URLs
@@ -43,4 +44,29 @@ urlpatterns = [
     path('placements/open_offer_proof/<str:file>/',open_offer_proof,name="placements/open_offer_proof/"),
     path('placements/open_exam_proof/<str:file>/',open_exam_proof,name="placements/open_exam_proof/"),
     path('placements/open_current_status_proof/<str:file>/',open_current_status_proof,name="placements/open_current_status_proof/"),
+
+    #Infrastructure URLs
+    path('display_infra',display_infra,name='display_infra'),
+    path('add_infra',add_infra,name='add_infra'),
+    path('filter_infra',filter_infra,name = 'filter_infra'),
+    path('display_infracolumns',display_infracolumns,name='display_infracolumns'),
+    path('delete_infra_entry',delete_infra_entry,name = 'delete_infra_entry'),
+    path('edit_infra_entry',edit_infra_entry,name = 'edit_infra_entry'),
+    path('save_infra_entry/<int:pk>',save_infra_entry,name = 'save_infra_entry'),
+    path('open_file_UGC_proof/<str:file>',open_file_UGC_proof,name='open_file_UGC_proof'),
+    path('open_file_college_estb_proof/<str:file>',open_file_college_estb_proof,name='open_file_college_estb_proof'),
+    path('open_file_AICTE_renew_proof/<str:file>',open_file_AICTE_renew_proof,name='open_file_AICTE_renew_proof'),
+    path('open_file_NBA_accr_proof/<str:file>',open_file_NBA_accr_proof,name='open_file_NBA_accr_proof'),
+    path('open_file_NAAC_accr_proof/<str:file>',open_file_NAAC_accr_proof,name='open_file_NAAC_accr_proof'),
+    path('open_file_AQAR_proof/<str:file>',open_file_AQAR_proof,name='open_file_AQAR_proof'),
+    path('open_file_governing_list/<str:file>',open_file_governing_list,name='open_file_governing_list'),
+    path('open_file_academic_list/<str:file>',open_file_academic_list,name='open_file_academic_list'),
+    path('open_file_anti_rag_list/<str:file>',open_file_anti_rag_list,name='open_file_anti_rag_list'),
+    path('open_file_int_complain_list/<str:file>',open_file_int_complain_list,name='open_file_int_complain_list'),
+    path('open_file_grievance_list/<str:file>',open_file_grievance_list,name='open_file_grievance_list'),
+    path('open_file_disciplane_list/<str:file>',open_file_disciplane_list,name='open_file_disciplane_list'),
+    path('open_file_ST_SC_list/<str:file>',open_file_ST_SC_list,name='open_file_ST_SC_list'),
+    path('open_file_diasater_mng_list/<str:file>',open_file_diasater_mng_list,name='open_file_diasater_mng_list'),
+    path('open_file_NSS_list/<str:file>',open_file_NSS_list,name='open_file_NSS_list'),
+    path('open_file_mou_proof/<str:file>',open_file_mou_proof,name='open_file_mou_proof'),
 ]

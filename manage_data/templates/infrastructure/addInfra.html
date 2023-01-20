@@ -1,0 +1,669 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container">
+        <h1 style="text-align: center; text-decoration: underline;padding-bottom: 10px; ">Infrastructure Entry</h1>
+        <div class = "div-container">
+            <form enctype="multipart/form-data" id="form_data" method="post" action="{% url 'add_infra' %}" style="padding: 18px;
+             margin: 7px;">
+                {% csrf_token %}
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">For Year</legend>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Select Academic Year</label>
+                        <input type="hidden" name="" id="hidden_for_yr" value="none">
+                        <select class="m-1 w-30 backYears" id="select_for_year" name="for_year_infra_entry">
+                        </select>
+                        
+                    </div>
+                </fieldset>   
+                <br>
+                <fieldset class="border border-2 p-3">
+                    <legend  class="float-none w-auto">Institute Details</legend>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Name of Institute</label>
+                        <input class="w-30 " value="Maharaja Surajmal Institute of Technology" type="text" name="name_of_the_institute" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Institute Category</label>
+                        <input class="w-30 " type="text" name="institute_category" id="" value="Affiliated to a University" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Name of affiliated University</label>
+                        <input class="w-30 " type="text" value="Guru Gobind Singh Indraprastha university" name="name_of_affiliating_university" id=""  required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Institute Type</label>
+                        <select required class="w-30 m-1" name="institute_type" >
+                            <option value="Aided">Private Aided</option>
+                            <option value="Unaided" >Private Unaided</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Institution Status</label>
+                        <input class="w-30 " type="text" value="Self-financing" name="institution_status"  id=""  required style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Year of Establishment</label>
+                        <input type="hidden" name="" id="hidden_estb_yr" value="none">
+                        <select class="m-1 w-30 backYears" id="select_estb_year" name="yr_of_establishment">
+                        </select>
+                        
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Year of 1st passout batch</label>
+                        <input type="hidden" name="" id="hidden_passout_yr" value="none">
+                        <select class="m-1 w-30 backYears" id="select_passout_year" name="yr_of_1st_passout_batch">
+                        </select> 
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Address</label>
+                        <input class="w-30 m-1" type="text" value="C-4 Janakpuri" name="address" id="" required  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">City</label>
+                        <input class="w-30 m-1" type="text" value="New Delhi" name="city" id="" required  style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">State</label>
+                        <input class="w-30 m-1" type="text" value="Delhi" name="state" id="" required  style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Pincode</label>
+                        <input class="w-30 m-1" type="number" value="110058" name="pincode" id="" required  style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Campus Area (in acres)</label>
+                        <input class="w-30" type="number" name="campus_area" step=".01" value="4.99" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total built up area (sq mt.)</label>
+                        <input class="w-30" type="number" value="17837" name="total_built_up_area_in_sqmtr" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total built up area (sq ft.)</label>
+                        <input class="w-30" type="number" value="191995" name="total_built_up_area_in_sqft" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total playground area (sq ft.)</label>
+                        <input class="w-30" type="number" value="127842" name="total_playground_area" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Phone No.</label>
+                        <input class="w-30" type="tel" pattern="^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$" value="011-45037193" name="phone" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Email</label>
+                        <input class="w-30" type="email" value="director@msit.in" name="email" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Website</label>
+                        <input class="w-30" type="url" value="https://msit.in" name="website" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Head of Institute</label>
+                        <input class="w-30" type="text" value="Director" name="head_of_the_institute" id="" required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Name of head</label>
+                        <input class="w-30" type="text" value="Prof. (Col.) Ranjit Singh" name="name_of_the_head_of_institution" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Available Courses</label>
+                        <input class="w-30" type="text" value="B.Tech." name="available_courses" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of voluntry or charity programs supported</label>
+                        <input class="w-30" type="number" value="1" name="no_of_voluntary_programs_supported" id="" required style = "height: 32px; border-radius: 4px;">
+                    </div>                                       
+                                                        
+                </fieldset>               
+                <br>
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Amenities Details</legend>
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Canteen</label>
+                        <select class="w-30 m-1" required name="canteen" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Cricket Ground</label>
+                        <select class="w-30 m-1" required name="cricket_ground" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Basketball Court</label>
+                        <select class="w-30 m-1" required name="basketball_court" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Football Ground</label>
+                        <select class="w-30 m-1" required name="football_ground" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Swimming Pool</label>
+                        <select class="w-30 m-1" required name="swimming_pool" class="form-control">
+                            <option value="Yes"  >Yes</option>
+                            <option value="No" selected >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Lawn Tennis Court</label>
+                        <select class="w-30 m-1" required name="lawn_tennis_court" class="form-control">
+                            <option value="Yes" >Yes</option>
+                            <option value="No" selected >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Bank Branch</label>
+                        <select class="w-30 m-1" required name="bank_branch" class="form-control">
+                            <option value="Yes"  selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Badminton Court</label>
+                        <select class="w-30 m-1" required name="badminton_court" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Wifi facilities</label>
+                        <select class="w-30 m-1" required name="wifi_facilities" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Table Tennis Boards</label>
+                        <select class="w-30 m-1" required name="table_tennis_boards" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Gymnasium</label>
+                        <select class="w-30 m-1" required name="gymnasium" class="form-control">
+                            <option value="Yes"  >Yes</option>
+                            <option value="No" selected>No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Bank ATM</label>
+                        <select class="w-30 m-1" required name="bank_ATM" class="form-control">
+                            <option value="Yes" >Yes</option>
+                            <option value="No" selected >No</option>
+                        </select>
+                    </div>
+                    
+                </fieldset>
+                <br>
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Availability of Cells</legend>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of water-recycling unit</label>
+                        <select class="w-30 m-1" required name="availability_of_water_recyling_unit" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of anti-ragging cell</label>
+                        <select class="w-30 m-1" required name="availability_of_anti_ragging_cell" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of grievance redressal system</label>
+                        <select class="w-30 m-1" required name="availability_of_grievance_redressal_mechanism" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of internal complaints comitee</label>
+                        <select class="w-30 m-1" required name="availability_of_internal_complaints_commitee" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of NSS cell</label>
+                        <select class="w-30 m-1" required name="availability_of_NSS_cell" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of IQAC</label>
+                        <select class="w-30 m-1" required name="availability_of_IQAC" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of faculty feedback system</label>
+                        <select class="w-30 m-1" required name="availability_of_faculty_feedback_mechanism" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of alumini association</label>
+                        <select class="w-30 m-1" required name="availability_of_alumini_association" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of alumini</label>
+                        <input class="w-30 m-1 " type="number" name="no_of_alumini"    style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Availability of incubation centre</label>
+                        <select class="w-30 m-1" required name="availability_of_incubation_centre" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of company set up in last 5yr by incubation centre</label>
+                        <input class="w-30 m-1 " type="number" name="no_of_companies_setup_in_last_5_years_by_incubation_centre"  style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>                  
+                </fieldset>
+                <br>
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Number of Resources</legend>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of classrooms</label>
+                        <input class="w-30 m-1 " type="number" name="number_of_classrooms" value="39" required  style = "height: 32px;border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of seminar halls</label>
+                        <input class="w-30 m-1 " type="number" value="03" name="no_of_seminar_halls" value="39" required  style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of classes with A-V facility</label>
+                        <input class="w-30 m-1 " type="number" value="18" name="no_of_classrooms_with_audio_visual_facility" style = "height: 32px;border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of labs</label>
+                        <input class="w-30 m-1 " type="number" value="35" name="no_of_labs"  style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of computer labs</label>
+                        <input class="w-30 m-1 " type="number" value="14" name="no_of_computer_labs"  style = "height: 32px;border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of auditoriums</label>
+                        <input class="w-30 m-1 " type="number" value="01" name="no_of_auditoriums"  style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Sitting capacity in main auditorium</label>
+                        <input class="w-30 m-1 " type="number" value="500" name="total_sitting_capacity_in_main_auditorium"  style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of conference rooms</label>
+                        <input class="w-30 m-1 " type="number" value="01" name="no_of_conference_rooms"  style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of recreation rooms</label>
+                        <input class="w-30 m-1 " type="number" value="02" name="no_of_recreation_rooms"  style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of faculty cabins</label>
+                        <input class="w-30 m-1 " type="number" value="40" name="no_of_faculty_cabins"   style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of PCs to students</label>
+                        <input class="w-30 m-1 countPC" type="number"  value="413" name="no_of_PCs_provided_to_student" oninput="findTotalPCs()" style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no of PCs to faculty</label>
+                        <input class="w-30 m-1 countPC" type="number"   name="no_of_PCs_provided_to_faculty" oninput="findTotalPCs()" style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no of PCs to other than faculty</label>
+                        <input class="w-30 m-1 countPC " type="number" id="otherPC"  name="no_of_PCs_provided_to_other_than_faculty" oninput = "findTotalPCs()"  style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no of PCs in campus</label>
+                        <input class="w-30 m-1 " type="number" id="totalPC"  name="total_PCs_in_campus" style = "height: 32px;
+                        border-radius: 4px;"  required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of latest instruments in labs</label>
+                        <input class="w-30 m-1 " type="number" value="175" name="no_of_latest_instruments_in_labs"  style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                </fieldset> 
+                <br>
+                
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Hostel Details</legend>
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Hostel facilities for boys</label>
+                        <select class="w-30 m-1" required name="hostel_facilities_for_boys" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Area of boys hostel(in sq. mtr)</label>
+                        <input class="w-30 m-1"  type="number" name="area_of_boys_hostel" style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Capacity of boys hostel</label>
+                        <input class="w-30 m-1 " type="number" name="capacity_of_boys_hostel" style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no. of boys in hostel</label>
+                        <input class="w-30 m-1 countStu" type="number" name="no_of_boys_in_hostel" oninput="findTotalStu()"   style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center float-child"  >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Hostel facilities for girls</label>
+                        <select class="w-30 m-1" required name="hostel_facilities_for_girls" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Area of girls hostel(in sq. mtr)</label>
+                        <input class="w-30 m-1 " type="number" name="area_of_girls_hostel"    style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Capacity of girls hostel</label>
+                        <input class="w-30 m-1" type="number" name="capacity_of_girls_hostel" style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no. of girls in hostel</label>
+                        <input class="w-30 m-1 countStu" type="number" name="no_of_girls_in_hostel" oninput="findTotalStu()"   style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total no. of students availing hostel facility</label>
+                        <input class="w-30 m-1 " type="number" id="totalStu" name="no_of_students_availing_hostel_facilities" style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Residence facilities for faculties</label>
+                        <select class="w-30 m-1" required name="residence_facility_for_faculty" class="form-control">
+                            <option value="Yes" selected >Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Total staff quaters</label>
+                        <input class="w-30 m-1 " type="number" name="total_staff_quarters"    style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of faculty residing in college campus</label>
+                        <input class="w-30 m-1 " type="number" value="1" name="how_many_faculties_residing_in_college_campus"  style = "height: 32px; border-radius: 4px;" required>
+                    </div>
+                </fieldset>
+                <br>
+                <fieldset class="border border-2 p-2 ">
+                    <legend  class="float-none w-auto">Tie-Up and Foreign Visits</legend>
+                    <div class="form-group align-center  float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">No. of faculties visited foreign uni. in previous AY</label>
+                        <input class="w-30 m-1 " type="number" name="no_of_faculties_visited_any_foreign_university_in_previous_AY"style = "height: 32px;
+                        border-radius: 4px;" required>
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk"  for="exampleFormControlInput1">Institue tie-up with foreign university</label>
+                        <select class="w-30 m-1" required name="institute_tieup_with_foreign_university" class="form-control"  oninput="yesnoCheck()" >
+                            <option id="yesCheck" value="Yes">Yes</option>
+                            <option value="No" selected>No</option>
+                        </select>
+                    </div>
+                    <div id="ifYes" class="form-group align-center pt-3"   style="display:none; clear: left;">
+                        <label class="required_asterisk" style = "margin-left: 4.5rem;width: 5rem" for="exampleFormControlInput1">Total no. of tie-up</label>
+                        <input class="w-30 " type="number"  name="no_of_tie_up" id="tieups" min="0" oninput="addTieups(this.value)" style = "height: 32px;border-radius: 4px; margin-left: 3.76rem;"/>
+                        <div id = 'insertTieupDets'></div>
+                    </div>
+                    
+                </fieldset>        
+                <br> 
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Publication Details</legend>
+                    <div class="form-group align-center pt-3" id = "inputPublishers" >
+                        <label class="required_asterisk" for="exampleFormControlInput1" style = "margin-left: 4.5rem;width: 5rem" id=" no_of_publishers" >Number of publications by college </label>
+                        <input class="w-30 " type="number"  name="no_of_publications_by_college" id="publication_no" min="0" oninput="addPublishers(this.value)" required style = "height: 32px;border-radius: 4px;margin-left: 3.76rem;"/>
+                        <div id = 'insertPublishDets'></div>
+                    </div>
+                </fieldset> 
+                <br>
+                <fieldset class="border border-2 p-2 ">
+                    <legend  class="float-none w-auto">Affiliations and Committees</legend>
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">AICTE Approved</label>
+                        <select class="w-30 m-1" required name="AICTE_approved" class="form-control">
+                            <option value="Yes" selected>Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                     
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of 1st AICTE accreditation</label>
+                        <input class="w-30" type="date" value="2001-06-29" name="date_of_first_AICTE_accreditation"  required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">AICTE approval valid upto</label>
+                        <input type="hidden" name="" id="hidden_AICTE_valid_yr" value="none">
+                        <select class="m-1 w-30 futureYears" id="select_AICTE_valid_year" name="AICTE_valid_upto_yr">
+                        </select>
+                    </div>
+                     <div class="form-group align-center float-child" >
+                            <label class="w-25 required_asterisk" for="exampleFormControlInput1">NAAC Accredited</label>
+                            <select class="w-30" required name="NAAC_accredited" class="form-control">
+                                <option value="Yes" selected>Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                    </div>  
+                    
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Yr. of 1st NAAC accreditation</label>
+                        <input type="hidden" name="" id="hidden_NAAC_accr_yr" value="none">
+                        <select class="m-1 w-30 backYears" id="select_NAAC_accr_year" name="yr_of_first_NAAC_accreditation">
+                        </select>
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Latest NAAC grade</label>
+                        <input class="w-30" type="text" value="A" name="latest_NAAC_grade"  required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Latest NAAC score</label>
+                        <input class="w-30" type="number" name="latest_NAAC_score"  required style = "height: 32px;
+                        border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">NAAC accreditation valid upto</label>
+                        <input type="hidden" name="" id="hidden_NAAC_valid_yr" value="none">
+                        <select class="m-1 w-30 futureYears" id="select_NAAC_valid_year" name="NAAC_accreditation_valid_upto_yr">
+                        </select>
+                        <!-- <input class="w-30" type="date" min="1900" max="2099" value="" name="NAAC_accreditation_valid_upto"  required style = "height: 32px; border-radius: 4px;"> -->
+                    </div>
+
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">Date of last submitted AQAR report</label>
+                        <input class="w-30" type="date" name="date_of_last_submitted_AQAR_report"  required style = "height: 32px; border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">ABET Accredited</label>
+                        <select class="w-30 m-1" required name="ABET_accredited" class="form-control">
+                            <option value="Yes" >Yes</option>
+                            <option value="No" selected>No</option>
+                        </select>
+                    </div>
+                    <div class="form-group align-center float-child" >
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">NBA Accredited Courses</label>
+                        <select class="w-30 m-1" required name="NBA_accredited_courses" class="form-control">
+                            <option value="Yes" selected>Yes</option>
+                            <option value="No" >No</option>
+                        </select>
+                    </div>
+                    <div class="form-group  align-center float-child">
+                        <label class="w-25 required_asterisk" for="exampleFormControlInput1">NBA accreditation valid upto</label>
+                        <input type="hidden" name="" id="hidden_NBA_valid_yr" value="none">
+                        <select class="m-1 w-30 futureYears" id="select_NBA_valid_year" name="NBA_accreditation_valid_upto_yr">
+                        </select>
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid " for="exampleFormControlFile1">Proof UGC Recognition(under section 2f)<sub class="required_asterisk" style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="proof_UGC_recognition" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Proof of yr. of establishment of college<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="proof_yr_of_estb_of_college" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Latest AICTE renewed approval certificate<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="latest_AICTE_renewed_approval_certificate" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">NBA Accrediatation certificate<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="NBA_accreditation_certificate" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">NAAC Accrediatation certificate<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="NAAC_accreditation_certificate" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Latest AQAR submitted to NAAC<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="latest_AQAR_submitted_to_NAAC" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of governing body members<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_governing_body_members" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of academic advisory body<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_academic_advisory_body" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in anti-ragging committee<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_anti_ragging_committee" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in internal complaint committee<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_internal_complaint_committee" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in grievance redressal committee<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_grievance_redressal_committee" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in disciplane committee<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_disciplane_committee" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;" >
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in ST/SC cell<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_ST_SC_cell" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in disaster management cell<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_disaster_management_cell" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                    <div class="form-group align-center  float-child" style="margin-top: 15px;margin-bottom: 15px;">
+                        <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">List of members in NSS cell<sub style="width:max-content;" ><strong>(Max Size 5mb)</strong></sub></label>
+                        <input class="w-30 m-1" type="file" name="list_of_members_in_NSS" class="form-control-file" id="exampleFormControlFile1" accept ="application/pdf" style = "height: 32px; 
+                        border-radius: 4px;">
+                    </div>
+                </fieldset> 
+                <br> 
+                <fieldset class="border border-2 p-2">
+                    <legend  class="float-none w-auto">Societies Details</legend>
+                    <div class="form-group align-center pt-3" id = "inputSocieties" >
+                        <label class="required_asterisk" for="exampleFormControlInput1" style = "margin-left: 4.8rem;width: 5rem; " id=" no_of_clubs" >Number of societies/clubs in college </label>
+                        <input class="w-30 " type="number"  name="no_of_clubs_in_college" id="clubs" oninput="addSocieties(this.value)" required style = "height: 32px;border-radius: 4px; margin-left: 3.6rem;"/>
+                        <div id = 'insertClubsDets'></div>
+                    </div>
+                    <div class="actual_clubs" style = "display :none;">
+                        <textarea name="club_details" id="clubtest" cols="30" rows="10" class = "clubs_text" ></textarea>
+                    </div>
+                </fieldset>  
+                <br>
+                   
+                <textarea class="d-none" name="tieup_university_details" id="tieup_data" cols="30" rows="10"></textarea>
+                <textarea class="d-none" name="publication_details" id="publication_data" cols="30" rows="10"></textarea>
+                <textarea name="columns_details" class="d-none" id="selected_columns" cols="30" rows="10"></textarea>
+                <div class="form-group w-100" style = "display: flex; justify-content: center;margin-top: 15px;">
+                    <input class="btn  btn-sm" type="submit" value="Add" onclick="submitPublishData(); submitTieupData();" style="background-color: #080885;color: white; width: 10rem;"/>
+                </div>
+            </form>
+        </div>
+        </div>      
+{% endblock %}

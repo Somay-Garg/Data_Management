@@ -1,0 +1,607 @@
+{% extends 'base.html' %}
+{% block body %}
+{% if msg != '' %}
+        <div class="alert alert-success" id="message-alert">
+            <p>{{msg}}</p>
+        </div>
+    {% endif %} 
+<div class="table">
+    <div id="wrapper">
+        <div style="display: flex;justify-content: space-between;">
+            <h3>Currently viewing {{ header }}</h3>
+            <div style="float: right;">
+                <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; margin: 0.5rem;" name="downloadExcel" value="export" type="submit" form="filterForm">Download Excel</button>
+                <button class="btn expo-btn" style=" background-color:#052e6a; color:#fff; margin: 0.5rem;" name="" value="" type="button" onclick = 'showFilters();'>Add Filters</button>
+            </div>
+        </div>
+        <fieldset id = 'filterDataDiv'  class="border border-2 p-2 d-none">
+            <legend class="float-none w-auto p-2">Filter Data</legend>
+            <form id="filterForm" class="overflow-hidden" action="{% url 'filter_infra'%}" method="POST">
+             {% csrf_token %}
+                <div class="form-group row">
+                 <div class="form-group row">
+                    {% for key,filter in filter_data.items %}
+                    {% if 'break' in key %}
+                        <div class="w-30"></div>
+                    {% else %}
+                        {% if sel_fil_val %}
+                            {% for k,v in sel_fil_val.items %}
+                                {% if key == k %}
+                                    <div class="col-lg m-2 ">
+                                        <select class="w-30" name="{{key}}" style="width: 30%;"> 
+                                            <option value="-1" class="text-secondary" >Select {{key}}</option>
+                                            {% for value in filter %}
+                                                {% if v == value and v != -1 %}
+                                                    <option value="{{value}}" selected>{{value}}</option>
+                                                {% else %}
+                                                    <option value="{{value}}">{{value}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-lg m-2" >
+                                <select class="w-30" name="{{key}}" style="width: 30%;"> 
+                                    <option class = 'w-30' value="-1" class="text-secondary">Select {{key}}</option>
+                                    {% for value in filter %}
+                                        <option class = 'w-30' value="{{value}}">{{value}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </div>
+               </div>
+               <textarea class="d-none" name="filter_data" id="filter_data">{% if sel_fil_val_json_string %}{{sel_fil_val_json_string}}{% else %}All{% endif %}</textarea>
+               <textarea class="d-none" name="display_columns" id="display_columns">All</textarea>
+               <textarea id = "fillColumns" name = "columns_details" class="d-none">{{columns_str}}</textarea>
+               <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+           
+               <hr>
+
+               <div class="form-group row">
+                   <legend  class="float-none w-auto"></legend>
+                   <div class="form-group mb-2 align-center" >
+                       <label class="mx-4" for="exampleFormControlInput1" id="no_of_columns">No of Columns</label>
+                       <input class="w-30 m-1" type="number" name="" id="no_of_col" val="1" oninput="addInfraColumns(this.value)" min = "0" max = "110" />
+                       <div class="form-group mb-2 align-center" id = "insert_infra_Fields" style="margin-top: 20px;"></div>
+                   </div>
+               </div>
+               <div class="form-group w-100 text-center" style = "margin-top : 15px;">
+                   <button class="btn btn-success float-right "style ="background-color:green;" name="filter" value="filter" type="submit" onclick="fillDefaultValues();">Apply Filters</button>
+                   <button class="btn btn-danger float-right" style ="background-color:red;"  name="resetFilter" value="reset" type="submit">Reset Filters</button>
+               </div>  
+            </form>
+        </fieldset>
+        <br>
+
+        
+        <div class="card table-scroll {% if not display %} d-none {% endif %}" id = "table-fields" style="max-height: 75vh;"  >
+            <table id="infra_table" cellpadding="10" class="table table-striped  table-bordered table-hover align-middle text-center">
+                        <tr class="table" style = "background-color: #052e6a;">
+                            <th style="color: white;">S.no</th>
+                            {% for col in columns %}
+                                {% if col == 'for_year_infra_entry' %} 
+                                    <th style="color: white;" id="{{field.name}}_col_head">In Year</th>
+                                {% elif col == 'name_of_the_institute' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Institute Name</th>
+                                {% elif col == 'institute_category' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Institute Category</th>
+                                {% elif col == 'name_of_affiliating_university' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Affiliated University Name</th>
+                                {% elif col == 'institution_status'%}  
+                                    <th style="color: white;" id="{{field.name}}_col_head">Institution Status</th>  
+                                {% elif col == 'institute_type' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Type of Institute</th>
+                                {% elif col == 'year_of_establishment' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Establishment Year</th>
+                                {% elif col == 'year_of_1st_passout_batch' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">1st passout batch year</th>
+                                {% elif col == 'address' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Address</th>
+                                {% elif col == 'city' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">City</th>
+                                {% elif col == 'state' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">State</th> 
+                                {% elif col == 'pincode' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Pincode</th>           
+                                {% elif col == 'campus_area' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Campus Area</th>
+                                {% elif col == 'total_built_up_area_in_sqmtr' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total built area (sq mt.)</th>
+                                {% elif col == 'total_built_up_area_in_sqft' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total built area (sq ft.)</th>  
+                                {% elif col == 'total_playground_area' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total playground area</th>      
+                                {% elif col == 'phone' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Phone No.</th>
+                                {% elif col == 'email' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Email</th>
+                                {% elif col == 'website' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Website</th>
+                                {% elif col == 'head_of_the_institute' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Head of Institute</th>
+                                {% elif col == 'name_of_the_head_of_institution' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Name of Head</th>
+                                {% elif col == 'available_courses' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Courses Available</th>
+                                {% elif col == 'no_of_voluntary_programs_supported' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of voluntrary programs supported</th>
+                                {% elif col == 'AICTE_approved' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">AICTE Approved</th>
+                                {% elif col == 'date_of_first_AICTE_accreditation' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head"> Date of 1st AICTE Accreditation</th>
+                                {% elif col == 'AICTE_valid_upto' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">AICTE valid upto</th>
+                                {% elif col == 'NAAC_accredited' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NAAC Accredited</th>
+                                {% elif col == 'year_of_first_NAAC_accreditation' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head"> Yr. of 1st NAAC Accrreditation</th>
+                                {% elif col == 'latest_NAAC_grade' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Latest NAAC Grade</th>
+                                {% elif col == 'latest_NAAC_score' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Latest NAAC Score</th>
+                                {% elif col == 'NAAC_accreditation_valid_upto' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NAAC valid upto</th>
+                                {% elif col == 'date_of_last_submitted_AQAR_report' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Last Submitted AQAR</th>
+                                {% elif col == 'ABET_accredited' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">ABET Accredited</th>
+                                 {% elif col == 'NBA_accredited_courses' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NBA Accredited Courses</th>  
+                                {% elif col == 'NBA_accreditation_valid_upto' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NBA Accreditation valid upto</th>   
+                                {% elif col == 'proof_UGC_recognition' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Proof UGC recognition</th>
+                                {% elif col == 'proof_yr_of_estb_of_college' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">College estb year proof</th>   
+                                {% elif col == 'latest_AICTE_renewed_approval_certificate' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Latest AICTE renewed approval certificate</th> 
+                                {% elif col == 'NBA_accreditation_certificate' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NBA Accreditation certificate</th>             
+                                {% elif col == 'NAAC_accreditation_certificate' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">NAAC Accreditation certificate</th>
+                                {% elif col == 'latest_AQAR_submitted_to_NAAC' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Latest AQAR submitted to NAAC</th> 
+                                {% elif col == 'list_of_governing_body_members' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of governing body members</th> 
+                                {% elif col == 'list_of_academic_advisory_body' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of academic advisory body members</th>
+                                {% elif col == 'list_of_members_in_anti_ragging_committee' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of anti-ragging committee</th>
+                                {% elif col == 'list_of_members_in_internal_complaint_committee' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in internal complain committee</th>
+                                {% elif col == 'list_of_members_in_grievance_redressal_committee' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in grievance redressal committee</th>
+                                {% elif col == 'list_of_members_in_disciplane_committee' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in disciplane committee</th>
+                                {% elif col == 'list_of_members_in_ST_SC_cell' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in ST/SC cell</th>
+                                {% elif col == 'list_of_members_in_disaster_management_cell' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in diasaster management cell</th>
+                                {% elif col == 'list_of_members_in_NSS' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">List of members in NSS cell</th>
+                                {% elif col == 'number_of_classrooms' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of classrooms</th>
+                                {% elif col == 'no_of_seminar_halls' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of seminar halls</th>    
+                                {% elif col == 'no_of_classrooms_with_audio_visual_facility' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Classrooms with A-V facility</th>
+                                {% elif col == 'no_of_labs' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Number of labs</th>
+                                {% elif col == 'no_of_computer_labs' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of computer labs</th>
+                                {% elif col == 'no_of_auditoriums' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of auditoriums</th>
+                                {% elif col == 'total_sitting_capacity_in_main_auditorium' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Main Auditorium Capacity</th>
+                                {% elif col == 'no_of_conference_rooms' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of conference rooms</th>
+                                {% elif col == 'no_of_recreation_rooms' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of recreation rooms</th>
+                                {% elif col == 'no_of_faculty_cabins' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of faculty cabins</th>
+                                {% elif col == 'no_of_PCs_provided_to_student' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of PCs to student</th>
+                                {% elif col == 'no_of_PCs_provided_to_faculty' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of PCs to faculty</th> 
+                                {% elif col == 'no_of_PCs_provided_to_other_than_faculty' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of PCs to other than faculty</th>       
+                                {% elif col == 'total_PCs_in_campus' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total number of PCs in campus</th>       
+                                {% elif col == 'no_of_latest_instruments_in_labs' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of latest instr.</th>
+                                {% elif col == 'availability_of_water_recyling_unit' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of water recycle unit</th>
+                                {% elif col == 'availability_of_anti_ragging_cell' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of anti-ragging cell</th>
+                                {% elif col == 'availability_of_grievance_redressal_mechanism' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of grievance mechanism</th>
+                                {% elif col == 'availability_of_internal_complaints_commitee' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of internal complaint</th>
+                                {% elif col == 'availability_of_NSS_cell' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of NSS cell</th>
+                                {% elif col == 'availability_of_IQAC' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of IQAC</th>
+                                {% elif col == 'availability_of_faculty_feedback_mechanism' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of faculty feedback mechanism</th>
+                                
+                                {% elif col == 'availability_of_alumini_association' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of alumini association</th>
+                                {% elif col == 'no_of_alumini' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of alumini</th>
+                                {% elif col == 'availability_of_incubation_centre' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Avail of incubation centre</th>
+                                {% elif col == 'no_of_companies_setup_in_last_5_years_by_incubation_centre' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Companies in 5yr by incubation</th>
+                                {% elif col == 'hostel_facilities_for_boys' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Boy's hostel facility</th>
+                                {% elif col == 'area_of_boys_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Boy's hostel area</th>
+                                {% elif col == 'capacity_of_boys_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Boy's hostel capacity</th>
+                                {% elif col == 'no_of_boys_in_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of boys in hostel</th>    
+                                {% elif col == 'hostel_facilities_for_girls' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Girl's hostel facility</th>
+                                {% elif col == 'area_of_girls_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Girl's hostel area</th>
+                                {% elif col == 'capacity_of_girls_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Girl's hostel capacity</th>
+                                {% elif col == 'no_of_girls_in_hostel' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of girls in hostel</th>    
+                                {% elif col == 'no_of_students_availing_hostel_facilities' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total students availing hostel facility</th>    
+                                {% elif col == 'residence_facility_for_faculty' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Faculty stay facility</th>
+                                {% elif col == 'total_staff_quarters' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total staff quaters</th>
+                                {% elif col == 'how_many_faculties_residing_in_college_campus' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Faculty staying in campus</th>
+                                {% elif col == 'no_of_faculties_visited_any_foreign_university_in_previous_AY' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of faculty visited foreign uni. in previous AY</th> 
+                                {% elif col == 'institute_tieup_with_foreign_university' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Institue tie-up with foreign university</th>  
+                                {% elif col == 'no_of_tie_up' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Total no. of tie-up</th>  
+                                {% elif col == 'tieup_university_details' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Tie-Up Details</th>       
+                                {% elif col == 'canteen' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Canteen</th>
+                                {% elif col == 'cricket_ground' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Cricket Ground</th>
+                                {% elif col == 'basketball_court' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Basketball Court</th>
+                                {% elif col == 'football_ground' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Football Ground</th>
+                                {% elif col == 'swimming_pool' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Swimming Pool</th>
+                                {% elif col == 'lawn_tennis_court' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Lawn Tennis Court</th>
+                                {% elif col == 'badminton_court' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Badmin Court</th>
+                                {% elif col == 'bank_branch' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Bank branch</th>
+                                {% elif col == 'wifi_facilities' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Wifi facility</th>
+                                {% elif col == 'table_tennis_boards' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Table Tennis Boards</th>
+                                {% elif col == 'gymnasium' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Gymnasium</th>
+                                {% elif col == 'bank_ATM' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Bank ATM</th>
+                                {% elif col == 'no_of_publications_by_college' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of publications</th>
+                                {% elif col == 'publication_details' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Publication Details</th>
+                                {% elif col == 'no_of_clubs_in_college' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">No. of societies/clubs in college</th>
+                                {% elif col == 'club_details' %}
+                                    <th style="color: white;" id="{{field.name}}_col_head">Society/Clubs Details</th>        
+                                {% endif %}
+                            {% endfor %}
+                            <th style="color: white;">Action</th>
+                        </tr>
+                        {% for info in infra_data %}
+                            <tr class="table-light" id = "event_row_id_{{event.id}}">
+                                <td>{{ forloop.counter }}</td>
+                                {% for col in columns %}
+                                    {% if col == 'for_year_infra_entry' %}
+                                        <td class="for_year_infra_entry">{{info.for_year_infra_entry}}</td>
+                                    {% elif col == 'name_of_the_institute' %}
+                                        <td class="name_of_the_institute_col">{{info.name_of_the_institute}}</td>
+                                    {% elif col == 'institute_category' %}
+                                        <td class="institute_category_col" >{{info.institute_category}}</td>
+                                    {% elif col == 'name_of_affiliating_university' %}
+                                        <td class="name_of_affiliating_university_col">{{info.name_of_affiliating_university}}</td>
+                                    {% elif col == 'institute_type' %}
+                                        <td class="institute_type_col">{{info.institute_type}}</td>
+                                    {% elif col == 'institution_status' %}
+                                        <td class="institution_status_col">{{info.institution_status}}</td>    
+                                    {% elif col == 'year_of_establishment' %}
+                                        <td class="year_of_establishment_col">{{info.year_of_establishment}}</td>
+                                    {% elif col == 'year_of_1st_passout_batch' %}
+                                        <td class="year_of_1st_passout_batch_col">{{info.year_of_1st_passout_batch}}</td>
+                                    {% elif col == 'address' %}
+                                        <td class="address_col">{{info.address}}</td>
+                                    {% elif col == 'city' %}
+                                        <td class="city_col">{{info.city}}</td>  
+                                    {% elif col == 'state' %}
+                                        <td class="state_col">{{info.state}}</td> 
+                                    {% elif col == 'pincode' %}
+                                        <td class="pincode_col">{{info.pincode}}</td>         
+                                    {% elif col == 'campus_area' %}
+                                        <td class="campus_area_col">{{info.campus_area}}</td>
+                                    {% elif col == 'total_built_up_area_in_sqmtr' %}
+                                        <td class="total_built_up_area_in_sqmtr_col">{{info.total_built_up_area_in_sqmtr}}</td>
+                                    {% elif col == 'total_built_up_area_in_sqft' %}
+                                        <td class="total_built_up_area_in_sqft_col">{{info.total_built_up_area_in_sqft}}</td>  
+                                    {% elif col == 'total_playground_area' %}
+                                        <td class="total_playground_area_col">{{info.total_playground_area}}</td>      
+                                    {% elif col == 'phone' %}
+                                        <td class="phone_col">{{info.phone}}</td>
+                                    {% elif col == 'email' %}
+                                        <td class="email_col">{{info.email}}</td>
+                                    {% elif col == 'website' %}
+                                        <td class="website_col">{{info.website}}</td>
+                                    {% elif col == 'head_of_the_institute' %}
+                                        <td class="head_of_the_institute_col">{{info.head_of_the_institute}}</td>
+                                    {% elif col == 'name_of_the_head_of_institution' %}
+                                        <td class="name_of_the_head_of_institution_col">{{info.name_of_the_head_of_institution}}</td>
+                                    {% elif col == 'available_courses' %}
+                                        <td class="available_courses_col">{{info.available_courses}}</td>
+                                    {% elif col == 'no_of_voluntary_programs_supported' %}
+                                        <td class="no_of_voluntary_programs_supported_col">{{info.no_of_voluntary_programs_supported}}</td>
+                                    {% elif col == 'AICTE_approved' %}
+                                        <td class="AICTE_approved_col">{{info.AICTE_approved}}</td>
+                                    {% elif col == 'date_of_first_AICTE_accreditation' %}
+                                        <td class="date_of_first_AICTE_accreditation_col">{{info.date_of_first_AICTE_accreditation}}</td>
+                                    {% elif col == 'AICTE_valid_upto' %}
+                                        <td class="AICTE_valid_upto_col">{{info.AICTE_valid_upto}}</td>
+                                    {% elif col == 'NAAC_accredited' %}
+                                        <td class="NAAC_accredited_col">{{info.NAAC_accredited}}</td>
+                                    {% elif col == 'year_of_first_NAAC_accreditation' %}
+                                        <td class="year_of_first_NAAC_accreditation_col">{{info.year_of_first_NAAC_accreditation}}</td>
+                                    {% elif col == 'latest_NAAC_grade' %}
+                                        <td class="latest_NAAC_grade_col">{{info.latest_NAAC_grade}}</td>
+                                    {% elif col == 'latest_NAAC_score' %}
+                                        <td class="latest_NAAC_score_col">{{info.latest_NAAC_score}}</td>
+                                    {% elif col == 'NAAC_accreditation_valid_upto' %}
+                                        <td class="NAAC_accreditation_valid_upto_col">{{info.NAAC_accreditation_valid_upto}}</td>
+                                    {% elif col == 'date_of_last_submitted_AQAR_report' %}
+                                        <td class="date_of_last_submitted_AQAR_report_col">{{info.date_of_last_submitted_AQAR_report}}</td>
+                                    {% elif col == 'ABET_accredited' %}
+                                        <td class="ABET_accredited_col">{{info.ABET_accredited}}</td>
+                                    {% elif col == 'NBA_accredited_courses' %}
+                                        <td class="NBA_accredited_courses_col">{{info.NBA_accredited_courses}}</td> 
+                                    {% elif col == 'NBA_accreditation_valid_upto' %}
+                                        <td class="NBA_accreditation_valid_upto_col">{{info.NBA_accreditation_valid_upto}}</td> 
+                                    {% elif col == 'proof_UGC_recognition' %}
+                                        <td class="proof_UGC_recognition_col" ><a href="{% url 'open_file_UGC_proof' info.proof_UGC_recognition %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'proof_yr_of_estb_of_college' %}
+                                        <td class="proof_yr_of_estb_of_college_col" ><a href="{% url 'open_file_college_estb_proof' info.proof_yr_of_estb_of_college %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'latest_AICTE_renewed_approval_certificate' %}
+                                        <td class="latest_AICTE_renewed_approval_certificate_col" ><a href="{% url 'open_file_AICTE_renew_proof' info.latest_AICTE_renewed_approval_certificate %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'NBA_accreditation_certificate' %}
+                                        <td class="NBA_accreditation_certificate_col" ><a href="{% url 'open_file_NBA_accr_proof' info.NBA_accreditation_certificate %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'NAAC_accreditation_certificate' %}
+                                        <td class="NAAC_accreditation_certificate_col" ><a href="{% url 'open_file_NAAC_accr_proof' info.NAAC_accreditation_certificate %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'latest_AQAR_submitted_to_NAAC' %}
+                                        <td class="latest_AQAR_submitted_to_NAAC_col" ><a href="{% url 'open_file_AQAR_proof' info.latest_AQAR_submitted_to_NAAC %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'list_of_governing_body_members' %}
+                                        <td class="list_of_governing_body_members_col" ><a href="{% url 'open_file_governing_list' info.list_of_governing_body_members %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'list_of_academic_advisory_body' %}
+                                        <td class="list_of_academic_advisory_body_col" ><a href="{% url 'open_file_academic_list' info.list_of_academic_advisory_body %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'list_of_members_in_anti_ragging_committee' %}
+                                        <td class="list_of_members_in_anti_ragging_committee_col" ><a href="{% url 'open_file_anti_rag_list' info.list_of_members_in_anti_ragging_committee %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'list_of_members_in_internal_complaint_committee' %}
+                                        <td class="list_of_members_in_internal_complaint_committee_col" ><a href="{% url 'open_file_int_complain_list' info.list_of_members_in_internal_complaint_committee %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'list_of_members_in_grievance_redressal_committee' %}
+                                        <td class="list_of_members_in_grievance_redressal_committee_col" ><a href="{% url 'open_file_grievance_list' info.list_of_members_in_grievance_redressal_committee %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'list_of_members_in_disciplane_committee' %}
+                                        <td class="list_of_members_in_disciplane_committee_col" ><a href="{% url 'open_file_disciplane_list' info.list_of_members_in_disciplane_committee %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                    {% elif col == 'list_of_members_in_ST_SC_cell' %}
+                                        <td class="list_of_members_in_ST_SC_cell_col" ><a href="{% url 'open_file_ST_SC_list' info.list_of_members_in_ST_SC_cell %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'list_of_members_in_disaster_management_cell' %}
+                                        <td class="list_of_members_in_disaster_management_cell_col" ><a href="{% url 'open_file_diasater_mng_list' info.list_of_members_in_disaster_management_cell %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td> 
+                                    {% elif col == 'list_of_members_in_NSS' %}
+                                        <td class="list_of_members_in_NSS_col" ><a href="{% url 'open_file_NSS_list' info.list_of_members_in_NSS %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>                                              
+                                    {% elif col == 'number_of_classrooms' %}
+                                        <td class="number_of_classrooms_col">{{info.number_of_classrooms}}</td>
+                                    {% elif col == 'no_of_seminar_halls' %}
+                                        <td class="number_of_seminar_halls_col">{{info.no_of_seminar_halls}}</td>
+                                    {% elif col == 'no_of_classrooms_with_audio_visual_facility' %}
+                                        <td class="no_of_classrooms_with_audio_visual_facility_col">{{info.no_of_classrooms_with_audio_visual_facility}}</td>
+                                    {% elif col == 'no_of_labs' %}
+                                        <td class="no_of_labs_col">{{info.no_of_labs}}</td>
+                                    {% elif col == 'no_of_computer_labs' %}
+                                        <td class="no_of_computer_labs_col">{{info.no_of_computer_labs}}</td>
+                                    {% elif col == 'no_of_auditoriums' %}
+                                        <td class="no_of_auditoriums_col">{{info.no_of_auditoriums}}</td>
+                                    {% elif col == 'total_sitting_capacity_in_main_auditorium' %}
+                                        <td class="total_sitting_capacity_in_main_auditorium_col">{{info.total_sitting_capacity_in_main_auditorium}}</td>
+                                    {% elif col == 'no_of_conference_rooms' %}
+                                        <td class="no_of_conference_rooms_col">{{info.no_of_conference_rooms}}</td>
+                                    {% elif col == 'no_of_recreation_rooms' %}
+                                        <td class="no_of_recreation_rooms_col">{{info.no_of_recreation_rooms}}</td>
+                                    {% elif col == 'no_of_faculty_cabins' %}
+                                        <td class="no_of_faculty_cabins_col">{{info.no_of_faculty_cabins}}</td>
+                                    {% elif col == 'no_of_PCs_provided_to_student' %}
+                                        <td class="no_of_PCs_provided_to_student_col">{{info.no_of_PCs_provided_to_student}}</td>
+                                    {% elif col == 'no_of_PCs_provided_to_faculty' %}
+                                        <td class="no_of_PCs_provided_to_faculty_col">{{info.no_of_PCs_provided_to_faculty}}</td>
+                                    {% elif col == 'no_of_PCs_provided_to_other_than_faculty' %}
+                                        <td class="no_of_PCs_provided_to_other_than_faculty_col">{{info.no_of_PCs_provided_to_other_than_faculty}}</td>
+                                    {% elif col == 'total_PCs_in_campus' %}
+                                        <td class="total_PCs_in_campus_col">{{info.total_PCs_in_campus}}</td>
+                                    {% elif col == 'no_of_latest_instruments_in_labs' %}
+                                        <td class="no_of_latest_instruments_in_labs_col">{{info.no_of_latest_instruments_in_labs}}</td>
+                                    {% elif col == 'availability_of_water_recyling_unit' %}
+                                        <td class="availability_of_water_recyling_unit_col">{{info.availability_of_water_recyling_unit}}</td>
+                                    {% elif col == 'availability_of_anti_ragging_cell' %}
+                                        <td class="availability_of_anti_ragging_cell_col">{{info.availability_of_anti_ragging_cell}}</td>
+                                    {% elif col == 'availability_of_grievance_redressal_mechanism' %}
+                                        <td class="availability_of_grievance_redressal_mechanism_col">{{info.availability_of_grievance_redressal_mechanism}}</td>
+                                    {% elif col == 'availability_of_internal_complaints_commitee' %}
+                                        <td class="availability_of_internal_complaints_commitee_col">{{info.availability_of_internal_complaints_commitee}}</td>
+                                    {% elif col == 'availability_of_NSS_cell' %}
+                                        <td class="availability_of_NSS_cell_col">{{info.availability_of_NSS_cell}}</td>
+                                    {% elif col == 'availability_of_IQAC' %}
+                                        <td class="availability_of_IQAC_col">{{info.availability_of_IQAC}}</td>
+                                    {% elif col == 'availability_of_faculty_feedback_mechanism' %}
+                                        <td class="availability_of_faculty_feedback_mechanism_col" >{{info.availability_of_faculty_feedback_mechanism}}</td>
+                                    {% elif col == 'availability_of_alumini_association' %}
+                                        <td class="availability_of_alumini_association_col">{{info.availability_of_alumini_association}}</td>
+                                    {% elif col == 'no_of_alumini' %}
+                                        <td class="no_of_alumini_col">{{info.no_of_alumini}}</td>
+                                    {% elif col == 'availability_of_incubation_centre' %}
+                                        <td class="availability_of_incubation_centre_col">{{info.availability_of_incubation_centre}}</td>
+                                    {% elif col == 'no_of_companies_setup_in_last_5_years_by_incubation_centre' %}
+                                        <td class="no_of_companies_setup_in_last_5_years_by_incubation_centre_col">{{info.no_of_companies_setup_in_last_5_years_by_incubation_centre}}</td>
+                                    {% elif col == 'hostel_facilities_for_boys' %}
+                                        <td class="hostel_facilities_for_boys_col">{{info.hostel_facilities_for_boys}}</td>
+                                    {% elif col == 'area_of_boys_hostel' %}
+                                        <td class="area_of_boys_hostel_col">{{info.area_of_boys_hostel}}</td>
+                                    {% elif col == 'capacity_of_boys_hostel' %}
+                                        <td class="capacity_of_boys_hostel_col">{{info.capacity_of_boys_hostel}}</td>
+                                    {% elif col == 'no_of_boys_in_hostel' %}
+                                        <td class="no_of_boys_in_hostel_col">{{info.no_of_boys_in_hostel}}</td>
+                                    {% elif col == 'hostel_facilities_for_girls' %}
+                                        <td class="hostel_facilities_for_girls_col">{{info.hostel_facilities_for_girls}}</td>
+                                    {% elif col == 'area_of_girls_hostel' %}
+                                        <td class="area_of_girls_hostel_col">{{info.area_of_girls_hostel}}</td>
+                                    {% elif col == 'capacity_of_girls_hostel' %}
+                                        <td class="capacity_of_girls_hostel_col">{{info.capacity_of_girls_hostel}}</td>
+                                    {% elif col == 'no_of_girls_in_hostel' %}
+                                        <td class="no_of_girls_in_hostel_col">{{info.no_of_girls_in_hostel}}</td> 
+                                    {% elif col == 'no_of_students_availing_hostel_facilities' %}
+                                        <td class="no_of_students_availing_hostel_facilities_col">{{info.no_of_students_availing_hostel_facilities}}</td>       
+                                    {% elif col == 'residence_facility_for_faculty' %}
+                                        <td class="residence_facility_for_faculty_col">{{info.residence_facility_for_faculty}}</td>
+                                    {% elif col == 'total_staff_quarters' %}
+                                        <td class="total_staff_quarters_col">{{info.total_staff_quarters}}</td>
+                                    {% elif col == 'how_many_faculties_residing_in_college_campus' %}
+                                        <td class="how_many_faculties_residing_in_college_campus_col">{{info.how_many_faculties_residing_in_college_campus}}</td>
+                                    {% elif col == 'no_of_faculties_visited_any_foreign_university_in_previous_AY' %}
+                                        <td class="no_of_faculties_visited_any_foreign_university_in_previous_AY_col">{{info.no_of_faculties_visited_any_foreign_university_in_previous_AY}}</td>
+                                    {% elif col == 'institute_tieup_with_foreign_university' %}
+                                        <td class="institute_tieup_with_foreign_university_col">{{info.institute_tieup_with_foreign_university}}</td> 
+                                    {% elif col == 'no_of_tie_up' %}
+                                        <td class="no_of_tie_up_col">{{info.no_of_tie_up}}</td> 
+                                    {% elif col == 'tieup_university_details' %}
+                                    <td class="tieup_university_details_col">
+                                        <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                            <tr>
+                                                <th class="ml-1">Name</th>
+                                                <th>Address</th>
+                                                <th>Phone</th>
+                                                <th>Email</th>
+                                                <th>Type</th>
+                                                <th>Proof</th>
+                                                <th>Student Exchange</th>
+                                                <th>Student Participated</th>
+                                            </tr>
+                                            {% for k,v in info.tieup_university_details.items %}
+                                            <tr>
+                                            {% for k2,v2 in v.items %}
+                                             {% if k2 == 'tieup_MoU_proof' %}
+                                             <td class="tieup_MoU_proof_col" ><a href="{% url 'open_file_mou_proof' v2 %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                             {% else %}
+                                             <td>{{v2}}</td>
+                                             {% endif %}
+                                            {% endfor %}
+                                            </tr>
+                                            {% endfor %}
+                                        </table> 
+                                        </td>              
+                                    {% elif col == 'canteen' %}
+                                        <td class="canteen_col">{{info.canteen}}</td>
+                                    {% elif col == 'cricket_ground' %}
+                                        <td class="cricket_ground_col">{{info.cricket_ground}}</td>
+                                    {% elif col == 'basketball_court' %}
+                                        <td class="basketball_court_col">{{info.basketball_court}}</td>
+                                    {% elif col == 'football_ground' %}
+                                        <td class="football_ground_col">{{info.football_ground}}</td>
+                                    {% elif col == 'swimming_pool' %}
+                                        <td class="swimming_pool_col">{{info.swimming_pool}}</td>
+                                    {% elif col == 'lawn_tennis_court' %}
+                                        <td class="lawn_tennis_court_col">{{info.lawn_tennis_court}}</td>
+                                    {% elif col == 'badminton_court' %}
+                                        <td class="badminton_court_col">{{info.badminton_court}}</td>
+                                    {% elif col == 'bank_branch' %}
+                                        <td class="bank_branch_col">{{info.bank_branch}}</td>
+                                    {% elif col == 'wifi_facilities' %}
+                                        <td class="wifi_facilities_col">{{info.wifi_facilities}}</td>
+                                    {% elif col == 'table_tennis_boards' %}
+                                        <td class="table_tennis_boards_col">{{info.table_tennis_boards}}</td>
+                                    {% elif col == 'gymnasium' %}
+                                        <td class="gymnasium_col">{{info.gymnasium}}</td>
+                                    {% elif col == 'bank_ATM' %}
+                                        <td class="bank_ATM_col">{{info.bank_ATM}}</td>
+                                    {% elif col == 'no_of_publications_by_college' %}
+                                        <td class="no_of_publications_by_college_col">{{info.no_of_publications_by_college}}</td>
+                                    {% elif col == 'publication_details' %}
+                                    <td class="publication_details_col">
+                                        <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                            <tr>
+                                                <th class="ml-1">Name</th>
+                                                <th>Type</th>
+                                                <th>Frequency</th>
+                                                <th>Circulation</th>
+                                            </tr>
+                                            {% for k,v in info.publication_details.items %}
+                                            <tr>
+                                            {% for k2,v2 in v.items %}
+                                             <td>{{v2}}</td>
+                                            {% endfor %}
+                                            </tr>
+                                            
+                                            {% endfor %}
+                                        
+                                        </table> 
+                                        </td>
+                                    {% elif col == 'no_of_clubs_in_college' %}
+                                        <td class="no_of_clubs_in_college_col">{{info.no_of_clubs_in_college}}</td>
+                                    {% elif col == 'club_details' %}
+                                    <td class="club_details_col">
+                                        <table class="table align-middle table-hover table-striped table-light table-sm text-center">
+                                            <tr>
+                                                <th class="ml-1">Name</th>
+                                                <th>Type</th>
+                                            </tr>
+                                            {% for name,type in info.club_details.items %}
+                                                <tr>
+                                                    <td class="ml-1">{{name}}</td>
+                                                    <td>{{type}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </table> 
+                                        </td>        
+                                    {% endif %}
+                                {% endfor %}
+                                <td>                                 
+                                    <!-- <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button> -->
+                                    <!-- <span  class="btn btn-danger btn-sm" role="button" style = "margin-bottom:7px;" onclick="deleteRow('{{ event.id }}')"  ><i class="material-icons">&#xE872;</i></span> -->
+            <form action="{% url 'edit_infra_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+             {% csrf_token %}
+                 <input name = "id_details" class = "d-none" value = "{{info.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
+                 <button class="btn btn-warning btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="fa-solid fa-pen" style="font-size: 1.5rem;"></i></button>
+                 <textarea class = 'show_filter_data d-none'  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+            </form>
+             <form action="{% url 'delete_infra_entry'%}" method ='POST' class="overflow-hidden"  enctype="multipart/form-data" class = "" id ='columnsDataform'>
+             {% csrf_token %}
+                 <input name = "id_details" class = "d-none" value = "{{info.id}}"/> <textarea name="columns_details" class="d-none" id = 'passingColumns'>{{columns_str}}</textarea>                             
+                 <button class="btn btn-danger btn-sm" style = "margin-bottom:7px;" type = "submit" ><i class="material-icons">&#xE872;</i></button>
+                 <textarea class = 'show_filter_data d-none '  cols = "30" row = "10" name = "show_filters">{{showFilters}}</textarea>
+            </form>
+            </td>
+          </tr>
+        {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
