@@ -61,4 +61,5 @@ class Students(models.Model):
     )
     level = models.CharField(max_length=30,choices=level_of_comp,blank=False,default="College")
     date_of_award = models.DateField()
-    upload_proof = models.CharField(max_length=255,blank=False)
+    # upload_proof = models.CharField(max_length=255,blank=False)
+    upload_proof = models.FileField(upload_to="students/upload_proof/",blank=False)

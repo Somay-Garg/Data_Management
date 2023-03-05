@@ -13,7 +13,7 @@ import csv
 # display all the details nd columns
 def display_students(request,msg=''):
     fields = Students._meta.fields
-    students_data = Students.objects.all().values()
+    students_data = Students.objects.all()
     columns = ['id','name','eroll_no','semester','Departments','Class','organized_by','mobile_no','mail_id','event_name','event_type','event_date','host_institute','position','team_size','level','date_of_award','upload_proof']
     columns_str = 'id,name,eroll_no,semester,Departments,Class,organized_by,mobile_no,mail_id,event_name,event_type,event_date,host_institute,position,team_size,level,date_of_award,upload_proof'
     
@@ -40,19 +40,19 @@ def display_students(request,msg=''):
     }
 
     for student in students_data:
-        filter_data['Semester'].add(student['semester'])
-        filter_data['Departments'].add(student['Departments'])
-        filter_data['Class'].add(student['Class'])
-        filter_data['Organized By'].add(student['organized_by'])
-        filter_data['Event Name'].add(student['event_name'])
-        filter_data['Event Type'].add(student['event_type'])
-        filter_data['Host Institute'].add(student['host_institute'])
-        filter_data['Position Obtained'].add(student['position'])
-        filter_data['Team Size'].add(student['team_size'])
-        filter_data['Level'].add(student['level'])
-        filter_data['Event Date'].add(student['event_date'])
-        filter_data['Award Date'].add(student['date_of_award'])
-        filter_data['Enrollment No'].add(student['eroll_no'])
+        filter_data['Semester'].add(student.semester)
+        filter_data['Departments'].add(student.Departments)
+        filter_data['Class'].add(student.Class)
+        filter_data['Organized By'].add(student.organized_by)
+        filter_data['Event Name'].add(student.event_name)
+        filter_data['Event Type'].add(student.event_type)
+        filter_data['Host Institute'].add(student.host_institute)
+        filter_data['Position Obtained'].add(student.position)
+        filter_data['Team Size'].add(student.team_size)
+        filter_data['Level'].add(student.level)
+        filter_data['Event Date'].add(student.event_date)
+        filter_data['Award Date'].add(student.date_of_award)
+        filter_data['Enrollment No'].add(student.eroll_no)
 
     context = {
         'fields' : fields,
@@ -371,11 +371,12 @@ def add_student(request):
         now = datetime.now()
 
         if request.method == 'POST' and request.FILES['upload_proof']:
+            # upload_proof = request.FILES['upload_proof']
+            # fs = FileSystemStorage(location='proof/award_proof/')
+            # filename = fs.save(now.strftime("%H%M%S")+"_"+upload_proof.name, upload_proof)
+            # uploaded_file_url = fs.url(filename)
+            # upload_proof = uploaded_file_url.split('/')[-1]
             upload_proof = request.FILES['upload_proof']
-            fs = FileSystemStorage(location='proof/award_proof/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_proof.name, upload_proof)
-            uploaded_file_url = fs.url(filename)
-            upload_proof = uploaded_file_url.split('/')[-1]
          
         student = Students()
         student.name = name
@@ -405,9 +406,9 @@ def delete_student_entry(request):
     if request.method == "POST":
         id = request.POST['id_details']
         item = get_object_or_404(Students,pk=id)
-        fs_proof = FileSystemStorage(location='proof/award_proof/')
-        path_ = str(item.upload_proof)
-        fs_proof.delete(path_)
+        # fs_proof = FileSystemStorage(location='proof/award_proof/')
+        # path_ = str(item.upload_proof)
+        # fs_proof.delete(path_)
         Students.objects.filter(id=id).delete()
         return display_students_table(request,'Entry Deleted')
     else:
@@ -453,20 +454,21 @@ def save_student_entry(request,pk):
         now = datetime.now()
 
         if request.method == 'POST' and "upload_proof" in request.FILES and request.FILES['upload_proof']:
-            upload_proof = request.FILES['upload_proof']
-            fs = FileSystemStorage(location='proof/award_proof/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_proof.name, upload_proof)
-            uploaded_file_url = fs.url(filename)
-            fs.delete(item.upload_proof)
-            item.upload_proof = uploaded_file_url.split('/')[-1]
+            # upload_proof = request.FILES['upload_proof']
+            # fs = FileSystemStorage(location='proof/award_proof/')
+            # filename = fs.save(now.strftime("%H%M%S")+"_"+upload_proof.name, upload_proof)
+            # uploaded_file_url = fs.url(filename)
+            # fs.delete(item.upload_proof)
+            # item.upload_proof = uploaded_file_url.split('/')[-1]
+            item.upload_proof = request.FILES['upload_proof']
             print('file changed')
 
     item.save()
     return display_students_table(request,'Details Edited')
 
 # open the proof file 
-def open_file_proof(request,file):
-    return FileResponse(open('proof/award_proof/'+file, 'rb'), filename=file)
+# def open_file_proof(request,file):
+#     return FileResponse(open('proof/award_proof/'+file, 'rb'), filename=file)
 
 def export_data(request):
 
@@ -525,8 +527,9 @@ def export_data(request):
             query = query & Q(date_of_award = date_of_award)
         
         query2 = Q()
-    students_data = Students.objects.filter(query & query2).values(*req_col)
-    print(students_data)
+    students_data1 = Students.objects.filter(query & query2).values(*req_col)
+    students_data2 = Students.objects.filter(query & query2).only(*req_col)
+    # print(students_data)
     response = HttpResponse(content_type = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename=students.csv'
     writer = csv.writer(response)
@@ -534,11 +537,14 @@ def export_data(request):
     writer.writerow(req_col)
     writer.writerow([])
     i = 1
-    for student in students_data:
+    for (student1,student2) in zip(students_data1,students_data2):
         event_row = [i]
-        for value in student:
-            event_row.append(student[value])
-            print(student[value])
+        for value in student1:
+            if value == "upload_proof":
+                event_row.append("=HYPERLINK(\""+ request.get_host() + student2.upload_proof.url+"\")")
+            else:
+                event_row.append(student1[value])
+            # print(student[value])
         writer.writerow(event_row)
         i+=1
 

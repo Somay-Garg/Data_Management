@@ -16,7 +16,6 @@ def index(request):
 
 def display_events(request,msg=''):
     fields = Events._meta.fields
-    # event_data = Events.objects.all().values()
     event_data = Events.objects.all()
     columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
     columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
@@ -57,17 +56,8 @@ def display_events(request,msg=''):
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
 
-    # event_obj = Events.objects.all()
-
     for event in event_data:
         event.sponsors_details = json.loads(event.sponsors_details)
-
-    # for test in event_obj:
-    #     event['upload_attendance'] = test.upload_attendance.url
-
-    # event_test = Events.objects.all()
-    # for test in event_test:
-    #     print(test.upload_attendance.url)
 
     context = {
         'fields' : fields,
@@ -91,13 +81,7 @@ def display_events(request,msg=''):
 def display_columns(request,msg=''):
     fields = Events._meta.fields
     columns = ['id','event_name','type_of_event','Audience','Societies','Departments','Organized_by','Conducted_by','sponsors_details','total_sponsored_amt','start_date','end_date','no_of_participants','upload_attendance','upload_report']
-    columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'
-    # print(' ---------  ',type(columns))
-
-#     if(request.method == "POST"):
-#         if( 'columns_details' in request.POST and request.POST['columns_details'] != ''):
-#             # print('cols_dets' , type(request.POST['columns_details']))
-#             columns = request.POST['columns_details'].split(',')        
+    columns_str = 'id,event_name,type_of_event,Audience,Societies,Departments,Organized_by,Conducted_by,sponsors_details,total_sponsored_amt,start_date,end_date,no_of_participants,upload_attendance,upload_report'    
    
     filter_data = {
         'Event Name': set(),
@@ -138,7 +122,6 @@ def display_columns(request,msg=''):
         sponsor = json.loads(event['sponsors_details'])
         for spon in sponsor:
             filter_data['Sponsors'].add(spon)
-        print(event['upload_attendance'])
 
     for event in event_data_all:
         event['sponsors_details'] = json.loads(event['sponsors_details'])
@@ -146,7 +129,6 @@ def display_columns(request,msg=''):
     event_data = ''
     if 'filter_data' in request.POST:
         filterData = request.POST['filter_data']
-        # print("filterData > ",filterData)
         query = Q()
         if filterData == "All":
             query2 = Q()
@@ -154,7 +136,6 @@ def display_columns(request,msg=''):
             query2 = Q()
         else:
             filterData = json.loads(filterData)
-            
             event_name = filterData['Event Name']
             type_of_event = filterData['Event Type']
             Audience = filterData['Audience']
@@ -192,11 +173,8 @@ def display_columns(request,msg=''):
     
         event_data = Events.objects.filter(query & query2).values(*columns)
 
-        # print("hii",event_data)
     else:
         event_data = event_data_all
-
-    # print("event_data  -> ",event_data)
 
     context = {
         'fields' : fields,
@@ -214,8 +192,6 @@ def display_columns(request,msg=''):
     if request.POST['show_filters'] == 'true'  or request.POST['show_filters'] == 'True' :
         context['showFilters'] = True
 
-#     if 'columns_details' in request.POST:
-#         context['columns_str'] = request.POST['columns_details']
     if 'columns_details' not in request.POST:
         context['display'] = False
 
@@ -243,19 +219,10 @@ def add_event(request):
         now = datetime.now()
 
         if request.method == 'POST' and request.FILES['upload_atten']:
-            # upload_attendance = request.FILES['upload_atten']
-            # fs = FileSystemStorage(location='attendance/event_attendances/')
-            # filename = fs.save(now.strftime("%H%M%S")+"_"+upload_attendance.name, upload_attendance)
-            # uploaded_file_url = fs.url(filename)
-            # upload_attendance = uploaded_file_url.split('/')[-1]
             upload_attendance = request.FILES['upload_atten']
         
         if request.method == 'POST' and request.FILES['upload_report']:
             upload_report = request.FILES['upload_report']
-            fs = FileSystemStorage(location='report/event_reports/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_report.name, upload_report)
-            uploaded_file_url = fs.url(filename)
-            upload_report = uploaded_file_url.split('/')[-1]
 
         event = Events(
             event_name=event_name,
@@ -424,12 +391,12 @@ def filter_event(request):
         return render(request,'events/addEvent.html',{})
 
 # open file 
-def open_file_atten(request,file):
-    return FileResponse(open('attendance/event_attendances/'+file, 'rb'), filename=file)
+# def open_file_atten(request,file):
+#     return FileResponse(open('attendance/event_attendances/'+file, 'rb'), filename=file)
 
 # open report
-def open_file_report(request,file):
-    return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)
+# def open_file_report(request,file):
+#     return FileResponse(open('report/event_reports/'+file, 'rb'), filename=file)
 
 def export_data(request):
     filter_data = request.POST['filter_data']
@@ -437,10 +404,8 @@ def export_data(request):
 
     if 'columns_details' in request.POST:
         req_col = request.POST['columns_details'].split(',')
-        print('required cols',req_col)
         req_col.remove('id')
     query = Q()
-    # print(filter_data)
     if filter_data == "All":
         query2 = Q()
     else:
@@ -480,7 +445,8 @@ def export_data(request):
         
         query2 = Q(start_date__range=[after,upto]) | Q(end_date__range=[after,upto])
     
-    event_data = Events.objects.filter(query & query2).values(*req_col)
+    event_data1 = Events.objects.filter(query & query2).values(*req_col)
+    event_data2 = Events.objects.filter(query & query2).only(*req_col)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename=events.csv'
     writer = csv.writer(response)
@@ -488,11 +454,16 @@ def export_data(request):
     writer.writerow(req_col)
     writer.writerow([])
     i = 1
-    for event in event_data:
+    for (event1,event2) in zip(event_data1,event_data2):
         event_row = [i]
-        for value in event:
-            event_row.append(event[value])
-            print(event[value])
+        
+        for value in event1:
+            if value == 'upload_attendance':
+                event_row.append("=HYPERLINK(\"http://"+ request.get_host() + event2.upload_attendance.url+"\")")
+            elif value == 'upload_report':
+                event_row.append("=HYPERLINK(\"http://"+ request.get_host() + event2.upload_report.url+"\")")
+            else:
+                event_row.append(event1[value])
         writer.writerow(event_row)
         i+=1
 
@@ -519,19 +490,11 @@ def save_event(request,pk):
         now = datetime.now()
         if request.method == 'POST' and "upload_attendance" in request.FILES and request.FILES['upload_attendance']:
             upload_attendance = request.FILES['upload_attendance']
-            fs = FileSystemStorage(location='attendance/event_attendances/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_attendance.name, upload_attendance)
-            uploaded_file_url = fs.url(filename)
-            fs.delete(item.upload_attendance)
-            item.upload_attendance = uploaded_file_url.split('/')[-1]
+            item.upload_attendance = upload_attendance
         
         if request.method == 'POST' and "upload_report" in request.FILES and request.FILES['upload_report']:
             upload_report = request.FILES['upload_report']
-            fs = FileSystemStorage(location='report/event_reports/')
-            filename = fs.save(now.strftime("%H%M%S")+"_"+upload_report.name, upload_report)
-            uploaded_file_url = fs.url(filename)
-            fs.delete(item.upload_report)
-            item.upload_report = uploaded_file_url.split('/')[-1] 
+            item.upload_report = upload_report
         print("item saved")
         item.save()
         return display_columns(request,"Details Edited")
@@ -560,12 +523,12 @@ def delete_event_entry(request):
         id = request.POST['id_details']
         columns = request.POST['columns_details'].split(',')
         item = get_object_or_404(Events,pk=id)
-        fs_attendance = FileSystemStorage(location='attendance/event_attendances/')
-        path_atten = str(item.upload_attendance)
-        fs_attendance.delete(path_atten)
-        fs_report = FileSystemStorage(location='report/event_reports/')
-        path_report = str(item.upload_report)
-        fs_report.delete(path_report)
+        # fs_attendance = FileSystemStorage(location='attendance/event_attendances/')
+        # path_atten = str(item.upload_attendance)
+        # fs_attendance.delete(path_atten)
+        # fs_report = FileSystemStorage(location='report/event_reports/')
+        # path_report = str(item.upload_report)
+        # fs_report.delete(path_report)
         # print("helo",path_)
         show_filters = request.POST['show_filters']
         # print('hiii',show_filters)

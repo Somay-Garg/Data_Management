@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="form-group  align-center float-child px-5">
                                         <label class="w-25" for="exampleFormControlInput1">Prev. Uploaded Proof:</label>
-                                        <a href="{% url 'placements/open_offer_proof/' offer.job_proof %}" class="btn btn-sm atten_file w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                                        <a href="{{ offer.job_proof.url }}" class="btn btn-sm atten_file w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                                     </div>
                                     <div class="form-group align-center float-child">
                                         <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload New Proof: <sub ><strong>(Max Size 5mb)</strong></sub></label>
@@ -142,7 +142,7 @@
                                         </div>
                                         <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}dont_show d-none{% endif %} px-5">
                                             <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof: </label>
-                                            <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                                            <a href="{{exam.result_proof.url }}" class="btn btn-sm atten_file  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                                         </div>
                                         <div class="form-group align-center float-child exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}d-none{% endif %}">
                                             <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload New Result Proof <sub ><strong>(Max Size 5mb)</strong></sub></label>
@@ -198,7 +198,7 @@
                           </div>
                           <div class="form-group align-center float-child px-5">
                             <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof(LOJ OR I-Card):</label>
-                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.joining_proof %}" class="btn btn-sm  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                            <a href="{{studentCurrentStatusDetail.joining_proof.url }}" class="btn btn-sm  text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                           </div>
                           <div class="form-group align-center float-child">
                             <label class="w-25 required_asterisk d-grid" for="exampleFormControlFile1">Upload Proof(LOJ OR I-Card) <sub ><strong>(Max Size 5mb)</strong></sub></label>
@@ -227,7 +227,7 @@
                           </div>
                           <div class="form-group align-center float-child px-5">
                             <label class="w-25 required_asterisk" for="exampleFormControlFile1">Prev. Uploaded Proof(LOJ OR I-Card):</label>
-                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.id_proof %}" class="btn btn-sm w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
+                            <a href="{{ studentCurrentStatusDetail.id_proof.url }}" class="btn btn-sm w-30 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i><input type="text" class="border-0 bg-white" disabled></a>
                           </div>
                           <div class="form-group align-center float-child">
                             <label class="w-25 d-grid required_asterisk" for="exampleFormControlFile1">Upload Proof(I-Card)<sub ><strong>(Max Size 5mb)</strong></sub></label>

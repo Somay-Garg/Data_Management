@@ -60,7 +60,8 @@ class Events(models.Model):
     no_of_participants = models.IntegerField()
     # upload_attendance = models.CharField(max_length=255,blank=False)
     upload_attendance = models.FileField(upload_to="event_attendance/",blank=False)
-    upload_report = models.CharField(max_length=255,blank=False)
+    # upload_report = models.CharField(max_length=255,blank=False)
+    upload_report = models.FileField(upload_to="event/reports/",blank=False)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

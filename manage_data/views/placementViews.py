@@ -268,11 +268,12 @@ def add_student_placement_detail(request):
             current_offer.job_proof = ''
 
             if 'upload_proof_'+key in request.FILES:
-                job_proof = request.FILES['upload_proof_'+key]
-                fs = FileSystemStorage(location='student_proofs/offer_proof/')
-                filename = fs.save(enrollmentno+'_'+current_offer.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
-                uploaded_file_url = fs.url(filename)
-                current_offer.job_proof = uploaded_file_url.split('/')[-1]
+                # job_proof = request.FILES['upload_proof_'+key]
+                # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+                # filename = fs.save(enrollmentno+'_'+current_offer.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
+                # uploaded_file_url = fs.url(filename)
+                # current_offer.job_proof = uploaded_file_url.split('/')[-1]
+                current_offer.job_proof = request.FILES['upload_proof_'+key]
             current_offer.save()
 
     appeared_for_exams = False
@@ -301,11 +302,12 @@ def add_student_placement_detail(request):
 
             current_exam.result_proof = None
             if 'result_proof_'+key in request.FILES:
-                result_proof = request.FILES['result_proof_'+key]
-                fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                filename = fs.save(enrollmentno+'_'+current_exam.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
-                uploaded_file_url = fs.url(filename)
-                current_exam.result_proof = uploaded_file_url.split('/')[-1]
+                # result_proof = request.FILES['result_proof_'+key]
+                # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+                # filename = fs.save(enrollmentno+'_'+current_exam.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
+                # uploaded_file_url = fs.url(filename)
+                # current_exam.result_proof = uploaded_file_url.split('/')[-1]
+                current_exam.result_proof = request.FILES['result_proof_'+key]
             current_exam.save()
 
     current_status = ''
@@ -320,11 +322,12 @@ def add_student_placement_detail(request):
             
             job.job_joining_proof = ''
             if 'job_joining_proof' in request.FILES:
-                job_joining_proof = request.FILES['job_joining_proof']
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                filename = fs.save(enrollmentno+'_'+current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
-                uploaded_file_url = fs.url(filename)
-                job.joining_proof = uploaded_file_url.split('/')[-1]
+                # job_joining_proof = request.FILES['job_joining_proof']
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # filename = fs.save(enrollmentno+'_'+current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
+                # uploaded_file_url = fs.url(filename)
+                # job.joining_proof = uploaded_file_url.split('/')[-1]
+                job.joining_proof = request.FILES['job_joining_proof']
 
             job.save()
         
@@ -338,11 +341,12 @@ def add_student_placement_detail(request):
 
             high_edu.college_joining_proof = ''
             if 'college_joining_proof' in request.FILES:
-                college_joining_proof = request.FILES['college_joining_proof']
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
-                uploaded_file_url = fs.url(filename)
-                high_edu.id_proof = uploaded_file_url.split('/')[-1]
+                # college_joining_proof = request.FILES['college_joining_proof']
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
+                # uploaded_file_url = fs.url(filename)
+                # high_edu.id_proof = uploaded_file_url.split('/')[-1]
+                high_edu.id_proof = request.FILES['college_joining_proof']
 
             high_edu.save()
 
@@ -433,17 +437,18 @@ def save_student_placement_detail(request):
             stu.on_off_campus = existing_offers[offer]['on_off_campus']
             if 'upload_proof_'+offer in request.FILES:
                 # deleting existing file
-                fs = FileSystemStorage(location='student_proofs/offer_proof/')
-                path = str(stu.job_proof)
-                if path != "":
-                    fs.delete(path)
+                # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+                # path = str(stu.job_proof)
+                # if path != "":
+                #     fs.delete(path)
                 
-                # adding new file
-                job_proof = request.FILES['upload_proof_'+offer]
-                fs = FileSystemStorage(location='student_proofs/offer_proof/')
-                filename = fs.save(enrollmentno+'_'+stu.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
-                uploaded_file_url = fs.url(filename)
-                stu.job_proof = uploaded_file_url.split('/')[-1]
+                # # adding new file
+                # job_proof = request.FILES['upload_proof_'+offer]
+                # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+                # filename = fs.save(enrollmentno+'_'+stu.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
+                # uploaded_file_url = fs.url(filename)
+                # stu.job_proof = uploaded_file_url.split('/')[-1]
+                stu.job_proof = request.FILES['upload_proof_'+offer]
             stu.save()
 
     # for deleting removed offers
@@ -451,10 +456,10 @@ def save_student_placement_detail(request):
         remove_offers = request.POST['removed_offers'].split(',')
         for offer in remove_offers:
             stu = StudentOfferDetails.objects.get(id=offer)
-            fs = FileSystemStorage(location='student_proofs/offer_proof/')
-            path = str(stu.job_proof)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+            # path = str(stu.job_proof)
+            # if path != "":
+            #     fs.delete(path)
             StudentOfferDetails.objects.filter(id=stu.id).delete()
 
     # for adding new offers
@@ -473,11 +478,12 @@ def save_student_placement_detail(request):
                 current_offer.job_proof = ''
 
                 if 'upload_proof_'+key in request.FILES:
-                    job_proof = request.FILES['upload_proof_'+key]
-                    fs = FileSystemStorage(location='student_proofs/offer_proof/')
-                    filename = fs.save(enrollmentno+'_'+current_offer.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
-                    uploaded_file_url = fs.url(filename)
-                    current_offer.job_proof = uploaded_file_url.split('/')[-1]
+                    # job_proof = request.FILES['upload_proof_'+key]
+                    # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+                    # filename = fs.save(enrollmentno+'_'+current_offer.company_name+'_'+generate_unique_id()+'.pdf', job_proof)
+                    # uploaded_file_url = fs.url(filename)
+                    # current_offer.job_proof = uploaded_file_url.split('/')[-1]
+                    current_offer.job_proof = request.FILES['upload_proof_'+key]
                 current_offer.save()
 
 
@@ -514,17 +520,18 @@ def save_student_placement_detail(request):
 #                 stu.result_proof = None
             if 'result_proof_'+exam in request.FILES:
                 # deleting existing file
-                fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                path = str(stu.result_proof)
-                if path != "":
-                    fs.delete(path)
+                # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+                # path = str(stu.result_proof)
+                # if path != "":
+                #     fs.delete(path)
 
-                # adding new file
-                result_proof = request.FILES['result_proof_'+exam]
-                fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                filename = fs.save(enrollmentno+'_'+stu.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
-                uploaded_file_url = fs.url(filename)
-                stu.result_proof = uploaded_file_url.split('/')[-1]
+                # # adding new file
+                # result_proof = request.FILES['result_proof_'+exam]
+                # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+                # filename = fs.save(enrollmentno+'_'+stu.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
+                # uploaded_file_url = fs.url(filename)
+                # stu.result_proof = uploaded_file_url.split('/')[-1]
+                stu.result_proof = request.FILES['result_proof_'+exam]
             stu.save()
 
     # for deleting removed exams
@@ -532,10 +539,10 @@ def save_student_placement_detail(request):
         removed_exams = request.POST['removed_exams'].split(',')
         for exam in removed_exams:
             stu = StudentExamDetails.objects.get(id=exam)
-            fs = FileSystemStorage(location='student_proofs/exam_proof/')
-            path = str(stu.result_proof)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+            # path = str(stu.result_proof)
+            # if path != "":
+            #     fs.delete(path)
             StudentExamDetails.objects.filter(id=stu.id).delete()
 
     # for adding new exams
@@ -566,11 +573,12 @@ def save_student_placement_detail(request):
 
                 current_exam.result_proof = None
                 if 'result_proof_'+key in request.FILES:
-                    result_proof = request.FILES['result_proof_'+key]
-                    fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                    filename = fs.save(enrollmentno+'_'+current_exam.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
-                    uploaded_file_url = fs.url(filename)
-                    current_exam.result_proof = uploaded_file_url.split('/')[-1]
+                    # result_proof = request.FILES['result_proof_'+key]
+                    # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+                    # filename = fs.save(enrollmentno+'_'+current_exam.exam_name+'_'+generate_unique_id()+'.pdf', result_proof)
+                    # uploaded_file_url = fs.url(filename)
+                    # current_exam.result_proof = uploaded_file_url.split('/')[-1]
+                    current_exam.result_proof = request.FILES['result_proof_'+key]
                 current_exam.save()
 
     student = StudentPlacement.objects.get(id=request.POST['student_id'])
@@ -589,15 +597,16 @@ def save_student_placement_detail(request):
             stu.date_of_joining = request.POST['joining_date']
             stu.address = request.POST['company_address']
             if 'job_joining_proof' in request.FILES:
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                path = str(stu.joining_proof)
-                if path != "":
-                    fs.delete(path)
-                job_joining_proof = request.FILES['job_joining_proof']
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                filename = fs.save(enrollmentno+'_'+student.current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
-                uploaded_file_url = fs.url(filename)
-                stu.joining_proof = uploaded_file_url.split('/')[-1]
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # path = str(stu.joining_proof)
+                # if path != "":
+                #     fs.delete(path)
+                # job_joining_proof = request.FILES['job_joining_proof']
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # filename = fs.save(enrollmentno+'_'+student.current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
+                # uploaded_file_url = fs.url(filename)
+                # stu.joining_proof = uploaded_file_url.split('/')[-1]
+                stu.joining_proof = request.FILES['job_joining_proof']
             stu.save()
         
         elif student.current_status == request.POST['currentstatus'] and student.current_status == 'Higher Education':
@@ -609,15 +618,16 @@ def save_student_placement_detail(request):
             stu.country_name = request.POST['country']
             stu.college_address = request.POST['college_address']
             if 'college_joining_proof' in request.FILES:
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                path = str(stu.id_proof)
-                if path != "":
-                    fs.delete(path)
-                college_joining_proof = request.FILES['college_joining_proof']
-                fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
-                uploaded_file_url = fs.url(filename)
-                stu.id_proof = uploaded_file_url.split('/')[-1]
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # path = str(stu.id_proof)
+                # if path != "":
+                #     fs.delete(path)
+                # college_joining_proof = request.FILES['college_joining_proof']
+                # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                # filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
+                # uploaded_file_url = fs.url(filename)
+                # stu.id_proof = uploaded_file_url.split('/')[-1]
+                stu.id_proof = request.FILES['college_joining_proof']
             stu.save()
 
         elif student.current_status == request.POST['currentstatus'] and student.current_status == 'Entreprenurship':
@@ -639,18 +649,18 @@ def save_student_placement_detail(request):
         # deleting previous status
         elif student.current_status == "Job":
             stu = StudentCurrentStatusJobDetails.objects.get(enrollmentno=student.enrollmentno)
-            fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-            path = str(stu.joining_proof)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+            # path = str(stu.joining_proof)
+            # if path != "":
+            #     fs.delete(path)
             StudentCurrentStatusJobDetails.objects.filter(id=stu.id).delete()
         
         elif student.current_status == "Higher Education":
             stu = StudentCurrentStatusHighEduDetails.objects.get(enrollmentno=student.enrollmentno)
-            fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-            path = str(stu.id_proof)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+            # path = str(stu.id_proof)
+            # if path != "":
+            #     fs.delete(path)
             StudentCurrentStatusHighEduDetails.objects.filter(id=stu.id).delete()
         
         elif student.current_status == "Entreprenurship":
@@ -667,12 +677,12 @@ def save_student_placement_detail(request):
                 
                 job.job_joining_proof = ''
                 if 'job_joining_proof' in request.FILES:
-                    job_joining_proof = request.FILES['job_joining_proof']
-                    fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                    filename = fs.save(enrollmentno+'_'+current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
-                    uploaded_file_url = fs.url(filename)
-                    job.joining_proof = uploaded_file_url.split('/')[-1]
-
+                    # job_joining_proof = request.FILES['job_joining_proof']
+                    # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                    # filename = fs.save(enrollmentno+'_'+current_status+'_'+generate_unique_id()+'.pdf', job_joining_proof)
+                    # uploaded_file_url = fs.url(filename)
+                    # job.joining_proof = uploaded_file_url.split('/')[-1]
+                    job.joining_proof = request.FILES['job_joining_proof']
                 job.save()
             
             elif current_status == 'Higher Education':
@@ -685,11 +695,12 @@ def save_student_placement_detail(request):
 
                 high_edu.college_joining_proof = ''
                 if 'college_joining_proof' in request.FILES:
-                    college_joining_proof = request.FILES['college_joining_proof']
-                    fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-                    filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
-                    uploaded_file_url = fs.url(filename)
-                    high_edu.id_proof = uploaded_file_url.split('/')[-1]
+                    # college_joining_proof = request.FILES['college_joining_proof']
+                    # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+                    # filename = fs.save(enrollmentno+'_'+'Higher_Education'+'_'+generate_unique_id()+'.pdf', college_joining_proof)
+                    # uploaded_file_url = fs.url(filename)
+                    # high_edu.id_proof = uploaded_file_url.split('/')[-1]
+                    high_edu.id_proof = request.FILES['college_joining_proof']
 
                 high_edu.save()
 
@@ -731,39 +742,39 @@ def delete_placement_entry(request):
         if item.is_placed:
             student = StudentOfferDetails.objects.filter(enrollmentno=enrollmentno)
             for stu in student:
-                fs = FileSystemStorage(location='student_proofs/offer_proof/')
-                path = str(stu.job_proof)
-                if path != "":
-                    fs.delete(path)
+                # fs = FileSystemStorage(location='student_proofs/offer_proof/')
+                # path = str(stu.job_proof)
+                # if path != "":
+                #     fs.delete(path)
                 StudentOfferDetails.objects.filter(id=stu.id).delete()
         
         # Deleting from exam section
         if item.appeared_for_exams:
             student = StudentExamDetails.objects.filter(enrollmentno=enrollmentno)
             for stu in student:
-                fs = FileSystemStorage(location='student_proofs/exam_proof/')
-                path = str(stu.result_proof)
-                if path != "":
-                    fs.delete(path)
+                # fs = FileSystemStorage(location='student_proofs/exam_proof/')
+                # path = str(stu.result_proof)
+                # if path != "":
+                #     fs.delete(path)
                 StudentExamDetails.objects.filter(id=stu.id).delete()
         
         # Deleting from current status as Job
         if item.current_status == "Job":
             student = StudentCurrentStatusJobDetails.objects.get(enrollmentno=enrollmentno)
-            fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-            path = str(student.joining_proof)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+            # path = str(student.joining_proof)
+            # if path != "":
+            #     fs.delete(path)
             StudentCurrentStatusJobDetails.objects.filter(id=student.id).delete()
         
         # Deleting from current status as Higher Education
         elif item.current_status == "Higher Education":
             student = StudentCurrentStatusHighEduDetails.objects.get(enrollmentno=enrollmentno)
-            fs = FileSystemStorage(location='student_proofs/current_status_proof/')
-            path = str(student.id_proof)
-            print(path)
-            if path != "":
-                fs.delete(path)
+            # fs = FileSystemStorage(location='student_proofs/current_status_proof/')
+            # path = str(student.id_proof)
+            # print(path)
+            # if path != "":
+            #     fs.delete(path)
             StudentCurrentStatusHighEduDetails.objects.filter(id=student.id).delete()
         
         # Deleting from current status as Entreprenurship
@@ -778,7 +789,7 @@ def delete_placement_entry(request):
 
 def show_placement_detail(request,pk,showFilters):
     id = pk
-    print("mansi--->",showFilters)
+    # print("mansi--->",showFilters)
     studentDetail = StudentPlacement.objects.get(pk = id)
     studentDetail.passout = str(studentDetail.passout).split('-')[0]
     studentOfferDetail = ''
@@ -810,11 +821,11 @@ def show_placement_detail(request,pk,showFilters):
 
     return render(request,'placements/show_placement_details.html',context)
 
-def open_offer_proof(request,file):
-    return FileResponse(open('student_proofs/offer_proof/'+file, 'rb'), filename=file)
+# def open_offer_proof(request,file):
+#     return FileResponse(open('student_proofs/offer_proof/'+file, 'rb'), filename=file)
 
-def open_exam_proof(request,file):
-    return FileResponse(open('student_proofs/exam_proof/'+file, 'rb'), filename=file)
+# def open_exam_proof(request,file):
+#     return FileResponse(open('student_proofs/exam_proof/'+file, 'rb'), filename=file)
 
-def open_current_status_proof(request,file):
-    return FileResponse(open('student_proofs/current_status_proof/'+file, 'rb'), filename=file)
+# def open_current_status_proof(request,file):
+#     return FileResponse(open('student_proofs/current_status_proof/'+file, 'rb'), filename=file)

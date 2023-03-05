@@ -11,8 +11,8 @@ urlpatterns = [
     path('add_event',add_event,name='add_event'),
     path('edit_event/<int:pk>',edit_event,name='edit_event'),
     path('display_columns',display_columns,name='display_columns'),
-    path('open_file_atten/<str:file>',open_file_atten,name='open_file_atten'),
-    path('open_file_report/<str:file>',open_file_report,name='open_file_report'),
+    # path('open_file_atten/<str:file>',open_file_atten,name='open_file_atten'),
+    # path('open_file_report/<str:file>',open_file_report,name='open_file_report'),
     path('save_event/<int:pk>',save_event,name = 'save_event'),
     path('edit_event',edit_event,name = 'edit_event'),
     path('filter_event',filter_event,name = 'filter_event'),
@@ -26,7 +26,7 @@ urlpatterns = [
     path('delete_student_entry',delete_student_entry,name = 'delete_student_entry'),
     path('edit_student_entry',edit_student_entry,name = 'edit_student_entry'),
     path('save_student_entry/<int:pk>',save_student_entry,name = 'save_student_entry'),
-    path('open_file_proof/<str:file>',open_file_proof,name='open_file_proof'),
+    # path('open_file_proof/<str:file>',open_file_proof,name='open_file_proof'),
     path('filter_student',filter_student,name = 'filter_student'),
     # students url end
 
@@ -40,7 +40,7 @@ urlpatterns = [
     path('placements/filter_placement/',filter_placement,name="placements/filter_placement/"),
     path('placements/save_student_placement_detail/',save_student_placement_detail,name="placements/save_student_placement_detail/"),
     path('placements/show_placement_detail/<int:pk>/<str:showFilters>',show_placement_detail,name="placements/show_placement_detail/"),
-    path('placements/open_offer_proof/<str:file>/',open_offer_proof,name="placements/open_offer_proof/"),
-    path('placements/open_exam_proof/<str:file>/',open_exam_proof,name="placements/open_exam_proof/"),
-    path('placements/open_current_status_proof/<str:file>/',open_current_status_proof,name="placements/open_current_status_proof/"),
+#     path('placements/open_offer_proof/<str:file>/',open_offer_proof,name="placements/open_offer_proof/"),
+#     path('placements/open_exam_proof/<str:file>/',open_exam_proof,name="placements/open_exam_proof/"),
+#     path('placements/open_current_status_proof/<str:file>/',open_current_status_proof,name="placements/open_current_status_proof/"),
 ]

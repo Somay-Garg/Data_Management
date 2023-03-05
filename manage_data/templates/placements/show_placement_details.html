@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="form-group align-center float-child w-100 ">
                                     <label class="w-29" style="font-weight: bold;" for="exampleFormControlInput1">Uploaded Proof:</label>
-                                    <a href="{% url 'placements/open_offer_proof/' offer.job_proof %}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                                    <a href="{{ offer.job_proof.url }}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
                                 </div>
                             </fieldset>
                         {% endfor %}
@@ -106,7 +106,7 @@
                                   </div>
                                     <div class="form-group align-center float-child w-100  exam_no_{{forloop.counter}} {% if exam.result_proof == '' or exam.result_proof == None %}dont_show d-none{% endif %}">
                                         <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof: </label>
-                                        <a href="{% url 'placements/open_exam_proof/' exam.result_proof %}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                                        <a href="{{ exam.result_proof.url }}" class="btn btn-sm atten_file w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
                                     </div>
                             </fieldset>
                         {% endfor %}
@@ -139,7 +139,7 @@
                           </div>
                           <div class="form-group align-center float-child w-100 ">
                             <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof(LOJ OR I-Card):</label>
-                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.joining_proof %}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                            <a href="{{ studentCurrentStatusDetail.joining_proof.url }}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
                           </div>
                         {% elif studentDetail.current_status == "Higher Education" %}
                           <div class="form-group align-center float-child w-100 ">
@@ -160,7 +160,7 @@
                           </div>
                           <div class="form-group align-center float-child w-100 ">
                             <label class="w-29" style="font-weight: bold;" for="exampleFormControlFile1">Uploaded Proof(LOJ OR I-Card):</label>
-                            <a href="{% url 'placements/open_current_status_proof/' studentCurrentStatusDetail.id_proof %}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
+                            <a href="{{ studentCurrentStatusDetail.id_proof.url }}" class="btn btn-sm w-65 text-start p-0" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a>
                           </div>
                         {% elif studentDetail.current_status == "Entreprenurship" %}
                           <div class="form-group align-center float-child w-100 ">

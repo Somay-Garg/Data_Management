@@ -191,7 +191,7 @@
                                         <td class="date_of_award_col" >{{ student.date_of_award }}</td>
                                     {% elif col == 'upload_proof' %}
                                         <!-- <td class="upload_proof_col" ><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></td> -->
-                                        <td class="upload_proof_col" ><a href="{% url 'open_file_proof' student.upload_proof %}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
+                                        <td class="upload_proof_col" ><a href="{{ student.upload_proof.url }}" class="btn btn-sm atten_file" role="button" target="_blank"><i class="fas fa-file-pdf" style = "font-size:2rem; color: red;"></i></a></td>
                                     {% endif %}
                                 {% endfor %}
                                 <td>                                 
